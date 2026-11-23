@@ -64,7 +64,7 @@ app:
 # (ojito en el panel de Mercado Pago) solo en tu copia local, nunca commitear el valor real.
 mercadopago:
   public-key: APP_USR-849c20b2-4269-4196-aded-4e3d353529a1
-  access-token: ${MERCADOPAGO_ACCESS_TOKEN:CAMBIAR_ACCESS_TOKEN_AQUI}
+  access-token: APP_USR-3007949062468393-112007-34ebc67479d3632dc8a4b042bc7e1800-3858850659
   # Checkout Pro: a donde vuelve el navegador segun el resultado. pagoId se agrega solo
   # (PasarelaPagoService.crearPreferencia) para que esa pantalla sepa que pago confirmar.
   back-url-success: http://localhost:4200/pagos/resultado
