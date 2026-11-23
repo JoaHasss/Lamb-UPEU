@@ -1,0 +1,1001 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema universitario integrado - historias de usuario, microservicios y arquitectura">
+      
+      
+      
+      
+        <link rel="prev" href="../u2-producto/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Pagos con Mercado Pago - Lamb UPeU 2.0</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pagos-con-mercado-pago" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="Lamb UPeU 2.0" class="md-header__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lamb UPeU 2.0
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Pagos con Mercado Pago
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lamb UPeU 2.0" class="md-nav__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lamb UPeU 2.0
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pagos con Mercado Pago
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pagos con Mercado Pago
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-resumen-en-una-linea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Resumen en una línea
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-como-lo-usa-un-cliente-paso-a-paso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cómo lo usa un cliente (paso a paso)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-flujo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flujo técnico
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Flujo técnico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estados-del-pago-estadopago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estados del pago (EstadoPago)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metodo-real-usado-metododesdemercadopago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Método real usado (metodoDesdeMercadoPago)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-endpoints-finanzas-ms-via-gateway-18080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Endpoints (finanzas-ms, vía Gateway :18080)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-donde-esta-el-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Dónde está el código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-configuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configuración
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pendientes-y-cosas-a-saber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Pendientes y cosas a saber
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-probar-en-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Probar en local
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-resumen-en-una-linea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Resumen en una línea
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-como-lo-usa-un-cliente-paso-a-paso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Cómo lo usa un cliente (paso a paso)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-flujo-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flujo técnico
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Flujo técnico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estados-del-pago-estadopago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estados del pago (EstadoPago)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metodo-real-usado-metododesdemercadopago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Método real usado (metodoDesdeMercadoPago)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-endpoints-finanzas-ms-via-gateway-18080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Endpoints (finanzas-ms, vía Gateway :18080)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-donde-esta-el-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Dónde está el código
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-configuracion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Configuración
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pendientes-y-cosas-a-saber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Pendientes y cosas a saber
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-probar-en-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Probar en local
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="pagos-con-mercado-pago">Pagos con Mercado Pago<a class="headerlink" href="#pagos-con-mercado-pago" title="Permanent link">&para;</a></h1>
+<p>Contexto de cómo funciona hoy la integración con Mercado Pago en LAMB: qué ve el usuario, qué pasa por detrás, dónde está el código y qué falta. Sirve como referencia para el equipo y como contexto para retomar el trabajo con Claude.</p>
+<blockquote>
+<p>Estado a <strong>2026-11-23</strong> (commit <code>141a0da</code>). Si cambias el flujo, actualiza este archivo.</p>
+</blockquote>
+<hr />
+<h2 id="1-resumen-en-una-linea">1. Resumen en una línea<a class="headerlink" href="#1-resumen-en-una-linea" title="Permanent link">&para;</a></h2>
+<p>El usuario registra un pago en LAMB → LAMB crea una <strong>preferencia de Checkout Pro</strong> → el navegador va a la página de <strong>Mercado Pago</strong>, donde el usuario elige tarjeta, Yape, PagoEfectivo, etc. → Mercado Pago lo devuelve a <code>/pagos/resultado</code> → LAMB <strong>consulta el pago real</strong> en Mercado Pago y lo marca <code>APROBADO</code>, <code>EN_PROCESO</code> o <code>RECHAZADO</code>.</p>
+<hr />
+<h2 id="2-como-lo-usa-un-cliente-paso-a-paso">2. Cómo lo usa un cliente (paso a paso)<a class="headerlink" href="#2-como-lo-usa-un-cliente-paso-a-paso" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Entra al frontend (<code>http://localhost:4200</code>) e inicia sesión con Keycloak.</li>
+<li>Va a <strong>Pagos → Nuevo pago</strong> (<code>/pagos/nueva</code>).</li>
+<li>Llena el formulario:</li>
+<li><strong>Persona</strong> que paga (lista de <code>personas-ms</code>).</li>
+<li><strong>Concepto</strong> (ej. "Constancia de estudios").</li>
+<li><strong>Monto</strong> en soles.</li>
+<li>Pulsa <strong>Procesar pago</strong>. El botón cambia a "Redirigiendo a Mercado Pago...".</li>
+<li>El navegador abre la página de <strong>Mercado Pago (Checkout Pro)</strong>. Ahí elige el método y paga.</li>
+<li>Al terminar, Mercado Pago muestra un botón para volver al sitio, que lleva a <code>/pagos/resultado?pagoId=...&amp;payment_id=...</code>. En local no hay retorno automático; ver §6.</li>
+<li>La pantalla de resultado muestra:</li>
+<li><strong>Pago aprobado. Referencia: ...</strong> (verde), o</li>
+<li><strong>Pago en_proceso / rechazado</strong> (rojo).</li>
+<li>En <strong>Pagos</strong> (<code>/pagos</code>) el pago aparece con el método real que se usó (TARJETA, YAPE, EFECTIVO...) y su estado.</li>
+</ol>
+<hr />
+<h2 id="3-flujo-tecnico">3. Flujo técnico<a class="headerlink" href="#3-flujo-tecnico" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    actor U as Usuario
+    participant FE as Frontend Angular&lt;br/&gt;(:4200)
+    participant GW as Gateway&lt;br/&gt;(:18080)
+    participant FIN as finanzas-ms
+    participant MP as Mercado Pago
+    participant IP as ingresos-pagos-ms
+    participant K as Kafka
+    participant MAT as matricula-ms
+
+    U-&gt;&gt;FE: Llena formulario y pulsa "Procesar pago"
+    FE-&gt;&gt;GW: POST /api/v1/pagos {idPersona, concepto, monto, metodo: MERCADOPAGO}
+    GW-&gt;&gt;FIN: (ruta)
+    FIN--&gt;&gt;FE: Pago {id, estado: EN_PROCESO}
+    FE-&gt;&gt;FIN: POST /api/v1/pagos/{id}/preferencia
+    FIN-&gt;&gt;MP: PreferenceClient.create(item, back_urls?pagoId=id, external_reference=pago-id)
+    MP--&gt;&gt;FIN: {preferenceId, initPoint}
+    FIN--&gt;&gt;FE: PreferenciaPagoResponse
+    FE-&gt;&gt;MP: window.location = initPoint
+    U-&gt;&gt;MP: Elige método y paga
+    MP--&gt;&gt;FE: Redirige a /pagos/resultado?pagoId=..&amp;payment_id=..
+    FE-&gt;&gt;FIN: POST /api/v1/pagos/{pagoId}/confirmar-mercadopago?paymentId=..
+    FIN-&gt;&gt;MP: PaymentClient.get(paymentId)
+    MP--&gt;&gt;FIN: status, status_detail, payment_method_id, payment_type_id
+    FIN-&gt;&gt;FIN: Actualiza Pago (estado, método real, referenciaExterna)
+    FIN-&gt;&gt;IP: POST /api/v1/logs-transaccion-pasarela (log M2M)
+    alt aprobado
+        FIN-&gt;&gt;K: pago.aceptado → topic pago-aceptado-eventos (tras commit)
+        K-&gt;&gt;MAT: si matriculaId != null → matriculaService.confirmar()
+    end
+    FIN--&gt;&gt;FE: PagoResponse
+    FE--&gt;&gt;U: "Pago aprobado" / "Pago rechazado"</code></pre>
+<h3 id="estados-del-pago-estadopago">Estados del pago (<code>EstadoPago</code>)<a class="headerlink" href="#estados-del-pago-estadopago" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Estado</th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PENDIENTE</code></td>
+<td>Cargo generado automáticamente al registrar una matrícula (todavía nadie lo intentó pagar).</td>
+</tr>
+<tr>
+<td><code>EN_PROCESO</code></td>
+<td>Pago creado desde el formulario, o Mercado Pago respondió <code>pending</code>/<code>in_process</code> (ej. PagoEfectivo aún no pagado en agente). Se puede volver a confirmar.</td>
+</tr>
+<tr>
+<td><code>APROBADO</code></td>
+<td>Mercado Pago respondió <code>approved</code> (Checkout Pro) o <code>processed</code>+<code>accredited</code> (Orders API). Dispara <code>pago.aceptado</code>.</td>
+</tr>
+<tr>
+<td><code>RECHAZADO</code></td>
+<td>Cualquier otro estado de Mercado Pago.</td>
+</tr>
+<tr>
+<td><code>REEMBOLSADO</code></td>
+<td>Reembolso manual desde la lista (<code>/reembolsar</code>, no llama a Mercado Pago).</td>
+</tr>
+</tbody>
+</table>
+<p>Solo se puede pagar con pasarela un pago en <code>EN_PROCESO</code>; si no, <code>BusinessRuleException</code>.</p>
+<h3 id="metodo-real-usado-metododesdemercadopago">Método real usado (<code>metodoDesdeMercadoPago</code>)<a class="headerlink" href="#metodo-real-usado-metododesdemercadopago" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mercado Pago</th>
+<th><code>MetodoPago</code> en LAMB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>payment_method_id = yape</code></td>
+<td><code>YAPE</code></td>
+</tr>
+<tr>
+<td><code>credit_card</code>, <code>debit_card</code>, <code>prepaid_card</code></td>
+<td><code>TARJETA</code></td>
+</tr>
+<tr>
+<td><code>ticket</code>, <code>atm</code> (PagoEfectivo, agentes)</td>
+<td><code>EFECTIVO</code></td>
+</tr>
+<tr>
+<td><code>bank_transfer</code></td>
+<td><code>TRANSFERENCIA</code></td>
+</tr>
+<tr>
+<td><code>account_money</code> u otro</td>
+<td><code>MERCADOPAGO</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-endpoints-finanzas-ms-via-gateway-18080">4. Endpoints (finanzas-ms, vía Gateway <code>:18080</code>)<a class="headerlink" href="#4-endpoints-finanzas-ms-via-gateway-18080" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Ruta</th>
+<th>Para qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos</code></td>
+<td>Crea el pago en <code>EN_PROCESO</code>.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos/{id}/preferencia</code></td>
+<td>Crea la preferencia de Checkout Pro. Devuelve <code>preferenceId</code>, <code>initPoint</code>, <code>sandboxInitPoint</code>.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos/{id}/confirmar-mercadopago?paymentId=X</code></td>
+<td>Consulta el pago en Mercado Pago y aplica el resultado.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos/{id}/pasarela</code></td>
+<td><strong>Alternativa</strong>: cobro directo con Orders API. Body <code>{cardToken, payerEmail}</code>. Ver §7.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos/{id}/aceptar</code> / <code>rechazar</code></td>
+<td>Aprobación/rechazo <strong>manual</strong> (ADMIN/COORDINADOR desde la lista). <code>aceptar</code> también publica <code>pago.aceptado</code>.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pagos/{id}/reembolsar</code></td>
+<td>Marca <code>REEMBOLSADO</code> (solo en LAMB).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-donde-esta-el-codigo">5. Dónde está el código<a class="headerlink" href="#5-donde-esta-el-codigo" title="Permanent link">&para;</a></h2>
+<p><strong>Backend — <code>services/lamb-finanzas-ms/src/main/java/pe/edu/upeu/lamb/finanzas/</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Rol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>service/PasarelaPagoService.java</code></td>
+<td>Toda la lógica de Mercado Pago: <code>crearPreferencia</code>, <code>confirmarPago</code>, <code>pagarConTarjeta</code>, mapeo de estados y métodos, log y evento.</td>
+</tr>
+<tr>
+<td><code>controller/PagoController.java</code></td>
+<td>Endpoints de §4.</td>
+</tr>
+<tr>
+<td><code>config/MercadoPagoProperties.java</code></td>
+<td>Propiedades <code>mercadopago.*</code>.</td>
+</tr>
+<tr>
+<td><code>config/MercadoPagoSdkConfig.java</code></td>
+<td>Inicializa el SDK con el <code>access-token</code> al arrancar.</td>
+</tr>
+<tr>
+<td><code>client/IngresosPagosPasarelaClient.java</code></td>
+<td>Registra cada intento en <code>ingresos-pagos-ms</code> (<code>LogTransaccionPasarela</code>). Si falla, solo hace <code>warn</code>.</td>
+</tr>
+<tr>
+<td><code>messaging/PagoEventosProducer.java</code></td>
+<td>Publica <code>pago.aceptado</code> <strong>después del commit</strong>.</td>
+</tr>
+<tr>
+<td><code>dto/PreferenciaPagoResponse.java</code></td>
+<td>Respuesta de la preferencia.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Frontend — <code>clients/lamb-frontend/src/</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Rol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/features/pagos/pago-form.ts</code> / <code>.html</code></td>
+<td>Formulario "Nuevo pago": <code>procesar</code> → <code>crearPreferencia</code> → redirige a <code>initPoint</code>.</td>
+</tr>
+<tr>
+<td><code>app/features/pagos/pago-resultado.component.ts</code></td>
+<td>Pantalla de retorno: lee <code>pagoId</code> y <code>payment_id</code> y llama a <code>confirmar-mercadopago</code>.</td>
+</tr>
+<tr>
+<td><code>app/features/pagos/pago-service.ts</code></td>
+<td>Llamadas HTTP.</td>
+</tr>
+<tr>
+<td><code>app/app.routes.ts</code></td>
+<td>Rutas <code>/pagos</code>, <code>/pagos/nueva</code>, <code>/pagos/resultado</code>.</td>
+</tr>
+<tr>
+<td><code>environments/environment.ts</code></td>
+<td><code>mercadoPago.publicKey</code>.</td>
+</tr>
+<tr>
+<td><code>index.html</code></td>
+<td>Carga el SDK JS <code>https://sdk.mercadopago.com/js/v2</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-configuracion">6. Configuración<a class="headerlink" href="#6-configuracion" title="Permanent link">&para;</a></h2>
+<p>Archivo: <code>infra/lamb-config/config-repo/lamb-finanzas-ms-dev.yml</code></p>
+<div class="highlight"><pre><span></span><code><span class="nt">mercadopago</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">public-key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_USR-...</span><span class="w">        </span><span class="c1"># pública, también en environment.ts del frontend</span>
+<span class="w">  </span><span class="nt">access-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_USR-...</span><span class="w">      </span><span class="c1"># SECRETO: cobra y consulta pagos de la cuenta</span>
+<span class="w">  </span><span class="nt">back-url-success</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:4200/pagos/resultado</span>
+<span class="w">  </span><span class="nt">back-url-pending</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:4200/pagos/resultado</span>
+<span class="w">  </span><span class="nt">back-url-failure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:4200/pagos/resultado</span>
+<span class="w">  </span><span class="nt">notification-url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost:4200/</span>
+</code></pre></div>
+<ul>
+<li>Las tres <code>back-url</code> apuntan a la misma pantalla; el backend les agrega <code>?pagoId=&lt;id&gt;</code>, porque Mercado Pago no reenvía el <code>external_reference</code> como parámetro.</li>
+<li><strong><code>auto_return</code> no se usa</strong>: Mercado Pago lo exige con una URL pública <code>https</code>, y en localhost la rechaza. El usuario vuelve pulsando el botón de Mercado Pago.</li>
+<li><strong>Webhook (<code>notification-url</code>)</strong>: en local Mercado Pago no puede llegar a <code>localhost</code>, así que <strong>la confirmación depende de que el usuario vuelva a <code>/pagos/resultado</code></strong>. Si cierra la pestaña antes, el pago queda <code>EN_PROCESO</code> en LAMB aunque se haya cobrado en Mercado Pago. En ese caso se puede llamar a mano a <code>confirmar-mercadopago</code> con el <code>payment_id</code> del panel de Mercado Pago.</li>
+<li>Las credenciales son de <strong>usuario de prueba</strong> (<code>APP_USR</code>): por eso se usa <code>initPoint</code> y no <code>sandboxInitPoint</code>.</li>
+<li>⚠️ El <code>access-token</code> real está commiteado en el repositorio privado <code>JoaHasss/Lamb-UPEU</code> por decisión del equipo. Si el repositorio se hace público o se suman colaboradores externos, <strong>genera un token nuevo</strong> en el panel de Mercado Pago.</li>
+</ul>
+<hr />
+<h2 id="7-pendientes-y-cosas-a-saber">7. Pendientes y cosas a saber<a class="headerlink" href="#7-pendientes-y-cosas-a-saber" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Checkout Pro puede fallar al cobrar con esta cuenta</strong>: un comentario en <code>pago-service.ts</code> registra que la página de Mercado Pago terminaba en <code>/fatal/</code>. Si vuelve a pasar, revisar la configuración de la cuenta o la aplicación en el panel de Mercado Pago (no es un problema de código).</li>
+<li><strong>Orders API (<code>/pasarela</code>) existe pero ningún pantalla la usa todavía.</strong> Necesitaría un formulario de tarjeta con el SDK JS (<code>MercadoPago(publicKey).createCardToken(...)</code>) que envíe <code>cardToken</code> y <code>payerEmail</code>. Además, en el backend la marca está fija: <code>id("master")</code> y <code>installments(1)</code>, así que solo funcionaría con Mastercard en una cuota.</li>
+<li>La antigua Payments API (<code>/v1/payments</code>) se reemplazó por Orders API porque la cuenta la rechaza con "Unauthorized use of live credentials".</li>
+<li><strong>Cobros de matrícula</strong>: al registrar una matrícula, <code>finanzas-ms</code> crea un cargo <code>PENDIENTE</code> de <strong>S/ 350.00</strong> (<code>MONTO_MATRICULA_PLACEHOLDER</code>, monto fijo provisional). La lista de pagos <strong>todavía no tiene botón para pagar un <code>PENDIENTE</code> con Mercado Pago</strong>; solo ADMIN/COORDINADOR pueden aceptar/rechazar los <code>EN_PROCESO</code> a mano. Para cerrar el circuito falta: pasar el cargo a <code>EN_PROCESO</code> y reutilizar <code>crearPreferencia</code>.</li>
+<li>Cuando un pago con <code>matriculaId</code> queda <code>APROBADO</code>, <code>matricula-ms</code> escucha <code>pago.aceptado</code> (topic <code>pago-aceptado-eventos</code>) y <strong>confirma la matrícula</strong>.</li>
+<li><code>ingresos-pagos-ms</code> tiene un consumidor <strong>temporal</strong> de <code>matricula.registrada</code> que publica <code>pago.validado</code> siempre como <code>VALIDADO</code> para que <code>lms-ms</code> habilite el curso en la demo. No depende de Mercado Pago; es el lugar a cambiar cuando exista la regla real.</li>
+<li>Reembolsos: <code>/reembolsar</code> solo cambia el estado en LAMB; <strong>no devuelve el dinero en Mercado Pago</strong>.</li>
+</ul>
+<hr />
+<h2 id="8-probar-en-local">8. Probar en local<a class="headerlink" href="#8-probar-en-local" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Levantar la infraestructura y los servicios (orquestador DB-Detector o los scripts de <code>scripts/</code>). Como mínimo: Kafka, Keycloak, config, gateway, <code>finanzas-ms</code>, <code>ingresos-pagos-ms</code>, <code>personas-ms</code> y el frontend.</li>
+<li>Abrir <code>http://localhost:4200</code>, iniciar sesión e ir a <strong>Pagos → Nuevo pago</strong>.</li>
+<li>Pagar en Mercado Pago con una <a href="https://www.mercadopago.com.pe/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards">tarjeta de prueba</a> (titular <code>APRO</code> = aprobado, <code>OTHE</code> = rechazado).</li>
+<li>Volver con el botón de Mercado Pago y verificar el estado en <code>/pagos</code>.</li>
+<li>Logs útiles en <code>finanzas-ms</code>: buscar <code>component=pasarela</code> (errores de Mercado Pago con <code>httpStatus</code> y <code>motivo</code>) y <code>component=producer</code> (evento <code>pago.aceptado</code> publicado).</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top", "toc.follow", "content.code.copy", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
