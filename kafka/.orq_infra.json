@@ -1,1 +1,0 @@
-{"infra_name": "kafka", "procs": [{"name": "kafka", "pid": 21940, "port": 18092, "ok": true}, {"name": "kafbat", "pid": 33188, "port": 8090, "ok": true}]}

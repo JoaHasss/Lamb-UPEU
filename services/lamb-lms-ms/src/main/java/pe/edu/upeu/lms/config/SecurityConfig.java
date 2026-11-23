@@ -9,14 +9,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    // TEMPORAL: seguridad desactivada para probar el frontend sin login (ver CONTEXTO_SESION.md seccion 7).
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/cursos/**", "/api/v1/contenidos/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+                        // .requestMatchers("/actuator/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/cursos/**", "/api/v1/contenidos/**").permitAll()
+                        // .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();

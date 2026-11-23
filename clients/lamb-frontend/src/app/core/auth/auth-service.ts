@@ -187,9 +187,15 @@ export class AuthService {
   cerrarSesion(): void {
     const idToken = this.sesion()?.idToken;
     this.borrarSesion();
+    if (!idToken) {
+      // Sin id_token_hint este Keycloak rechaza el logout ("Missing parameters"): sesion local
+      // ya quedo borrada arriba, alcanza con volver a la pagina de inicio.
+      location.href = environment.keycloak.logoutRedirectUri;
+      return;
+    }
     const params = new URLSearchParams({
       post_logout_redirect_uri: environment.keycloak.logoutRedirectUri,
-      ...(idToken ? { id_token_hint: idToken } : {}),
+      id_token_hint: idToken,
     });
     location.href = `${environment.keycloak.issuer}/protocol/openid-connect/logout?${params.toString()}`;
   }

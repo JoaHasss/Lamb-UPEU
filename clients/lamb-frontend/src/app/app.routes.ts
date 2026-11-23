@@ -215,6 +215,10 @@ export const routes: Routes = [
         path: 'pagos/nueva',
         loadComponent: () => import('./features/pagos/pago-form').then((m) => m.PagoForm),
       },
+      {
+        path: 'pagos/resultado',
+        loadComponent: () => import('./features/pagos/pago-resultado.component').then((m) => m.PagoResultadoComponent),
+      },
 
       // --- Matricula_Finanzas (convertido a estilo Lamb_UPeU: feature-file-group por recurso) ---
       {

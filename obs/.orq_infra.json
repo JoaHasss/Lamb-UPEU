@@ -1,1 +1,0 @@
-{"infra_name": "obs", "procs": [{"name": "loki", "pid": 3084, "port": 13100, "ok": true}, {"name": "prometheus", "pid": 35324, "port": 19090, "ok": true}, {"name": "promtail", "pid": 34888, "port": 9080, "ok": true}, {"name": "grafana", "pid": 23300, "port": 13000, "ok": true}]}

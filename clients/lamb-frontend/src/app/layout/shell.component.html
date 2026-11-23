@@ -205,6 +205,10 @@
           <span class="material-symbols-outlined nav-item__icon">credit_card</span>
           <span class="nav-item__label">Realizar pago</span>
         </a>
+      }
+
+      @if (showIngresos()) {
+        <div class="nav-group">Ingresos y Pagos</div>
         @for (bucket of finanzasGrouped(); track bucket.subgroup) {
           <button type="button" class="nav-subgroup" (click)="toggleSubgroup(bucket.subgroup, bucket.items)">
             <span class="material-symbols-outlined nav-subgroup__chev">
@@ -280,7 +284,7 @@
           <span class="material-symbols-outlined nav-item__icon">payments</span>
           <span class="nav-item__label">Finanzas</span>
         </a>
-        <a class="nav-item" routerLink="/estado-cuenta">
+        <a class="nav-item" [routerLink]="['/crud', 'fin-cajas']">
           <span class="material-symbols-outlined nav-item__icon">account_balance_wallet</span>
           <span class="nav-item__label">Ingresos y pagos</span>
         </a>

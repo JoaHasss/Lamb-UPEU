@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import pe.edu.upeu.lamb.finanzas.dto.PagoPasarelaRequest;
 import pe.edu.upeu.lamb.finanzas.dto.PagoRequest;
 import pe.edu.upeu.lamb.finanzas.dto.PagoResponse;
+import pe.edu.upeu.lamb.finanzas.dto.PreferenciaPagoResponse;
 import pe.edu.upeu.lamb.finanzas.service.PagoService;
 import pe.edu.upeu.lamb.finanzas.service.PasarelaPagoService;
 import jakarta.validation.Valid;
@@ -62,6 +63,18 @@ public class PagoController {
         return pasarelaPagoService.pagarConTarjeta(id, request.getCardToken(), request.getPayerEmail());
     }
 
+    @PostMapping("/{id}/preferencia")
+    @Operation(summary = "Generar preferencia de Checkout Pro: redirigir al navegador a initPoint para pagar")
+    public PreferenciaPagoResponse crearPreferencia(@PathVariable Long id) {
+        return pasarelaPagoService.crearPreferencia(id);
+    }
+
+    @PostMapping("/{id}/confirmar-mercadopago")
+    @Operation(summary = "Confirmar un pago tras volver del Checkout Pro (payment_id que Mercado Pago agrega a la back_url)")
+    public PagoResponse confirmarMercadoPago(@PathVariable Long id, @RequestParam Long paymentId) {
+        return pasarelaPagoService.confirmarPago(id, paymentId);
+    }
+
     @PostMapping("/{id}/aceptar")
     @Operation(summary = "Aceptar un pago en proceso")
     public PagoResponse aceptar(@PathVariable Long id) {
@@ -76,11 +89,16 @@ public class PagoController {
 
     // idPersona viaja en el token via protocol mapper (lamb-realm.json); ADMIN/COORDINADOR
     // ven todo, ESTUDIANTE solo lo suyo (aislamiento por fila, el Gateway solo filtra por rol).
+    // Sin jwt (seguridad TEMPORAL desactivada, ver CONTEXTO_SESION.md seccion 7): se trata como
+    // privilegiado para no romper el listado mientras no hay login.
     private static Long idPersonaDe(Jwt jwt) {
-        return jwt.getClaim("idPersona");
+        return jwt == null ? null : jwt.getClaim("idPersona");
     }
 
     private static boolean esPrivilegiado(Jwt jwt) {
+        if (jwt == null) {
+            return true;
+        }
         Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
         Object roles = realmAccess == null ? null : realmAccess.get("roles");
         if (!(roles instanceof Collection<?> lista)) {

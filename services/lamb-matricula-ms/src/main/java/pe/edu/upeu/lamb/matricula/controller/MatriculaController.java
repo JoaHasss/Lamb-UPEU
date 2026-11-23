@@ -161,11 +161,16 @@ public class MatriculaController {
 
     // idPersona viaja en el token via protocol mapper (lamb-realm.json); ADMIN/COORDINADOR
     // ven todo, ESTUDIANTE solo lo suyo (aislamiento por fila, el Gateway solo filtra por rol).
+    // Sin jwt (seguridad TEMPORAL desactivada, ver CONTEXTO_SESION.md seccion 7): se trata como
+    // privilegiado para no romper el listado mientras no hay login.
     private static Long idPersonaDe(Jwt jwt) {
-        return jwt.getClaim("idPersona");
+        return jwt == null ? null : jwt.getClaim("idPersona");
     }
 
     private static boolean esPrivilegiado(Jwt jwt) {
+        if (jwt == null) {
+            return true;
+        }
         Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
         Object roles = realmAccess == null ? null : realmAccess.get("roles");
         if (!(roles instanceof Collection<?> lista)) {

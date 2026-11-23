@@ -18,7 +18,8 @@ public class PagoRequest {
     @NotNull
     private Long idPersona;
 
-    @NotNull
+    // Opcional: nulo para pagos directos en caja (tramites, constancias) sin matricula asociada;
+    // los cargos de matricula los genera matricula-ms y siempre llegan con este campo relleno.
     private Long matriculaId;
 
     @NotBlank

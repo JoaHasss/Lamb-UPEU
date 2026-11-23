@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from '../core/auth/auth-guard';
 
 /** Portal academico (Modulo 02): curriculo, planificacion y evaluacion con el diseño de Figma. */
 export const ACADEMICO_ROUTES: Routes = [
@@ -11,7 +10,6 @@ export const ACADEMICO_ROUTES: Routes = [
   {
     path: 'docente',
     loadComponent: () => import('./docente/docente-shell').then((m) => m.DocenteShell),
-    canActivate: [authGuard],
     children: [
       { path: '', loadComponent: () => import('./docente/mis-cursos').then((m) => m.MisCursos) },
       { path: 'horario', loadComponent: () => import('./docente/mi-horario').then((m) => m.MiHorario) },
@@ -23,7 +21,6 @@ export const ACADEMICO_ROUTES: Routes = [
   {
     path: ':modulo',
     loadComponent: () => import('./shell/shell').then((m) => m.Shell),
-    canActivate: [authGuard],
     children: [
       { path: '', loadComponent: () => import('./inicio/modulo-inicio').then((m) => m.ModuloInicio) },
       { path: 's/:seccion', loadComponent: () => import('./seccion/seccion').then((m) => m.Seccion) },

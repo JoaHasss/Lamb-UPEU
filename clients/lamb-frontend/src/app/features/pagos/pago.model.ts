@@ -1,4 +1,4 @@
-export type MetodoPago = 'TARJETA' | 'YAPE' | 'PLIN' | 'TRANSFERENCIA' | 'EFECTIVO';
+export type MetodoPago = 'MERCADOPAGO' | 'TARJETA' | 'YAPE' | 'PLIN' | 'TRANSFERENCIA' | 'EFECTIVO';
 
 export type EstadoPago = 'PENDIENTE' | 'EN_PROCESO' | 'APROBADO' | 'RECHAZADO' | 'REEMBOLSADO';
 
@@ -21,4 +21,10 @@ export interface PagoResponse {
   estado: EstadoPago;
   fechaPago: string;
   referenciaExterna: string | null;
+}
+
+export interface PreferenciaPagoResponse {
+  preferenceId: string;
+  initPoint: string;
+  sandboxInitPoint: string;
 }

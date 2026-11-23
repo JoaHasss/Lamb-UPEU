@@ -67,7 +67,9 @@ public class MatriculaService {
                         detalle.getIdSeccion());
                 continue;
             }
-            if (!"ABIERTA".equals(seccion.getEstado())) {
+            // EstadoGrupo en planificacion-ms es "ABIERTO" (no "ABIERTA"): comparar con el valor
+            // equivocado hacia que ninguna seccion realmente abierta pasara nunca esta validacion.
+            if (!"ABIERTO".equals(seccion.getEstado())) {
                 throw new BusinessRuleException("La seccion " + detalle.getIdSeccion()
                         + " no esta ABIERTA (estado actual: " + seccion.getEstado() + ")");
             }

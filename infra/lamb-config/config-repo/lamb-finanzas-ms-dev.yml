@@ -17,6 +17,11 @@ spring:
     locations: classpath:db/migration
   kafka:
     bootstrap-servers: localhost:18092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.add.type.headers: false
     consumer:
       group-id: lamb-finanzas-ms
       auto-offset-reset: earliest
@@ -59,7 +64,15 @@ app:
 # (ojito en el panel de Mercado Pago) solo en tu copia local, nunca commitear el valor real.
 mercadopago:
   public-key: APP_USR-849c20b2-4269-4196-aded-4e3d353529a1
-  access-token: CAMBIAR_ACCESS_TOKEN_AQUI
+  access-token: ${MERCADOPAGO_ACCESS_TOKEN:CAMBIAR_ACCESS_TOKEN_AQUI}
+  # Checkout Pro: a donde vuelve el navegador segun el resultado. pagoId se agrega solo
+  # (PasarelaPagoService.crearPreferencia) para que esa pantalla sepa que pago confirmar.
+  back-url-success: http://localhost:4200/pagos/resultado
+  back-url-pending: http://localhost:4200/pagos/resultado
+  back-url-failure: http://localhost:4200/pagos/resultado
+  # Localhost no es alcanzable desde Mercado Pago: el webhook no va a llegar en dev. Se confirma
+  # el pago manualmente via POST /api/v1/pagos/{id}/confirmar-mercadopago en su lugar.
+  notification-url: http://localhost:4200/
 
 eureka:
   instance:

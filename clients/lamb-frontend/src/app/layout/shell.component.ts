@@ -5,7 +5,7 @@ import { filter } from 'rxjs';
 import { AuthService } from '../core/auth/auth-service';
 import { CRUDS, CRUD_BY_SLUG } from '../features/cruds.catalog';
 
-type ModuleKey = 'Admisión' | 'Trayectoria' | 'Institucional' | 'Personas' | 'Currículo' | 'Planificación' | 'Evaluación' | 'Matrícula' | 'Finanzas' | 'B-Learning';
+type ModuleKey = 'Admisión' | 'Trayectoria' | 'Institucional' | 'Personas' | 'Currículo' | 'Planificación' | 'Evaluación' | 'Matrícula' | 'Finanzas' | 'Ingresos y Pagos' | 'B-Learning';
 
 @Component({
   selector: 'app-shell',
@@ -88,7 +88,8 @@ export class ShellComponent {
     const match = u.match(/^\/crud\/([^/?#]+)/);
     if (match) {
       const def = CRUD_BY_SLUG.get(match[1]);
-      if (def) return def.group as ModuleKey;
+      // Los CRUD del grupo 'Finanzas' (slugs fin-*) son de ingresos-pagos-ms: modulo propio.
+      if (def) return def.group === 'Finanzas' ? 'Ingresos y Pagos' : (def.group as ModuleKey);
     }
     return null;
   });
@@ -110,6 +111,7 @@ export class ShellComponent {
   showEvaluacion    = computed(() => this.activeModule() === 'Evaluación');
   showMatricula     = computed(() => this.activeModule() === 'Matrícula');
   showFinanzas      = computed(() => this.activeModule() === 'Finanzas');
+  showIngresos      = computed(() => this.activeModule() === 'Ingresos y Pagos');
   showBLearning     = computed(() => this.activeModule() === 'B-Learning');
 
   // Titulo del topbar segun el modulo activo
@@ -123,6 +125,7 @@ export class ShellComponent {
       case 'Evaluación':    return 'Portal UPeU · Evaluación';
       case 'Matrícula':     return 'Portal UPeU · Matrícula';
       case 'Finanzas':      return 'Portal UPeU · Finanzas';
+      case 'Ingresos y Pagos': return 'Portal UPeU · Ingresos y Pagos';
       case 'Institucional': return 'Portal UPeU · Institucional';
       case 'Personas':      return 'Portal UPeU · Personas';
       case 'B-Learning':    return 'Portal UPeU · B-Learning';

@@ -27,7 +27,7 @@ export class HomeComponent {
     { label: 'EVALUACIÓN',    icon: 'grading',            route: '/academico/evaluacion' },
     { label: 'MATRÍCULA',     icon: 'assignment_ind',     route: '/matriculas' },
     { label: 'FINANZAS',      icon: 'payments',           route: '/pagos' },
-    { label: 'INGRESOS Y PAGOS', icon: 'account_balance_wallet', route: '/estado-cuenta' },
+    { label: 'INGRESOS Y PAGOS', icon: 'account_balance_wallet', route: ['/crud', 'fin-cajas'] },
     { label: 'B-LEARNING',    icon: 'cast_for_education', route: '/b-learning' },
     { label: 'INSTITUCIONAL', icon: 'account_balance',    route: ['/crud', 'inst-niveles-academicos'] },
     { label: 'PERSONAS',      icon: 'badge',              route: ['/crud', 'per-personas'] }
