@@ -33,6 +33,7 @@ theme:
 nav:
   - Inicio: index.md
   - Producto U2: u2-producto.md
+  - Pagos con Mercado Pago: mercado-pago.md
 
 extra_css:
   - stylesheets/extra.css
