@@ -1,0 +1,94 @@
+/* === Paleta pagatu === */
+:root {
+  --md-primary-fg-color:        #2b6cb0;
+  --md-primary-fg-color--light: #4a86c4;
+  --md-primary-fg-color--dark:  #22568c;
+  --md-accent-fg-color:         #b7791f;
+}
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        #2b6cb0;
+  --md-accent-fg-color:         #d69e2e;
+}
+
+/* === Ancho equilibrado estilo pagatu === */
+.md-grid {
+  max-width: 68rem;
+}
+
+/* Sidebars al estilo pagatu: nav izquierda estandar, TOC derecha mas cerca del contenido */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    width: 12.1rem;
+  }
+  .md-sidebar--secondary {
+    width: 11rem;
+  }
+}
+
+/* === Tablas: SIN scroll horizontal, todo cabe con word-wrap === */
+.md-typeset__table {
+  display: block;
+  overflow-x: visible;
+}
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: #fff;
+  font-weight: 600;
+  white-space: normal;
+}
+.md-typeset table:not([class]) td,
+.md-typeset table:not([class]) th {
+  padding: 0.45rem 0.55rem;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* Codigo inline dentro de tablas: que haga wrap */
+.md-typeset table:not([class]) code {
+  white-space: normal;
+  word-break: break-word;
+  font-size: 0.9em;
+}
+
+/* Filas alternadas suaves */
+.md-typeset table:not([class]) tbody tr:nth-child(even) {
+  background: rgba(43, 108, 176, 0.04);
+}
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* === Tarjetas de resumen (grid cards) === */
+.md-typeset .grid.cards > ul > li {
+  text-align: center;
+  border-radius: 0.6rem;
+  border-top: 3px solid var(--md-primary-fg-color);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+
+/* === Diagramas Mermaid centrados === */
+.md-typeset .mermaid {
+  text-align: center;
+  overflow-x: auto;
+}
+
+/* === Bloques de codigo tipo "producto del curso" === */
+.md-typeset pre > code {
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
