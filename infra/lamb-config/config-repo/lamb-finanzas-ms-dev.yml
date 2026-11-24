@@ -72,8 +72,8 @@ app:
 # Sin credenciales reales el sistema arranca igual; solo falla el boton de pagar con Mercado Pago.
 # ============================================================================================
 mercadopago:
-  public-key: PEGA_AQUI_TU_PUBLIC_KEY_DE_PRUEBA
-  access-token: PEGA_AQUI_TU_ACCESS_TOKEN_DE_PRUEBA
+  public-key: APP_USR-64dd822b-4fe9-434c-9005-83d113e39ce3
+  access-token: APP_USR-4688545642946730-112414-cc5a7bdb18a7682e5db647134c293dd4-3870141743
   # Checkout Pro: a donde vuelve el navegador segun el resultado. pagoId se agrega solo
   # (PasarelaPagoService.crearPreferencia) para que esa pantalla sepa que pago confirmar.
   back-url-success: http://localhost:4200/pagos/resultado

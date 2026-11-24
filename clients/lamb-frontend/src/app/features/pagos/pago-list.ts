@@ -102,13 +102,6 @@ export class PagoList {
     this.accion(this.service.rechazar(pago.id), `Pago ${pago.id} rechazado.`, 'No se pudo rechazar el pago.');
   }
 
-  protected reembolsar(pago: PagoResponse): void {
-    if (!confirm(`Reembolsar S/ ${pago.monto} del pago ${pago.id}?`)) {
-      return;
-    }
-    this.accion(this.service.reembolsar(pago.id), `Pago ${pago.id} reembolsado.`, 'No se pudo reembolsar el pago.');
-  }
-
   private accion(peticion: Observable<unknown>, ok: string, fallo: string): void {
     this.errorAccion.set(null);
     this.exito.set(null);

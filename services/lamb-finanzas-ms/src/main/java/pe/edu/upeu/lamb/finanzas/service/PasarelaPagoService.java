@@ -188,7 +188,7 @@ public class PasarelaPagoService {
         pago.setEstado(aprobado ? EstadoPago.APROBADO : pendiente ? EstadoPago.EN_PROCESO : EstadoPago.RECHAZADO);
         Pago guardado = pagoRepository.save(pago);
         if (aprobado) {
-            saldoCuentaService.abonarPago(guardado);
+            saldoCuentaService.descontarPago(guardado);
         } else if (!pendiente && guardado.getMatriculaId() == null) {
             saldoCuentaService.anularCargoPago(guardado, "Pago rechazado, se anula el cargo");
         }

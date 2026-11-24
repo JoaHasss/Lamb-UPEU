@@ -32,21 +32,24 @@ INSERT INTO pagos (id, id_persona, concepto, monto, metodo, estado, fecha_pago, 
 (9, 5, 'Certificado de notas',    45.00, 'TARJETA',       'REEMBOLSADO', '2026-09-10 17:25', 'demo-09', NULL, NULL,     NULL,  NULL)
 ON CONFLICT (id) DO NOTHING;
 
--- Cuentas de estudiante (una por persona). saldo_actual = lo que DEBE hoy (negativo = saldo a favor):
--- persona 2 debe la matricula (pago 3) y el carnet (pago 8, aun sin validar); persona 3 la matricula
--- (pago 4, voucher sin validar) mas una mora por ajuste manual. Persona 4 no debe: su cargo se cancelo.
--- Persona 5 tiene S/ 20 a favor por un ajuste manual. Al final del archivo el saldo se recalcula
--- desde los movimientos, asi siempre cuadra.
+-- Cuentas de estudiante (una por persona). saldo_actual = saldo A FAVOR hoy (negativo = debe).
+-- Cargos antiguos aun sin pagar: persona 2 la matricula (pago 3) y el carnet (pago 8, aun sin validar);
+-- persona 3 la matricula (pago 4, voucher sin validar) mas una mora por ajuste manual. Persona 4 no
+-- debe: su cargo se cancelo. Todos estos cargos se compensan con el saldo inicial de S/ 1000.
+-- Persona 5 tiene S/ 20 a favor por un ajuste manual. Ademas, cada estudiante parte con S/ 1000 a favor
+-- (movimientos 18..22). Al final del archivo el saldo se recalcula desde los movimientos, asi siempre
+-- cuadra: los valores de abajo son solo el punto de partida y el UPDATE final los deja correctos.
 INSERT INTO cuentas_estudiante (id, id_persona, saldo_actual, fecha_apertura) VALUES
-(1, 1,   0.00, '2026-03-10 09:15'),
-(2, 2, 375.00, '2026-08-14 16:05'),
-(3, 3, 365.00, '2026-08-25 11:40'),
-(4, 4,   0.00, '2026-08-13 08:50'),
-(5, 5, -20.00, '2026-08-11 12:20')
+(1, 1, 1000.00, '2026-03-10 09:15'),
+(2, 2,  625.00, '2026-08-14 16:05'),
+(3, 3,  635.00, '2026-08-25 11:40'),
+(4, 4, 1000.00, '2026-08-13 08:50'),
+(5, 5, 1020.00, '2026-08-11 12:20')
 ON CONFLICT (id) DO NOTHING;
 
--- Movimientos de cuenta: explican cada saldo de arriba (CARGO suma a la deuda, ABONO la resta).
+-- Movimientos de cuenta: explican cada saldo de arriba (ABONO suma saldo a favor, CARGO lo descuenta).
 -- Cada pago genera su CARGO; al aprobarse, su ABONO. Persona 4: matricula anulada, cargo revertido.
+-- (Datos de demo del esquema anterior: los pagos nuevos solo generan su CARGO al aprobarse.)
 INSERT INTO movimientos_cuenta (id, id_cuenta, tipo, monto, concepto, fecha, id_pago) VALUES
 ( 1, 1, 'CARGO', 350.00, 'Matricula 2026-1',                                 '2026-03-10 09:15', 1),
 ( 2, 1, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-1',                  '2026-03-10 09:20', 1),
@@ -63,15 +66,21 @@ INSERT INTO movimientos_cuenta (id, id_cuenta, tipo, monto, concepto, fecha, id_
 (13, 5, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-2',                  '2026-08-11 12:26', 6),
 (14, 5, 'CARGO',  45.00, 'Certificado de notas',                             '2026-09-10 17:20', 9),
 (15, 5, 'ABONO',  45.00, 'Pago aprobado: Certificado de notas',              '2026-09-10 17:25', 9),
--- Ajustes manuales (ver ajustes_manuales_saldo): uno sube la deuda, otro deja saldo a favor
+-- Ajustes manuales (ver ajustes_manuales_saldo): uno suma deuda (CARGO), otro deja saldo a favor (ABONO)
 (16, 3, 'CARGO',  15.00, 'Ajuste manual: Mora por pago extemporaneo de matricula', '2026-09-01 10:00', NULL),
-(17, 5, 'ABONO',  20.00, 'Ajuste manual: Pago duplicado en ventanilla, queda a favor', '2026-09-20 12:00', NULL)
+(17, 5, 'ABONO',  20.00, 'Ajuste manual: Pago duplicado en ventanilla, queda a favor', '2026-09-20 12:00', NULL),
+-- Saldo a favor inicial de S/ 1000 para cada estudiante de demo (se suma al resto de movimientos)
+(18, 1, 'ABONO', 1000.00, 'Saldo inicial a favor', '2026-01-01 08:00', NULL),
+(19, 2, 'ABONO', 1000.00, 'Saldo inicial a favor', '2026-01-01 08:00', NULL),
+(20, 3, 'ABONO', 1000.00, 'Saldo inicial a favor', '2026-01-01 08:00', NULL),
+(21, 4, 'ABONO', 1000.00, 'Saldo inicial a favor', '2026-01-01 08:00', NULL),
+(22, 5, 'ABONO', 1000.00, 'Saldo inicial a favor', '2026-01-01 08:00', NULL)
 ON CONFLICT (id) DO NOTHING;
 
--- Ajustes manuales de saldo: positivo = el estudiante debe mas (CARGO), negativo = debe menos (ABONO)
+-- Ajustes manuales de saldo: positivo = suma saldo a favor (ABONO), negativo = lo descuenta (CARGO)
 INSERT INTO ajustes_manuales_saldo (id, id_cuenta, monto, motivo, autorizado_por, fecha) VALUES
-(1, 3,  15.00, 'Mora por pago extemporaneo de matricula',  'Tesoreria', '2026-09-01 10:00'),
-(2, 5, -20.00, 'Pago duplicado en ventanilla, queda a favor', 'Tesoreria', '2026-09-20 12:00')
+(1, 3, -15.00, 'Mora por pago extemporaneo de matricula',  'Tesoreria', '2026-09-01 10:00'),
+(2, 5,  20.00, 'Pago duplicado en ventanilla, queda a favor', 'Tesoreria', '2026-09-20 12:00')
 ON CONFLICT (id) DO NOTHING;
 
 -- Cancelacion del cargo de la matricula 5 (persona 4): explica el ABONO 11 de arriba
@@ -154,9 +163,9 @@ INSERT INTO reembolsos_pago (id, id_solicitud_devolucion, id_cuenta_estudiante, 
 (1, 1, 5, 45.00, '2026-09-15 11:30')
 ON CONFLICT (id) DO NOTHING;
 
--- El saldo de cada cuenta de demo es la suma de sus movimientos (CARGO suma, ABONO resta)
+-- El saldo de cada cuenta de demo es la suma de sus movimientos (ABONO suma, CARGO resta)
 UPDATE cuentas_estudiante c SET saldo_actual = COALESCE((
-    SELECT SUM(CASE WHEN m.tipo = 'CARGO' THEN m.monto ELSE -m.monto END)
+    SELECT SUM(CASE WHEN m.tipo = 'ABONO' THEN m.monto ELSE -m.monto END)
     FROM movimientos_cuenta m WHERE m.id_cuenta = c.id), 0)
 WHERE c.id BETWEEN 1 AND 5;  -- solo las cuentas de demo: no toca cuentas creadas desde la app
 

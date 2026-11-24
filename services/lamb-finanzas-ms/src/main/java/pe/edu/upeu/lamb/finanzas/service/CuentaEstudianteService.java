@@ -38,7 +38,8 @@ public class CuentaEstudianteService {
     @Transactional
     public CuentaEstudianteResponse crear(CuentaEstudianteRequest request) {
         // La cuenta abre en 0; un saldo inicial queda como movimiento, asi el saldo
-        // siempre se explica con su historial.
+        // siempre se explica con su historial. Positivo = saldo a favor que se le crea al
+        // estudiante (ABONO); negativo = deuda inicial (CARGO).
         CuentaEstudiante entity = cuentaEstudianteMapper.toEntity(request);
         entity.setSaldoActual(BigDecimal.ZERO);
         entity.setFechaApertura(Instant.now());
@@ -46,7 +47,7 @@ public class CuentaEstudianteService {
         BigDecimal inicial = request.getSaldoActual();
         if (inicial != null && inicial.signum() != 0) {
             saldoCuentaService.registrar(guardada.getId(),
-                    inicial.signum() > 0 ? TipoMovimientoCuenta.CARGO : TipoMovimientoCuenta.ABONO,
+                    inicial.signum() > 0 ? TipoMovimientoCuenta.ABONO : TipoMovimientoCuenta.CARGO,
                     inicial.abs(), "Saldo inicial", null);
         }
         return cuentaEstudianteMapper.toResponse(guardada);

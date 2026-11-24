@@ -43,8 +43,8 @@ public class AjusteManualSaldoService {
         if (request.getMonto().signum() == 0) {
             throw new BusinessRuleException("El monto del ajuste no puede ser 0");
         }
-        // Positivo: el estudiante debe mas (CARGO). Negativo: debe menos (ABONO).
-        TipoMovimientoCuenta tipo = request.getMonto().signum() > 0 ? TipoMovimientoCuenta.CARGO : TipoMovimientoCuenta.ABONO;
+        // Positivo: mas saldo a favor para el estudiante (ABONO). Negativo: menos saldo a favor (CARGO).
+        TipoMovimientoCuenta tipo = request.getMonto().signum() > 0 ? TipoMovimientoCuenta.ABONO : TipoMovimientoCuenta.CARGO;
         saldoCuentaService.registrar(request.getIdCuenta(), tipo, request.getMonto().abs(),
                 "Ajuste manual: " + request.getMotivo(), null);
         AjusteManualSaldo entity = ajusteManualSaldoMapper.toEntity(request);

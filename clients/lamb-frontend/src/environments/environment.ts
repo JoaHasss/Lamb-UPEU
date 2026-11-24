@@ -5,7 +5,7 @@ export const environment = {
     // Pega aqui la MISMA Public Key que pusiste en
     // infra/lamb-config/config-repo/lamb-finanzas-ms-dev.yml (mercadopago.public-key).
     // Se obtiene en el panel de Mercado Pago > tu aplicacion > Credenciales de prueba.
-    publicKey: 'PEGA_AQUI_TU_PUBLIC_KEY_DE_PRUEBA',
+    publicKey: 'APP_USR-64dd822b-4fe9-434c-9005-83d113e39ce3',
   },
   keycloak: {
     issuer: 'http://localhost:18180/realms/lamb',

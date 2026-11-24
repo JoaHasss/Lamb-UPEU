@@ -35,7 +35,7 @@ public class MovimientoCuentaService {
 
     @Transactional
     public MovimientoCuentaResponse crear(MovimientoCuentaRequest request) {
-        // Actualiza el saldo: CARGO suma a la deuda, ABONO la resta
+        // Actualiza el saldo a favor: ABONO lo suma, CARGO lo descuenta
         MovimientoCuenta entity = saldoCuentaService.registrar(
                 request.getIdCuenta(), request.getTipo(), request.getMonto(), request.getConcepto(), null);
         return movimientoCuentaMapper.toResponse(entity);

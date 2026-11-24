@@ -17,11 +17,13 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * Mantiene el saldo de la cuenta del estudiante. El saldo es lo que el estudiante DEBE:
- * un CARGO lo sube, un ABONO lo baja. Negativo = saldo a favor.
+ * Mantiene el saldo de la cuenta del estudiante. El saldo es lo que el estudiante tiene A FAVOR
+ * (credito que la universidad le abona): un ABONO lo sube, un CARGO lo baja. Cada pago aprobado
+ * se descuenta de ese saldo. Si el pago supera el saldo disponible, el saldo queda negativo y
+ * negativo = el estudiante DEBE ese monto.
  *
- * Todo cambio de saldo pasa por aqui y deja un MovimientoCuenta, asi el saldo siempre
- * se explica con su historial de movimientos.
+ * saldo = suma(ABONO) - suma(CARGO). Todo cambio de saldo pasa por aqui y deja un
+ * MovimientoCuenta, asi el saldo siempre se explica con su historial de movimientos.
  */
 @Slf4j
 @Service
@@ -50,7 +52,8 @@ public class SaldoCuentaService {
                                       String concepto, Pago pago) {
         CuentaEstudiante cuenta = cuentaEstudianteRepository.findByIdParaActualizar(idCuenta)
                 .orElseThrow(() -> new ResourceNotFoundException("Cuenta de estudiante no encontrada: " + idCuenta));
-        BigDecimal delta = tipo == TipoMovimientoCuenta.CARGO ? monto : monto.negate();
+        // ABONO suma saldo a favor; CARGO lo descuenta.
+        BigDecimal delta = tipo == TipoMovimientoCuenta.ABONO ? monto : monto.negate();
         cuenta.setSaldoActual(cuenta.getSaldoActual().add(delta));
         cuentaEstudianteRepository.save(cuenta);
 
@@ -67,29 +70,24 @@ public class SaldoCuentaService {
         return movimiento;
     }
 
-    /** El estudiante pasa a deber el monto del pago (cargo de matricula o tramite). */
+    /**
+     * Pago aprobado: su monto se descuenta del saldo a favor del estudiante (CARGO). Si el saldo
+     * no alcanza queda negativo (deuda). Idempotente por pago: si el pago ya tiene un CARGO
+     * (p. ej. cargos generados antes de este cambio, al crearse el pago) no se descuenta dos veces.
+     */
     @Transactional(propagation = Propagation.MANDATORY)
-    public void cargarPago(Pago pago) {
+    public void descontarPago(Pago pago) {
         if (pago.getMonto().signum() <= 0 || movimientoCuentaRepository.existsByPagoIdAndTipo(pago.getId(), TipoMovimientoCuenta.CARGO)) {
             return;
         }
         CuentaEstudiante cuenta = obtenerOCrearCuenta(pago.getIdPersona());
-        registrar(cuenta.getId(), TipoMovimientoCuenta.CARGO, pago.getMonto(), pago.getConcepto(), pago);
-    }
-
-    /** Pago aprobado: el monto se descuenta de la deuda. */
-    @Transactional(propagation = Propagation.MANDATORY)
-    public void abonarPago(Pago pago) {
-        if (pago.getMonto().signum() <= 0 || movimientoCuentaRepository.existsByPagoIdAndTipo(pago.getId(), TipoMovimientoCuenta.ABONO)) {
-            return;
-        }
-        CuentaEstudiante cuenta = obtenerOCrearCuenta(pago.getIdPersona());
-        registrar(cuenta.getId(), TipoMovimientoCuenta.ABONO, pago.getMonto(), "Pago aprobado: " + pago.getConcepto(), pago);
+        registrar(cuenta.getId(), TipoMovimientoCuenta.CARGO, pago.getMonto(), "Pago aprobado: " + pago.getConcepto(), pago);
     }
 
     /**
-     * El cargo de este pago ya no se debe (tramite rechazado, cargo de matricula cancelado):
-     * se revierte con un abono. Solo si el pago tiene cargo y aun no tiene abono.
+     * Revierte con un ABONO un CARGO que ya existia para este pago (tramite rechazado, cargo de
+     * matricula cancelado). Solo si el pago tiene CARGO y aun no tiene ABONO. Con el flujo actual
+     * un pago solo genera CARGO al aprobarse, asi que esto solo actua sobre cargos antiguos.
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public void anularCargoPago(Pago pago, String motivo) {

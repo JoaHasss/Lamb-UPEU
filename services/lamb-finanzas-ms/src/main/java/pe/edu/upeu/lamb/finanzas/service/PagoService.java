@@ -66,8 +66,8 @@ public class PagoService {
                 .estado(EstadoPago.PENDIENTE)
                 .fechaPago(Instant.now())
                 .build();
+        // El saldo de la cuenta no cambia aqui: el monto se descuenta del saldo a favor al aprobarse el pago.
         Pago guardado = pagoRepository.save(pago);
-        saldoCuentaService.cargarPago(guardado);
         log.info("component=processor matriculaId={} idPersona={} pagoId={} estado={} montoOriginal={} becaPct={} descuentoPct={} montoFinal={} status=processed",
                 evento.getMatriculaId(), evento.getIdPersona(), guardado.getId(), guardado.getEstado(),
                 calculo.montoOriginal(), calculo.porcentajeBeca(), calculo.porcentajeDescuento(), calculo.montoFinal());
@@ -94,18 +94,11 @@ public class PagoService {
      */
     @Transactional
     public PagoResponse procesar(PagoRequest request) {
-        // Si la matricula ya tiene su cargo, este pago es solo el intento de pagarlo: la deuda
-        // ya esta en la cuenta. Si no (tramites), el pago trae su propio cargo.
-        boolean pagaCargoExistente = request.getMatriculaId() != null
-                && pagoRepository.existsByMatriculaId(request.getMatriculaId());
         Pago pago = pagoMapper.toEntity(request);
         pago.setEstado(EstadoPago.EN_PROCESO);
         pago.setReferenciaExterna(UUID.randomUUID().toString());
-        Pago guardado = pagoRepository.save(pago);
-        if (!pagaCargoExistente) {
-            saldoCuentaService.cargarPago(guardado);
-        }
-        return pagoMapper.toResponse(guardado);
+        // El saldo de la cuenta no cambia aqui: se descuenta del saldo a favor al aprobarse el pago.
+        return pagoMapper.toResponse(pagoRepository.save(pago));
     }
 
     @Transactional
@@ -114,7 +107,7 @@ public class PagoService {
         validarEstado(pago, EstadoPago.EN_PROCESO, "aceptar");
         pago.setEstado(EstadoPago.APROBADO);
         Pago guardado = pagoRepository.save(pago);
-        saldoCuentaService.abonarPago(guardado);
+        saldoCuentaService.descontarPago(guardado);
         pagoEventosProducer.publicarTrasCommit(PagoAceptadoEvento.builder()
                 .tipoEvento("pago.aceptado")
                 .idPago(guardado.getId())

@@ -50,31 +50,35 @@ class SaldoCuentaServiceTest {
     }
 
     @Test
-    void cargoSubeLaDeudaYAbonoLaBaja() {
-        Pago p = pago(1, "175.00");
-        servicio.cargarPago(p);
-        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("175.00");
-        servicio.abonarPago(p);
-        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("0.00");
+    void pagoAprobadoSeDescuentaDelSaldoAFavor() {
+        servicio.registrar(1L, TipoMovimientoCuenta.ABONO, new BigDecimal("500.00"), "Saldo inicial", null);
+        servicio.descontarPago(pago(1, "175.00"));
+        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("325.00");
         assertThat(movimientos).extracting(MovimientoCuenta::getTipo)
-                .containsExactly(TipoMovimientoCuenta.CARGO, TipoMovimientoCuenta.ABONO);
+                .containsExactly(TipoMovimientoCuenta.ABONO, TipoMovimientoCuenta.CARGO);
     }
 
     @Test
-    void noDuplicaCargoNiAbonoDelMismoPago() {
+    void pagoMayorQueElSaldoLoDejaNegativoComoDeuda() {
+        servicio.registrar(1L, TipoMovimientoCuenta.ABONO, new BigDecimal("100.00"), "Saldo inicial", null);
+        servicio.descontarPago(pago(1, "350.00"));
+        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("-250.00");
+    }
+
+    @Test
+    void noDescuentaDosVecesElMismoPago() {
         Pago p = pago(1, "350.00");
-        servicio.cargarPago(p);
-        servicio.cargarPago(p);
-        servicio.abonarPago(p);
-        servicio.abonarPago(p);
-        assertThat(movimientos).hasSize(2);
-        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("0.00");
+        servicio.descontarPago(p);
+        servicio.descontarPago(p);
+        assertThat(movimientos).hasSize(1);
+        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("-350.00");
     }
 
     @Test
-    void anularCargoRevierteLaDeuda() {
+    void anularCargoAntiguoLoRevierte() {
+        // Cargo creado antes del cambio (al generarse el pago): rechazarlo lo revierte con un ABONO.
         Pago p = pago(2, "25.00");
-        servicio.cargarPago(p);
+        servicio.registrar(1L, TipoMovimientoCuenta.CARGO, p.getMonto(), "Carnet", p);
         servicio.anularCargoPago(p, "Pago rechazado, se anula el cargo");
         assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("0.00");
     }
@@ -87,14 +91,14 @@ class SaldoCuentaServiceTest {
     }
 
     @Test
-    void cargoEnCeroNoGeneraMovimiento() {
-        servicio.cargarPago(pago(4, "0.00"));
+    void pagoEnCeroNoGeneraMovimiento() {
+        servicio.descontarPago(pago(4, "0.00"));
         assertThat(movimientos).isEmpty();
     }
 
     @Test
-    void abonoMayorDejaSaldoAFavor() {
+    void abonoSumaSaldoAFavor() {
         servicio.registrar(1L, TipoMovimientoCuenta.ABONO, new BigDecimal("50.00"), "Ajuste manual: pago en exceso", null);
-        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("-50.00");
+        assertThat(cuenta.getSaldoActual()).isEqualByComparingTo("50.00");
     }
 }

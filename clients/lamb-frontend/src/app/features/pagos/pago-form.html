@@ -18,7 +18,15 @@
 
   <div>
     <label for="concepto">Concepto</label>
-    <input id="concepto" type="text" formControlName="concepto" placeholder="Constancia de estudios" />
+    <select id="concepto" formControlName="idConcepto">
+      <option [ngValue]="null" disabled>Selecciona un concepto</option>
+      @for (c of conceptos(); track c.id) {
+        <option [ngValue]="c.id">{{ c.nombre }} (S/ {{ c.monto }})</option>
+      }
+    </select>
+    @if (conceptos().length === 0) {
+      <small>No hay conceptos de pago vigentes. Crealos en el apartado "Conceptos de pago".</small>
+    }
   </div>
 
   <div>

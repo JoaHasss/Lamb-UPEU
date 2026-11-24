@@ -64,9 +64,6 @@
               <button type="button" (click)="aceptar(pago)">Aceptar</button>
               <button type="button" class="peligro" (click)="rechazar(pago)">Rechazar</button>
             }
-            @if (pago.estado === 'APROBADO') {
-              <button type="button" class="peligro" (click)="reembolsar(pago)">Reembolsar</button>
-            }
           </td>
         }
       </tr>
