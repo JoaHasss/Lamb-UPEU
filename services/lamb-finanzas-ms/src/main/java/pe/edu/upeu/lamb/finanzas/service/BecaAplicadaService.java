@@ -3,6 +3,7 @@ package pe.edu.upeu.lamb.finanzas.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.BecaAplicadaRequest;
 import pe.edu.upeu.lamb.finanzas.dto.BecaAplicadaResponse;
 import pe.edu.upeu.lamb.finanzas.entity.BecaAplicada;
@@ -49,6 +50,25 @@ public class BecaAplicadaService {
 
         BecaAplicada guardado = becaAplicadaRepository.save(entity);
         return becaAplicadaMapper.toResponse(guardado);
+    }
+
+    @Transactional
+    public BecaAplicadaResponse actualizar(Long id, BecaAplicadaRequest request) {
+        BecaAplicada entity = buscarOFallar(id);
+        TipoBeca tipoBeca = tipoBecaRepository.findById(request.getIdTipoBeca())
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de beca no encontrado: " + request.getIdTipoBeca()));
+        entity.setIdPersona(request.getIdPersona());
+        entity.setTipoBeca(tipoBeca);
+        entity.setPorcentaje(request.getPorcentaje());
+        entity.setFechaInicio(request.getFechaInicio());
+        return becaAplicadaMapper.toResponse(becaAplicadaRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        becaAplicadaRepository.delete(buscarOFallar(id));
+        becaAplicadaRepository.flush();
     }
 
     private BecaAplicada buscarOFallar(Long id) {

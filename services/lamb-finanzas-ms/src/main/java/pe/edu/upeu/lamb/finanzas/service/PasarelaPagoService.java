@@ -72,7 +72,9 @@ public class PasarelaPagoService {
     }
 
     public PreferenciaPagoResponse crearPreferencia(Long idPago) {
-        Pago pago = buscarEnProceso(idPago);
+        // Un cargo PENDIENTE (p.ej. el de una matricula) tambien se puede pagar: al crear la
+        // preferencia pasa a EN_PROCESO con metodo MERCADOPAGO.
+        Pago pago = buscarPagable(idPago);
 
         PreferenceItemRequest item = PreferenceItemRequest.builder()
                 .title(pago.getConcepto())
@@ -98,6 +100,11 @@ public class PasarelaPagoService {
 
         try {
             Preference preferencia = new PreferenceClient().create(request);
+            if (pago.getEstado() == EstadoPago.PENDIENTE) {
+                pago.setEstado(EstadoPago.EN_PROCESO);
+                pago.setMetodo(MetodoPago.MERCADOPAGO);
+                pagoRepository.save(pago);
+            }
             return new PreferenciaPagoResponse(preferencia.getId(), preferencia.getInitPoint(), preferencia.getSandboxInitPoint());
         } catch (MPApiException e) {
             log.error("component=pasarela pagoId={} accion=preferencia status=error httpStatus={} motivo=\"{}\"",
@@ -125,6 +132,16 @@ public class PasarelaPagoService {
             log.error("component=pasarela pagoId={} accion=confirmar status=error motivo=\"{}\"", pago.getId(), e.getMessage());
             throw new BusinessRuleException("Error al conectar con Mercado Pago: " + e.getMessage());
         }
+    }
+
+    private Pago buscarPagable(Long idPago) {
+        Pago pago = pagoRepository.findById(idPago)
+                .orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado: " + idPago));
+        if (pago.getEstado() != EstadoPago.PENDIENTE && pago.getEstado() != EstadoPago.EN_PROCESO) {
+            throw new BusinessRuleException("No se puede pagar con pasarela el pago " + idPago
+                    + ": esta en estado " + pago.getEstado() + ", se esperaba PENDIENTE o EN_PROCESO");
+        }
+        return pago;
     }
 
     private Pago buscarEnProceso(Long idPago) {

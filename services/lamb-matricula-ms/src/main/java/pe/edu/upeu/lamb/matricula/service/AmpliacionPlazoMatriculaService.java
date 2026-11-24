@@ -9,6 +9,7 @@ import pe.edu.upeu.lamb.matricula.repository.AmpliacionPlazoMatriculaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,21 @@ public class AmpliacionPlazoMatriculaService {
     public AmpliacionPlazoMatriculaResponse crear(AmpliacionPlazoMatriculaRequest request) {
         AmpliacionPlazoMatricula entity = ampliacionPlazoMatriculaMapper.toEntity(request);
         return ampliacionPlazoMatriculaMapper.toResponse(ampliacionPlazoMatriculaRepository.save(entity));
+    }
+
+    @Transactional
+    public AmpliacionPlazoMatriculaResponse actualizar(Long id, AmpliacionPlazoMatriculaRequest request) {
+        AmpliacionPlazoMatricula entity = buscarOFallar(id);
+        entity.setIdCronograma(request.getIdCronograma());
+        entity.setFechaAmpliada(request.getFechaAmpliada());
+        entity.setMotivo(request.getMotivo());
+        entity.setAutorizadoPor(request.getAutorizadoPor());
+        return ampliacionPlazoMatriculaMapper.toResponse(ampliacionPlazoMatriculaRepository.save(entity));
+    }
+
+    @Transactional
+    public void eliminar(Long id) {
+        ampliacionPlazoMatriculaRepository.delete(buscarOFallar(id));
     }
 
     private AmpliacionPlazoMatricula buscarOFallar(Long id) {

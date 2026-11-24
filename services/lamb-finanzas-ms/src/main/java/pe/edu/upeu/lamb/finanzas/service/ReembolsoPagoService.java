@@ -3,6 +3,7 @@ package pe.edu.upeu.lamb.finanzas.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.ReembolsoPagoRequest;
 import pe.edu.upeu.lamb.finanzas.dto.ReembolsoPagoResponse;
 import pe.edu.upeu.lamb.finanzas.entity.CuentaEstudiante;
@@ -52,6 +53,29 @@ public class ReembolsoPagoService {
                 .build();
 
         return reembolsoPagoMapper.toResponse(reembolsoPagoRepository.save(entity));
+    }
+
+    @Transactional
+    public ReembolsoPagoResponse actualizar(Long id, ReembolsoPagoRequest request) {
+        ReembolsoPago entity = buscarOFallar(id);
+        SolicitudDevolucion solicitudDevolucion = solicitudDevolucionRepository.findById(request.getIdSolicitudDevolucion())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se encontro la solicitud de devolucion con id " + request.getIdSolicitudDevolucion()));
+        CuentaEstudiante cuentaEstudiante = cuentaEstudianteRepository.findById(request.getIdCuentaEstudiante())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se encontro la cuenta de estudiante con id " + request.getIdCuentaEstudiante()));
+        entity.setSolicitudDevolucion(solicitudDevolucion);
+        entity.setCuentaEstudiante(cuentaEstudiante);
+        entity.setMontoReembolsado(request.getMontoReembolsado());
+        entity.setFecha(request.getFecha());
+        return reembolsoPagoMapper.toResponse(reembolsoPagoRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        reembolsoPagoRepository.delete(buscarOFallar(id));
+        reembolsoPagoRepository.flush();
     }
 
     private ReembolsoPago buscarOFallar(Long id) {

@@ -104,6 +104,19 @@ public class DescuentosBecasController {
         return tipoBecaService.crear(request);
     }
 
+    @PutMapping("/tipos-beca/{id}")
+    @Operation(summary = "Actualizar un tipo de beca")
+    public TipoBecaResponse actualizarTipoBeca(@PathVariable Long id, @Valid @RequestBody TipoBecaRequest request) {
+        return tipoBecaService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/tipos-beca/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar un tipo de beca")
+    public void eliminarTipoBeca(@PathVariable Long id) {
+        tipoBecaService.eliminar(id);
+    }
+
     // --- Beca aplicada ---
 
     @GetMapping("/becas-aplicadas")
@@ -123,6 +136,19 @@ public class DescuentosBecasController {
     @Operation(summary = "Crear una beca aplicada")
     public BecaAplicadaResponse crearBecaAplicada(@Valid @RequestBody BecaAplicadaRequest request) {
         return becaAplicadaService.crear(request);
+    }
+
+    @PutMapping("/becas-aplicadas/{id}")
+    @Operation(summary = "Actualizar una beca aplicada")
+    public BecaAplicadaResponse actualizarBecaAplicada(@PathVariable Long id, @Valid @RequestBody BecaAplicadaRequest request) {
+        return becaAplicadaService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/becas-aplicadas/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar una beca aplicada")
+    public void eliminarBecaAplicada(@PathVariable Long id) {
+        becaAplicadaService.eliminar(id);
     }
 
     // --- Renovacion/suspension de beca ---

@@ -53,6 +53,19 @@ public class SaldoEstudianteController {
         return cuentaEstudianteService.crear(request);
     }
 
+    @PutMapping("/cuentas/{id}")
+    @Operation(summary = "Actualizar una cuenta de estudiante")
+    public CuentaEstudianteResponse actualizarCuenta(@PathVariable Long id, @Valid @RequestBody CuentaEstudianteRequest request) {
+        return cuentaEstudianteService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/cuentas/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar una cuenta de estudiante")
+    public void eliminarCuenta(@PathVariable Long id) {
+        cuentaEstudianteService.eliminar(id);
+    }
+
     // --- Movimiento de cuenta (item 65) ---
 
     @GetMapping("/movimientos")

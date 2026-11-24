@@ -74,6 +74,19 @@ public class CatalogosTarifasController {
         return conceptoPagoService.crear(request);
     }
 
+    @PutMapping("/conceptos-pago/{id}")
+    @Operation(summary = "Actualizar un concepto de pago")
+    public ConceptoPagoResponse actualizarConceptoPago(@PathVariable Long id, @Valid @RequestBody ConceptoPagoRequest request) {
+        return conceptoPagoService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/conceptos-pago/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar un concepto de pago")
+    public void eliminarConceptoPago(@PathVariable Long id) {
+        conceptoPagoService.eliminar(id);
+    }
+
     // --- Tarifario por escuela y ciclo ---
 
     @GetMapping("/tarifarios-escuela-ciclo")

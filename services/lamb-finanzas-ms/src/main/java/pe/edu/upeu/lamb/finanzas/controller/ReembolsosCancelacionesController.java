@@ -50,6 +50,19 @@ public class ReembolsosCancelacionesController {
         return solicitudDevolucionService.crear(request);
     }
 
+    @PutMapping("/solicitudes-devolucion/{id}")
+    @Operation(summary = "Actualizar una solicitud de devolucion")
+    public SolicitudDevolucionResponse actualizarSolicitudDevolucion(@PathVariable Long id, @Valid @RequestBody SolicitudDevolucionRequest request) {
+        return solicitudDevolucionService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/solicitudes-devolucion/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar una solicitud de devolucion")
+    public void eliminarSolicitudDevolucion(@PathVariable Long id) {
+        solicitudDevolucionService.eliminar(id);
+    }
+
     // --- Reembolso de pago (impacta CuentaEstudiante, dominio Saldo del Estudiante) ---
 
     @GetMapping("/reembolsos-pago")
@@ -69,5 +82,18 @@ public class ReembolsosCancelacionesController {
     @Operation(summary = "Crear un reembolso de pago")
     public ReembolsoPagoResponse crearReembolsoPago(@Valid @RequestBody ReembolsoPagoRequest request) {
         return reembolsoPagoService.crear(request);
+    }
+
+    @PutMapping("/reembolsos-pago/{id}")
+    @Operation(summary = "Actualizar un reembolso de pago")
+    public ReembolsoPagoResponse actualizarReembolsoPago(@PathVariable Long id, @Valid @RequestBody ReembolsoPagoRequest request) {
+        return reembolsoPagoService.actualizar(id, request);
+    }
+
+    @DeleteMapping("/reembolsos-pago/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar un reembolso de pago")
+    public void eliminarReembolsoPago(@PathVariable Long id) {
+        reembolsoPagoService.eliminar(id);
     }
 }

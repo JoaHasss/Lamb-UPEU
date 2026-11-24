@@ -39,6 +39,21 @@ public class CuentaEstudianteService {
         return cuentaEstudianteMapper.toResponse(cuentaEstudianteRepository.save(entity));
     }
 
+    @Transactional
+    public CuentaEstudianteResponse actualizar(Long id, CuentaEstudianteRequest request) {
+        CuentaEstudiante entity = buscarOFallar(id);
+        entity.setIdPersona(request.getIdPersona());
+        entity.setSaldoActual(request.getSaldoActual());
+        return cuentaEstudianteMapper.toResponse(cuentaEstudianteRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        cuentaEstudianteRepository.delete(buscarOFallar(id));
+        cuentaEstudianteRepository.flush();
+    }
+
     private CuentaEstudiante buscarOFallar(Long id) {
         return cuentaEstudianteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cuenta de estudiante no encontrada: " + id));

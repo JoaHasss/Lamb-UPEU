@@ -9,6 +9,7 @@ import pe.edu.upeu.lamb.matricula.repository.VariacionMatriculaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,22 @@ public class VariacionMatriculaService {
     public VariacionMatriculaResponse crear(VariacionMatriculaRequest request) {
         VariacionMatricula entity = variacionMatriculaMapper.toEntity(request);
         return variacionMatriculaMapper.toResponse(variacionMatriculaRepository.save(entity));
+    }
+
+    @Transactional
+    public VariacionMatriculaResponse actualizar(Long id, VariacionMatriculaRequest request) {
+        VariacionMatricula entity = buscarOFallar(id);
+        entity.setIdCronograma(request.getIdCronograma());
+        entity.setTipo(request.getTipo());
+        entity.setFechaInicio(request.getFechaInicio());
+        entity.setFechaFin(request.getFechaFin());
+        entity.setDescripcion(request.getDescripcion());
+        return variacionMatriculaMapper.toResponse(variacionMatriculaRepository.save(entity));
+    }
+
+    @Transactional
+    public void eliminar(Long id) {
+        variacionMatriculaRepository.delete(buscarOFallar(id));
     }
 
     private VariacionMatricula buscarOFallar(Long id) {

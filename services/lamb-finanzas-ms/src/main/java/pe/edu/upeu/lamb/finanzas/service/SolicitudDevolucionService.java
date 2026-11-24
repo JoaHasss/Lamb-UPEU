@@ -3,10 +3,13 @@ package pe.edu.upeu.lamb.finanzas.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.SolicitudDevolucionRequest;
 import pe.edu.upeu.lamb.finanzas.dto.SolicitudDevolucionResponse;
+import pe.edu.upeu.lamb.finanzas.entity.EstadoPago;
 import pe.edu.upeu.lamb.finanzas.entity.Pago;
 import pe.edu.upeu.lamb.finanzas.entity.SolicitudDevolucion;
+import pe.edu.upeu.lamb.finanzas.exception.BusinessRuleException;
 import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.SolicitudDevolucionMapper;
 import pe.edu.upeu.lamb.finanzas.repository.PagoRepository;
@@ -36,6 +39,7 @@ public class SolicitudDevolucionService {
     public SolicitudDevolucionResponse crear(SolicitudDevolucionRequest request) {
         Pago pago = pagoRepository.findById(request.getIdPago())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontro el pago con id " + request.getIdPago()));
+        validarPagoDevolvible(pago, request, true);
 
         SolicitudDevolucion entity = SolicitudDevolucion.builder()
                 .pago(pago)
@@ -46,6 +50,42 @@ public class SolicitudDevolucionService {
                 .build();
 
         return solicitudDevolucionMapper.toResponse(solicitudDevolucionRepository.save(entity));
+    }
+
+    @Transactional
+    public SolicitudDevolucionResponse actualizar(Long id, SolicitudDevolucionRequest request) {
+        SolicitudDevolucion entity = buscarOFallar(id);
+        Pago pago = pagoRepository.findById(request.getIdPago())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro el pago con id " + request.getIdPago()));
+        validarPagoDevolvible(pago, request, !pago.getId().equals(entity.getPago().getId()));
+        entity.setPago(pago);
+        entity.setMotivo(request.getMotivo());
+        entity.setMontoSolicitado(request.getMontoSolicitado());
+        entity.setEstado(request.getEstado());
+        entity.setFecha(request.getFecha());
+        return solicitudDevolucionMapper.toResponse(solicitudDevolucionRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        solicitudDevolucionRepository.delete(buscarOFallar(id));
+        solicitudDevolucionRepository.flush();
+    }
+
+    /**
+     * Solo se devuelve dinero cobrado: el pago debe estar APROBADO (un PENDIENTE, EN_PROCESO o
+     * RECHAZADO no cobro nada) y no se puede pedir mas de lo que se pago.
+     */
+    private void validarPagoDevolvible(Pago pago, SolicitudDevolucionRequest request, boolean exigirAprobado) {
+        if (exigirAprobado && pago.getEstado() != EstadoPago.APROBADO) {
+            throw new BusinessRuleException("Solo se puede pedir la devolucion de un pago APROBADO; el pago "
+                    + pago.getId() + " esta " + pago.getEstado());
+        }
+        if (request.getMontoSolicitado().compareTo(pago.getMonto()) > 0) {
+            throw new BusinessRuleException("El monto solicitado (S/ " + request.getMontoSolicitado()
+                    + ") supera lo pagado (S/ " + pago.getMonto() + ")");
+        }
     }
 
     private SolicitudDevolucion buscarOFallar(Long id) {

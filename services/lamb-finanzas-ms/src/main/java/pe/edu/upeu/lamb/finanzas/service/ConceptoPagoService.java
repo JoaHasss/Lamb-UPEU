@@ -48,6 +48,26 @@ public class ConceptoPagoService {
         return conceptoPagoMapper.toResponse(conceptoPagoRepository.save(entity));
     }
 
+    @Transactional
+    public ConceptoPagoResponse actualizar(Long id, ConceptoPagoRequest request) {
+        ConceptoPago entity = buscarOFallar(id);
+        CategoriaConcepto categoria = categoriaConceptoRepository.findById(request.getIdCategoria())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria de concepto no encontrada: " + request.getIdCategoria()));
+        entity.setCategoria(categoria);
+        entity.setNombre(request.getNombre());
+        entity.setMonto(request.getMonto());
+        entity.setVigenciaDesde(request.getVigenciaDesde());
+        entity.setVigenciaHasta(request.getVigenciaHasta());
+        return conceptoPagoMapper.toResponse(conceptoPagoRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        conceptoPagoRepository.delete(buscarOFallar(id));
+        conceptoPagoRepository.flush();
+    }
+
     private ConceptoPago buscarOFallar(Long id) {
         return conceptoPagoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Concepto de pago no encontrado: " + id));

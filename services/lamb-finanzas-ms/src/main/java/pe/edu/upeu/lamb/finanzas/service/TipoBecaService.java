@@ -3,6 +3,7 @@ package pe.edu.upeu.lamb.finanzas.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.TipoBecaRequest;
 import pe.edu.upeu.lamb.finanzas.dto.TipoBecaResponse;
 import pe.edu.upeu.lamb.finanzas.entity.TipoBeca;
@@ -37,6 +38,21 @@ public class TipoBecaService {
         TipoBeca entity = tipoBecaMapper.toEntity(request);
         TipoBeca guardado = tipoBecaRepository.save(entity);
         return tipoBecaMapper.toResponse(guardado);
+    }
+
+    @Transactional
+    public TipoBecaResponse actualizar(Long id, TipoBecaRequest request) {
+        TipoBeca entity = buscarOFallar(id);
+        entity.setNombre(request.getNombre());
+        entity.setDescripcion(request.getDescripcion());
+        return tipoBecaMapper.toResponse(tipoBecaRepository.save(entity));
+    }
+
+    // Si otro registro lo usa (FK), la base lo impide y el manejador global responde 409
+    @Transactional
+    public void eliminar(Long id) {
+        tipoBecaRepository.delete(buscarOFallar(id));
+        tipoBecaRepository.flush();
     }
 
     private TipoBeca buscarOFallar(Long id) {
