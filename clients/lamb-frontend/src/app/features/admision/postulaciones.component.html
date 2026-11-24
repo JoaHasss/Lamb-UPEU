@@ -48,7 +48,7 @@
               <td>{{ p.idPrograma }}</td>
               <td>{{ p.periodo }}</td>
               <td>{{ p.puntajeExamen ?? '—' }}</td>
-              <td><span [class]="estadoClass(p.estado)">{{ p.estado }}</span></td>
+              <td><span [class]="estadoClass(p.estado)">{{ p.estado | sinGuion }}</span></td>
               <td>{{ p.fechaRegistro | date:'short' }}</td>
               <td class="actions">
                 <button class="btn btn--sm" (click)="accion(p, 'evaluar')">Evaluar</button>

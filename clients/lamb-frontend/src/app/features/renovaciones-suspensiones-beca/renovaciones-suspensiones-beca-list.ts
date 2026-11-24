@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { RenovacionesSuspensionesBecaResponse } from './renovaciones-suspensiones-beca.model';
 import { RenovacionesSuspensionesBecaService } from './renovaciones-suspensiones-beca-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-renovaciones-suspensiones-beca-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './renovaciones-suspensiones-beca-list.html',
 })
 export class RenovacionesSuspensionesBecaList {

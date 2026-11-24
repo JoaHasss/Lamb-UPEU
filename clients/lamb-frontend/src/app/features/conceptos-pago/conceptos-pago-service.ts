@@ -24,4 +24,8 @@ export class ConceptosPagoService {
   actualizar(id: number, request: ConceptosPagoRequest): Observable<ConceptosPagoResponse> {
     return this.http.put<ConceptosPagoResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

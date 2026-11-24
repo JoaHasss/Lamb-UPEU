@@ -35,7 +35,7 @@
       Estado
       <select formControlName="estado">
         @for (e of estados; track e) {
-          <option [value]="e">{{ e }}</option>
+          <option [value]="e">{{ e | sinGuion }}</option>
         }
       </select>
     </label>

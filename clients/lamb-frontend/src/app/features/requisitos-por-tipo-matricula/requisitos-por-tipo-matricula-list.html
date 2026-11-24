@@ -38,7 +38,7 @@
             <td>{{ item.idTipoMatricula }}</td>
             <td>{{ item.idRequisitoCurriculo }}</td>
             <td>{{ item.descripcion }}</td>
-            <td>{{ item.obligatorio }}</td>
+            <td>{{ item.obligatorio | siNo }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/requisitos-por-tipo-matricula', item.id, 'editar']">Editar</a>

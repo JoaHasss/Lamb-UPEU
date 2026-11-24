@@ -7,9 +7,10 @@ import { FacultadResponse } from '../facultades/facultad.model';
 import { ProgramaService } from './programa-service';
 import { GradoAcademico } from './programa.model';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-programa-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [SinGuion, ReactiveFormsModule, RouterLink],
   templateUrl: './programa-form.html',
 })
 export class ProgramaForm {

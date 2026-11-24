@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { ReservasVacanteResponse } from './reservas-vacante.model';
 import { ReservasVacanteService } from './reservas-vacante-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-reservas-vacante-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './reservas-vacante-list.html',
 })
 export class ReservasVacanteList {

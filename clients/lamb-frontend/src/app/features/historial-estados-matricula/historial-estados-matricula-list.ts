@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { HistorialEstadosMatriculaResponse } from './historial-estados-matricula.model';
 import { HistorialEstadosMatriculaService } from './historial-estados-matricula-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-historial-estados-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './historial-estados-matricula-list.html',
 })
 export class HistorialEstadosMatriculaList {

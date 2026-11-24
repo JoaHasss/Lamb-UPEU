@@ -45,5 +45,19 @@ export class TiposBecaList {
     });
   }
 
-
+  // Pide confirmacion; si otro registro lo usa, el backend responde 409 y se muestra su mensaje
+  protected eliminar(id: number): void {
+    if (!confirm(`¿Eliminar el registro #${id}?`)) {
+      return;
+    }
+    this.errorAccion.set(null);
+    this.exito.set(null);
+    this.servicio.eliminar(id).subscribe({
+      next: () => {
+        this.exito.set(`Registro #${id} eliminado.`);
+        this.cargar();
+      },
+      error: (err) => this.errorAccion.set(mensajeError(err, 'No se pudo eliminar el registro.')),
+    });
+  }
 }

@@ -1,13 +1,12 @@
+// Igual que CuentaEstudianteRequest/Response de lamb-finanzas-ms (/api/v1/saldo-estudiante/cuentas)
 export interface CuentasRequest {
-  id?: number;
   idPersona: number;
-  saldo: number;
-  estado: string;
+  saldoActual: number;
 }
 
 export interface CuentasResponse {
   id: number;
   idPersona: number;
-  saldo: number;
-  estado: string;
+  saldoActual: number;
+  fechaApertura: string;
 }

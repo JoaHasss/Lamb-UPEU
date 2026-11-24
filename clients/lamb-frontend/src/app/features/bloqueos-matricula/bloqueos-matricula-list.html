@@ -40,7 +40,7 @@
             <td>{{ item.motivo }}</td>
             <td>{{ item.fechaInicio }}</td>
             <td>{{ item.fechaFin }}</td>
-            <td>{{ item.activo }}</td>
+            <td>{{ item.activo | siNo }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/bloqueos-matricula', item.id, 'editar']">Editar</a>

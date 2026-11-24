@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { TiposMatriculaResponse } from './tipos-matricula.model';
 import { TiposMatriculaService } from './tipos-matricula-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-tipos-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './tipos-matricula-list.html',
 })
 export class TiposMatriculaList {

@@ -300,7 +300,7 @@
               <input class="ac-input" type="number" min="1" placeholder="Id docente" [name]="'doc' + i" [(ngModel)]="d.idDocente" />
               <select class="ac-input" [name]="'rol' + i" [(ngModel)]="d.rol" (ngModelChange)="cambioRol(d)">
                 @for (r of roles; track r) {
-                  <option [value]="r">{{ r }}</option>
+                  <option [value]="r">{{ r | sinGuion }}</option>
                 }
               </select>
               <input class="ac-input" type="number" min="0" [name]="'hs' + i" [(ngModel)]="d.horasSemanales" />

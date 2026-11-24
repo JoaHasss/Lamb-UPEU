@@ -10,7 +10,7 @@
     <select id="idPersona" formControlName="idPersona">
       <option [ngValue]="null" disabled>Selecciona una persona (tipo estudiante)</option>
       @for (p of personas(); track p.id) {
-        <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento }} {{ p.numeroDocumento }})</option>
+        <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento | sinGuion }} {{ p.numeroDocumento }})</option>
       }
     </select>
     @if (!personas().length) {

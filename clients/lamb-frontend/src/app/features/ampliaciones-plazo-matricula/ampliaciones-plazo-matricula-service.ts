@@ -24,4 +24,8 @@ export class AmpliacionesPlazoMatriculaService {
   actualizar(id: number, request: AmpliacionesPlazoMatriculaRequest): Observable<AmpliacionesPlazoMatriculaResponse> {
     return this.http.put<AmpliacionesPlazoMatriculaResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

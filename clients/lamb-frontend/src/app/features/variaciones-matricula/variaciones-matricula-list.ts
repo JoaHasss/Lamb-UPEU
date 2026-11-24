@@ -2,14 +2,16 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../core/auth/auth-service';
+import { OpcionesFinanzasMatricula } from '../../core/catalogos/opciones-finanzas-matricula';
 import { mensajeError } from '../../core/http/mensaje-error';
 import { VariacionesMatriculaResponse } from './variaciones-matricula.model';
 import { VariacionesMatriculaService } from './variaciones-matricula-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-variaciones-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './variaciones-matricula-list.html',
 })
 export class VariacionesMatriculaList {
@@ -18,10 +20,12 @@ export class VariacionesMatriculaList {
 
   protected readonly items = signal<VariacionesMatriculaResponse[]>([]);
   protected readonly error = signal<string | null>(null);
+  protected readonly periodos = signal<Map<number, string>>(new Map());
   protected readonly errorAccion = signal<string | null>(null);
   protected readonly exito = signal<string | null>(null);
 
   constructor() {
+    inject(OpcionesFinanzasMatricula).cronogramas().subscribe((c) => this.periodos.set(new Map(c.map((x) => [x.id, x.periodo]))));
     this.cargar();
   }
 
@@ -45,5 +49,19 @@ export class VariacionesMatriculaList {
     });
   }
 
-
+  // Pide confirmacion; si otro registro lo usa, el backend responde 409 y se muestra su mensaje
+  protected eliminar(id: number): void {
+    if (!confirm(`¿Eliminar el registro #${id}?`)) {
+      return;
+    }
+    this.errorAccion.set(null);
+    this.exito.set(null);
+    this.servicio.eliminar(id).subscribe({
+      next: () => {
+        this.exito.set(`Registro #${id} eliminado.`);
+        this.cargar();
+      },
+      error: (err) => this.errorAccion.set(mensajeError(err, 'No se pudo eliminar el registro.')),
+    });
+  }
 }

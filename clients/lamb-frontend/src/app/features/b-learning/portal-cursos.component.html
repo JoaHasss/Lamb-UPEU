@@ -25,7 +25,7 @@
               </div>
               <p class="bl-curso-meta">Ingeniería de Sistemas - J</p>
               <p class="bl-curso-meta">{{ c.programa }}</p>
-              <p class="bl-curso-meta">{{ c.ciclo }} {{ c.grupo }} {{ c.nivel }}</p>
+              <p class="bl-curso-meta">{{ c.ciclo }} {{ c.grupo }} {{ c.nivel | sinGuion }}</p>
               <div class="bl-curso-docente">
                 <span class="bl-avatar">👤</span>
                 <span>{{ c.docente }}</span>
@@ -62,7 +62,7 @@
             <div class="bl-pendiente">
               <div>
                 <strong>{{ p.titulo }}</strong>
-                <p class="bl-curso-meta">{{ p.tipo }} · {{ p.cursoNombre }}</p>
+                <p class="bl-curso-meta">{{ p.tipo | sinGuion }} · {{ p.cursoNombre }}</p>
               </div>
               <div class="bl-pendiente-fecha">
                 <span>{{ p.fecha }}</span>

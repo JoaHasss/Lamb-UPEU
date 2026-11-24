@@ -5,9 +5,10 @@ import { AuthService } from '../../core/auth/auth-service';
 import { PersonaService } from './persona-service';
 import { PersonaResponse } from './persona.model';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-persona-list',
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './persona-list.html',
 })
 export class PersonaList {

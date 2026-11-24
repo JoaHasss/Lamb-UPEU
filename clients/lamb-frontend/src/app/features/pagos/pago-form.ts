@@ -7,6 +7,7 @@ import { PersonaService } from '../personas/persona-service';
 import { PersonaResponse } from '../personas/persona.model';
 import { PagoService } from './pago-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 /**
  * Nuevo pago via Mercado Pago (Checkout Pro): aqui solo se registra persona, concepto y monto.
  * El metodo (tarjeta, Yape, PagoEfectivo...) se elige en la pagina de Mercado Pago; al volver,
@@ -14,7 +15,7 @@ import { PagoService } from './pago-service';
  */
 @Component({
   selector: 'app-pago-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [SinGuion, ReactiveFormsModule, RouterLink],
   templateUrl: './pago-form.html',
 })
 export class PagoForm {

@@ -36,7 +36,7 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.idBecaAplicada }}</td>
-            <td>{{ item.tipo }}</td>
+            <td>{{ item.tipo | sinGuion }}</td>
             <td>{{ item.motivo }}</td>
             <td>{{ item.fecha }}</td>
           @if (auth.tieneRol('ADMIN')) {

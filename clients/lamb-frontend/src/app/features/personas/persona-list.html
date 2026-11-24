@@ -26,11 +26,11 @@
     @for (persona of personas(); track persona.id) {
       <tr>
         <td>{{ persona.id }}</td>
-        <td>{{ persona.tipoDocumento }} {{ persona.numeroDocumento }}</td>
+        <td>{{ persona.tipoDocumento | sinGuion }} {{ persona.numeroDocumento }}</td>
         <td>{{ persona.nombres }}</td>
         <td>{{ persona.apellidos }}</td>
         <td>{{ persona.email }}</td>
-        <td>{{ persona.tipo }}</td>
+        <td>{{ persona.tipo | sinGuion }}</td>
         @if (auth.tieneRol('ADMIN', 'COORDINADOR')) {
           <td>
             <button type="button" (click)="editar(persona)">Editar</button>

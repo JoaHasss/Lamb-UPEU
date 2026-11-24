@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/api.service';
 import { Postulacion, PostulacionRequest } from './postulacion.model';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-postulaciones',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [SinGuion, CommonModule, FormsModule, DatePipe],
   templateUrl: './postulaciones.component.html',
   styleUrl: './postulaciones.component.scss'
 })

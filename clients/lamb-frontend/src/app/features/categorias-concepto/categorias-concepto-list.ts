@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { CategoriasConceptoResponse } from './categorias-concepto.model';
 import { CategoriasConceptoService } from './categorias-concepto-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-categorias-concepto-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './categorias-concepto-list.html',
 })
 export class CategoriasConceptoList {

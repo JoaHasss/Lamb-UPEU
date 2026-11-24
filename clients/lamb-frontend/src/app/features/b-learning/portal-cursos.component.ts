@@ -9,10 +9,11 @@ import {
   SESIONES_HOY_MOCK,
 } from './mocks/b-learning.mocks';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-b-learning-portal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [SinGuion, CommonModule, FormsModule],
   templateUrl: './portal-cursos.component.html',
   styleUrl: './portal-cursos.component.scss',
 })

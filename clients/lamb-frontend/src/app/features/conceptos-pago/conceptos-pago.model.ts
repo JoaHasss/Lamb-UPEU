@@ -1,17 +1,17 @@
+// Igual que ConceptoPagoRequest/Response de lamb-finanzas-ms (/api/v1/catalogos-tarifas/conceptos-pago)
 export interface ConceptosPagoRequest {
-  id?: number;
-  idCategoriaConcepto: number;
-  codigo: string;
+  idCategoria: number;
   nombre: string;
-  descripcion?: string;
-  activo?: boolean;
+  monto: number;
+  vigenciaDesde: string;
+  vigenciaHasta?: string | null;
 }
 
 export interface ConceptosPagoResponse {
   id: number;
-  idCategoriaConcepto: number;
-  codigo: string;
+  idCategoria: number;
   nombre: string;
-  descripcion: string;
-  activo: boolean;
+  monto: number;
+  vigenciaDesde: string;
+  vigenciaHasta: string | null;
 }

@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CategoriaConceptoOpcion, OpcionesFinanzasMatricula } from '../../core/catalogos/opciones-finanzas-matricula';
 import { mensajeError } from '../../core/http/mensaje-error';
 import { ConceptosPagoRequest } from './conceptos-pago.model';
 import { ConceptosPagoService } from './conceptos-pago-service';
@@ -19,16 +20,18 @@ export class ConceptosPagoForm {
 
   protected readonly error = signal<string | null>(null);
   protected readonly id = this.ruta.snapshot.paramMap.get('id');
+  protected readonly categorias = signal<CategoriaConceptoOpcion[]>([]);
 
   protected readonly form = this.fb.group({
-      idCategoriaConcepto: [0, [Validators.required]],
-      codigo: ['', [Validators.required]],
+      idCategoria: [null as number | null, [Validators.required]],
       nombre: ['', [Validators.required]],
-      descripcion: ['', []],
-      activo: [false, []],
+      monto: [null as number | null, [Validators.required, Validators.min(0)]],
+      vigenciaDesde: ['', [Validators.required]],
+      vigenciaHasta: [null as string | null],
   });
 
   constructor() {
+    inject(OpcionesFinanzasMatricula).categoriasConcepto().subscribe((c) => this.categorias.set(c));
     if (this.id) {
       this.servicio.obtener(Number(this.id)).subscribe({
         next: (data) => this.form.patchValue(data),
@@ -43,7 +46,8 @@ export class ConceptosPagoForm {
       return;
     }
     this.error.set(null);
-    const request = this.form.getRawValue() as ConceptosPagoRequest;
+    const valores = this.form.getRawValue();
+    const request = { ...valores, vigenciaHasta: valores.vigenciaHasta || null } as ConceptosPagoRequest;
     const obs = this.id
       ? this.servicio.actualizar(Number(this.id), request)
       : this.servicio.crear(request);

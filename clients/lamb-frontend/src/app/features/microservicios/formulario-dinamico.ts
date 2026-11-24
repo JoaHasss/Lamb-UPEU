@@ -3,10 +3,11 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { convertir, Fila, valorParaInput } from './ms-api.service';
 import { Campo } from './ms.model';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 /** Formulario construido a partir de los campos del catalogo (DTO Request del backend). */
 @Component({
   selector: 'app-formulario-dinamico',
-  imports: [ReactiveFormsModule],
+  imports: [SinGuion, ReactiveFormsModule],
   templateUrl: './formulario-dinamico.html',
 })
 export class FormularioDinamico {

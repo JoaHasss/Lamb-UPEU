@@ -24,4 +24,8 @@ export class CronogramasMatriculaService {
   actualizar(id: number, request: CronogramasMatriculaRequest): Observable<CronogramasMatriculaResponse> {
     return this.http.put<CronogramasMatriculaResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

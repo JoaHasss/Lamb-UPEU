@@ -8,9 +8,10 @@ import { ProgramaService } from '../programas/programa-service';
 import { ProgramaResponse } from '../programas/programa.model';
 import { PostulacionService } from './postulacion-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-postulacion-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [SinGuion, ReactiveFormsModule, RouterLink],
   templateUrl: './postulacion-form.html',
 })
 export class PostulacionForm {

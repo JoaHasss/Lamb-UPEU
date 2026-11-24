@@ -21,6 +21,11 @@ export interface PagoResponse {
   estado: EstadoPago;
   fechaPago: string;
   referenciaExterna: string | null;
+  // Datos del voucher (solo pagos por transferencia/deposito)
+  numeroOperacion?: string | null;
+  bancoReferencia?: string | null;
+  fechaVoucher?: string | null;
+  archivoVoucher?: string | null;
 }
 
 export interface PreferenciaPagoResponse {

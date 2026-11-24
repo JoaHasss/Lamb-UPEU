@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { SolicitudesRectificacionResponse } from './solicitudes-rectificacion.model';
 import { SolicitudesRectificacionService } from './solicitudes-rectificacion-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-solicitudes-rectificacion-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './solicitudes-rectificacion-list.html',
 })
 export class SolicitudesRectificacionList {

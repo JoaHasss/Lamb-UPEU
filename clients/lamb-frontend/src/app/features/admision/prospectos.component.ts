@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/api.service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 interface Postulante {
   id: number;
   codigoPostulante: string;
@@ -15,7 +16,7 @@ interface Postulante {
 @Component({
   selector: 'app-prospectos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [SinGuion, CommonModule],
   template: `
     <div class="wrap">
       <h2>Bandeja de admisión</h2>
@@ -33,7 +34,7 @@ interface Postulante {
           @for (p of filtrados(); track p.id) {
             <tr>
               <td>{{ p.codigoPostulante }}</td>
-              <td><span class="badge">{{ p.estado }}</span></td>
+              <td><span class="badge">{{ p.estado | sinGuion }}</span></td>
               <td>{{ p.correoContacto }}</td>
               <td>{{ p.telefonoContacto }}</td>
               <td>{{ p.fechaRegistro | date:'short' }}</td>

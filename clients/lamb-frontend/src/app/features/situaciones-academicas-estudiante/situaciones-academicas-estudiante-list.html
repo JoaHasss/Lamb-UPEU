@@ -37,7 +37,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.idPersona }}</td>
             <td>{{ item.periodo }}</td>
-            <td>{{ item.situacion }}</td>
+            <td>{{ item.situacion | sinGuion }}</td>
             <td>{{ item.fechaRegistro }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>

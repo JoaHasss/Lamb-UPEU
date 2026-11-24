@@ -8,9 +8,10 @@ import { GrupoResponse } from '../grupos/grupo.model';
 import { MatriculaService } from './matricula-service';
 import { MatriculaResponse } from './matricula.model';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-matricula-list',
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './matricula-list.html',
 })
 export class MatriculaList {
@@ -20,13 +21,22 @@ export class MatriculaList {
 
   protected readonly matriculas = signal<MatriculaResponse[]>([]);
   protected readonly grupos = signal<Map<number, GrupoResponse>>(new Map());
+  // Las matriculas suelen llegar antes que los grupos: hasta entonces no se muestra "Grupo N"
+  protected readonly gruposCargados = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly errorAccion = signal<string | null>(null);
   protected readonly exito = signal<string | null>(null);
 
   constructor() {
     this.cargar();
-    this.grupoService.listar().subscribe({ next: (g) => this.grupos.set(new Map(g.map((x) => [x.id, x]))) });
+    this.grupoService.listar().subscribe({
+      next: (g) => {
+        this.grupos.set(new Map(g.map((x) => [x.id, x])));
+        this.gruposCargados.set(true);
+      },
+      // Si planificacion no responde se muestra "Grupo N" en vez de quedarse cargando
+      error: () => this.gruposCargados.set(true),
+    });
   }
 
   protected cargar(): void {
@@ -38,6 +48,9 @@ export class MatriculaList {
   }
 
   protected nombreGrupo(id: number): string {
+    if (!this.gruposCargados()) {
+      return 'Cargando curso...';
+    }
     const g = this.grupos().get(id);
     return g ? `${g.curso?.codigo} ${g.curso?.nombre} (${g.codigo})` : `Grupo ${id}`;
   }

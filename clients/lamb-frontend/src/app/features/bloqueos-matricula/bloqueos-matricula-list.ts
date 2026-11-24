@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { BloqueosMatriculaResponse } from './bloqueos-matricula.model';
 import { BloqueosMatriculaService } from './bloqueos-matricula-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-bloqueos-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './bloqueos-matricula-list.html',
 })
 export class BloqueosMatriculaList {

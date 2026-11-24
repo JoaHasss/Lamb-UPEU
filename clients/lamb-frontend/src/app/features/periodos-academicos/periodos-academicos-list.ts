@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { PeriodosAcademicosResponse } from './periodos-academicos.model';
 import { PeriodosAcademicosService } from './periodos-academicos-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-periodos-academicos-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './periodos-academicos-list.html',
 })
 export class PeriodosAcademicosList {

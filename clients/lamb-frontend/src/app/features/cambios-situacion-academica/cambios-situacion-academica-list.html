@@ -37,8 +37,8 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.idSituacionAcademica }}</td>
-            <td>{{ item.situacionAnterior }}</td>
-            <td>{{ item.situacionNueva }}</td>
+            <td>{{ item.situacionAnterior | sinGuion }}</td>
+            <td>{{ item.situacionNueva | sinGuion }}</td>
             <td>{{ item.resolucion }}</td>
             <td>{{ item.fechaCambio }}</td>
           @if (auth.tieneRol('ADMIN')) {

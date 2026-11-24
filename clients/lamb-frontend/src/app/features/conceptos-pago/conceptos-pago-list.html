@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>conceptos-pago</h2>
+  <h2>Conceptos de pago</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,11 +22,11 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Categoría</th>
-          <th>Código</th>
+          <th>Categoría</th>
           <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Activo</th>
+          <th>Monto</th>
+          <th>Vigente desde</th>
+          <th>Vigente hasta</th>
         @if (auth.tieneRol('ADMIN')) {
           <th>Acciones</th>
         }
@@ -36,14 +36,15 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idCategoriaConcepto }}</td>
-            <td>{{ item.codigo }}</td>
+            <td>{{ categorias().get(item.idCategoria) ?? item.idCategoria }}</td>
             <td>{{ item.nombre }}</td>
-            <td>{{ item.descripcion }}</td>
-            <td>{{ item.activo }}</td>
+            <td>S/ {{ item.monto }}</td>
+            <td>{{ item.vigenciaDesde }}</td>
+            <td>{{ item.vigenciaHasta ?? 'Sin fin' }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/conceptos-pago', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button>
 
             </td>
           }

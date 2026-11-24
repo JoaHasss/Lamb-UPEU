@@ -1,15 +1,16 @@
+// Igual que ReembolsoPagoRequest/Response de lamb-finanzas-ms
+// (/api/v1/reembolsos-cancelaciones/reembolsos-pago)
 export interface ReembolsosPagoRequest {
-  id?: number;
-  idPago: number;
+  idSolicitudDevolucion: number;
+  idCuentaEstudiante: number;
   montoReembolsado: number;
-  fechaReembolso: string;
-  estado?: string;
+  fecha: string;
 }
 
 export interface ReembolsosPagoResponse {
   id: number;
-  idPago: number;
+  idSolicitudDevolucion: number;
+  idCuentaEstudiante: number;
   montoReembolsado: number;
-  fechaReembolso: string;
-  estado: string;
+  fecha: string;
 }

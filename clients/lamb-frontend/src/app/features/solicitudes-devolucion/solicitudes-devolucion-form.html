@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>solicitudes-devolucion</h2>
+  <h2>Solicitudes de devolución</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -7,24 +7,38 @@
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
     <label>
-      ID Persona
-      <input type="number" formControlName="idPersona" />
+      Pago a devolver
+      <select formControlName="idPago" (change)="alElegirPago()">
+        <option [ngValue]="null" disabled>Seleccione un pago...</option>
+        @for (p of pagosDevolvibles(); track p.id) {
+          <option [ngValue]="p.id">
+            #{{ p.id }} · {{ nombrePersona(p.idPersona) }} · {{ p.concepto }} · S/ {{ p.monto }} · {{ p.estado | sinGuion }}
+          </option>
+        } @empty {
+          <option [ngValue]="null" disabled>No hay pagos aprobados para devolver</option>
+        }
+      </select>
+      <small>Solo aparecen pagos APROBADOS: los demás no cobraron dinero.</small>
     </label>
     <label>
       Motivo
-      <input type="text" formControlName="motivo" />
+      <input type="text" formControlName="motivo" placeholder="Tramite anulado, cobro duplicado..." />
     </label>
     <label>
-      Monto solicitado
-      <input type="number" formControlName="montoSolicitado" step="0.01" />
+      Monto solicitado (S/)
+      <input type="number" step="0.01" min="0.01" formControlName="montoSolicitado" />
     </label>
     <label>
       Estado
-      <input type="text" formControlName="estado" />
+      <select formControlName="estado">
+        <option value="PENDIENTE">PENDIENTE</option>
+        <option value="APROBADA">APROBADA</option>
+        <option value="RECHAZADA">RECHAZADA</option>
+      </select>
     </label>
     <label>
-      Fecha solicitud
-      <input type="datetime-local" formControlName="fechaSolicitud" />
+      Fecha de la solicitud
+      <input type="datetime-local" formControlName="fecha" />
     </label>
 
     <button type="submit">Guardar</button>

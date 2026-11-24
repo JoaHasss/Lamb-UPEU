@@ -488,7 +488,7 @@
                   <tr>
                     <td style="white-space: normal; min-width: 200px; max-width: 280px">
                       <b class="fuerte">{{ e.nombreCursoDestino }}</b>
-                      <div style="font-size: 0.7rem; color: #64748b">{{ e.codigoCursoDestino }}@if (e.tipoCursoDestino) { · {{ e.tipoCursoDestino }} }</div>
+                      <div style="font-size: 0.7rem; color: #64748b">{{ e.codigoCursoDestino }}@if (e.tipoCursoDestino) { · {{ e.tipoCursoDestino | sinGuion }} }</div>
                       @if (e.observacion) {
                         <div style="font-size: 0.7rem; color: #b45309; margin-top: 2px">{{ e.observacion }}</div>
                       }

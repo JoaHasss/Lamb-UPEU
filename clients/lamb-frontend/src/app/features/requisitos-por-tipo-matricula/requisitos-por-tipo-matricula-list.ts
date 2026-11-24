@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { RequisitosPorTipoMatriculaResponse } from './requisitos-por-tipo-matricula.model';
 import { RequisitosPorTipoMatriculaService } from './requisitos-por-tipo-matricula-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-requisitos-por-tipo-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './requisitos-por-tipo-matricula-list.html',
 })
 export class RequisitosPorTipoMatriculaList {

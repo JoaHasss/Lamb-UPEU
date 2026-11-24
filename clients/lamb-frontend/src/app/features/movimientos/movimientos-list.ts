@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { MovimientosResponse } from './movimientos.model';
 import { MovimientosService } from './movimientos-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-movimientos-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './movimientos-list.html',
 })
 export class MovimientosList {

@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ApiService } from '../../core/api.service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 interface Alerta {
   id: number;
   idEstudiante: number;
@@ -13,7 +14,7 @@ interface Alerta {
 @Component({
   selector: 'app-alertas',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [SinGuion, CommonModule, DatePipe],
   template: `
     <div class="upeu-card">
       <h2 style="color:var(--upeu-navy);margin:0 0 12px">Alertas de riesgo</h2>
@@ -37,7 +38,7 @@ interface Alerta {
                 <td style="padding:10px">#{{ a.id }}</td>
                 <td style="padding:10px">{{ a.idEstudiante }}</td>
                 <td style="padding:10px">{{ a.descripcion }}</td>
-                <td style="padding:10px">{{ a.nivelRiesgo }}</td>
+                <td style="padding:10px">{{ a.nivelRiesgo | sinGuion }}</td>
                 <td style="padding:10px">{{ a.fechaDeteccion | date:'short' }}</td>
               </tr>
             }

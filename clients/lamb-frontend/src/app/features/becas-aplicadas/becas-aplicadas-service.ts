@@ -24,4 +24,8 @@ export class BecasAplicadasService {
   actualizar(id: number, request: BecasAplicadasRequest): Observable<BecasAplicadasResponse> {
     return this.http.put<BecasAplicadasResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

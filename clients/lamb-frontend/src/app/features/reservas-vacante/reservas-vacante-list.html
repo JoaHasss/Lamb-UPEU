@@ -40,7 +40,7 @@
             <td>{{ item.idPersona }}</td>
             <td>{{ item.fechaReserva }}</td>
             <td>{{ item.vigenciaHasta }}</td>
-            <td>{{ item.estado }}</td>
+            <td>{{ item.estado | sinGuion }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/reservas-vacante', item.id, 'editar']">Editar</a>

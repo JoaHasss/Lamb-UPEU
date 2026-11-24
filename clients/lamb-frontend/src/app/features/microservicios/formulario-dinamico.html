@@ -11,7 +11,7 @@
               <option value="">-</option>
             }
             @for (op of campo.opciones; track op) {
-              <option [value]="op">{{ op }}</option>
+              <option [value]="op">{{ op | sinGuion }}</option>
             }
           </select>
         }

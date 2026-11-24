@@ -34,7 +34,7 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.tipoDocumento }}</td>
+            <td>{{ item.tipoDocumento | sinGuion }}</td>
             <td>{{ item.serie }}</td>
             <td>{{ item.correlativoActual }}</td>
           @if (auth.tieneRol('ADMIN')) {

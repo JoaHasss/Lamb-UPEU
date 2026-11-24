@@ -19,7 +19,7 @@ import { PagoResponse } from './pago.model';
       } @else if (pago()?.estado === 'APROBADO') {
         <p class="ok">Pago aprobado. Referencia: {{ pago()?.referenciaExterna }}</p>
       } @else {
-        <p class="rechazado">Pago {{ pago()?.estado | lowercase }}.</p>
+        <p class="rechazado">Pago {{ (pago()?.estado ?? '').replace('_', ' ') | lowercase }}.</p>
       }
       <a routerLink="/pagos">Volver a pagos</a>
     </div>

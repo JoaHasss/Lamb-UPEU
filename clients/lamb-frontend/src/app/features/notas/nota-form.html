@@ -20,7 +20,7 @@
     <select id="idPersona" formControlName="idPersona">
       <option [ngValue]="null" disabled>Selecciona un estudiante</option>
       @for (p of estudiantes(); track p.id) {
-        <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento }} {{ p.numeroDocumento }})</option>
+        <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento | sinGuion }} {{ p.numeroDocumento }})</option>
       }
     </select>
   </div>
@@ -52,7 +52,7 @@
         <label>Tipo</label>
         <select formControlName="tipo">
           @for (t of tiposComponente; track t) {
-            <option [value]="t">{{ t }}</option>
+            <option [value]="t">{{ t | sinGuion }}</option>
           }
         </select>
       </div>

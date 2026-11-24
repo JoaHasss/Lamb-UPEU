@@ -13,9 +13,10 @@ import { ModalidadesMatriculaService } from '../modalidades-matricula/modalidade
 import { ModalidadesMatriculaResponse } from '../modalidades-matricula/modalidades-matricula.model';
 import { MatriculaService } from './matricula-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-matricula-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [SinGuion, ReactiveFormsModule, RouterLink],
   templateUrl: './matricula-form.html',
 })
 export class MatriculaForm {

@@ -6,10 +6,11 @@ import { Location } from '@angular/common';
 import { ApiService } from '../../core/api.service';
 import { CRUD_BY_SLUG, CrudDef, FieldDef } from '../cruds.catalog';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-crud-generic',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [SinGuion, CommonModule, FormsModule, DatePipe],
   templateUrl: './crud-generic.component.html',
   styleUrl: './crud-generic.component.scss'
 })

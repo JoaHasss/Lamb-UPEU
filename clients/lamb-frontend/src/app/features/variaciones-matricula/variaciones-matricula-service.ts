@@ -24,4 +24,8 @@ export class VariacionesMatriculaService {
   actualizar(id: number, request: VariacionesMatriculaRequest): Observable<VariacionesMatriculaResponse> {
     return this.http.put<VariacionesMatriculaResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

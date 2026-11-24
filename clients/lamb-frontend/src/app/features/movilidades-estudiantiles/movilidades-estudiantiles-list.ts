@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { MovilidadesEstudiantilesResponse } from './movilidades-estudiantiles.model';
 import { MovilidadesEstudiantilesService } from './movilidades-estudiantiles-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-movilidades-estudiantiles-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './movilidades-estudiantiles-list.html',
 })
 export class MovilidadesEstudiantilesList {

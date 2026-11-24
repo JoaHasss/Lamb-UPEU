@@ -86,7 +86,7 @@
           <label>Dia</label>
           <select formControlName="diaSemana">
             @for (d of dias; track d) {
-              <option [value]="d">{{ d }}</option>
+              <option [value]="d">{{ d | sinGuion }}</option>
             }
           </select>
         </div>
@@ -118,7 +118,7 @@
           <select formControlName="idDocente">
             <option [ngValue]="null" disabled>Docente</option>
             @for (p of docentes(); track p.id) {
-              <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento }} {{ p.numeroDocumento }})</option>
+              <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.tipoDocumento | sinGuion }} {{ p.numeroDocumento }})</option>
             }
           </select>
         </div>
@@ -126,7 +126,7 @@
           <label>Rol</label>
           <select formControlName="rol">
             @for (r of roles; track r) {
-              <option [value]="r">{{ r }}</option>
+              <option [value]="r">{{ r | sinGuion }}</option>
             }
           </select>
         </div>

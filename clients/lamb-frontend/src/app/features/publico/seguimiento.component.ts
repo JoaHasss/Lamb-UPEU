@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 interface EventoTimeline {
   etiqueta: string;
   detalle: string;
@@ -25,7 +26,7 @@ interface TimelineResponse {
 @Component({
   selector: 'app-seguimiento',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [SinGuion, CommonModule, FormsModule, RouterLink],
   template: `
     <div class="wrap">
       <header class="top">
@@ -51,7 +52,7 @@ interface TimelineResponse {
           <h2>{{ d.nombreCompleto }}</h2>
           <p class="codigo">Código: <b>{{ d.codigoPostulante }}</b> &middot; Periodo: {{ d.periodo }}</p>
           <p class="estado" [class.ok]="d.estado === 'ADMITIDO'" [class.no]="d.estado === 'NO_ADMITIDO'">
-            Estado actual: <b>{{ d.estado }}</b>
+            Estado actual: <b>{{ d.estado | sinGuion }}</b>
           </p>
           @if (d.puntajeExamen != null) {
             <p>Puntaje del examen: <b>{{ d.puntajeExamen }}</b></p>

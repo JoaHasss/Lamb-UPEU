@@ -9,6 +9,7 @@ import { SesionUi } from '../comun/sesion-ui';
 import { MODULOS } from '../modulos';
 import { BloqueFranja, SelectorFranjas } from '../comun/selector-franjas';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 interface Horario {
   id?: number;
   idAmbiente: number | null;
@@ -103,7 +104,7 @@ interface Bloque {
 /** Grupos del periodo y su horario semanal (MisCursos del diseño) + apertura transaccional. */
 @Component({
   selector: 'ac-grupos-horario',
-  imports: [FormsModule, FormularioModal, GrupoDetalle, SelectorFranjas],
+  imports: [SinGuion, FormsModule, FormularioModal, GrupoDetalle, SelectorFranjas],
   templateUrl: './grupos-horario.html',
 })
 export class GruposHorario {

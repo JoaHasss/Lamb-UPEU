@@ -40,11 +40,11 @@
             <td>{{ item.id }}</td>
             <td>{{ item.idPersona }}</td>
             <td>{{ item.institucionDestino }}</td>
-            <td>{{ item.tipoMovilidad }}</td>
+            <td>{{ item.tipoMovilidad | sinGuion }}</td>
             <td>{{ item.periodo }}</td>
             <td>{{ item.fechaInicio }}</td>
             <td>{{ item.fechaFin }}</td>
-            <td>{{ item.estado }}</td>
+            <td>{{ item.estado | sinGuion }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/movilidades-estudiantiles', item.id, 'editar']">Editar</a>

@@ -7,10 +7,11 @@ import { PeriodosAcademicosService } from './periodos-academicos-service';
 import { TiposPeriodoResponse } from '../tipos-periodo/tipos-periodo.model';
 import { TiposPeriodoService } from '../tipos-periodo/tipos-periodo-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-periodos-academicos-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [SinGuion, ReactiveFormsModule],
   templateUrl: './periodos-academicos-form.html',
 })
 export class PeriodosAcademicosForm {

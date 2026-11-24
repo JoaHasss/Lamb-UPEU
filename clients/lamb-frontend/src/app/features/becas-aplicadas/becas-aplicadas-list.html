@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>becas-aplicadas</h2>
+  <h2>Becas aplicadas</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,10 +22,10 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Persona</th>
-          <th>ID Tipo beca</th>
-          <th>Periodo</th>
-          <th>Estado</th>
+          <th>Persona</th>
+          <th>Tipo de beca</th>
+          <th>Porcentaje</th>
+          <th>Rige desde</th>
         @if (auth.tieneRol('ADMIN')) {
           <th>Acciones</th>
         }
@@ -35,15 +35,13 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idPersona }}</td>
-            <td>{{ item.idTipoBeca }}</td>
-            <td>{{ item.periodo }}</td>
-            <td>{{ item.estado }}</td>
+            <td>{{ persona(item.idPersona) }}</td>
+            <td>{{ tiposBeca().get(item.idTipoBeca) ?? item.idTipoBeca }}</td>
+            <td>{{ item.porcentaje }}%</td>
+            <td>{{ item.fechaInicio }}</td>
           @if (auth.tieneRol('ADMIN')) {
-            <td>
-              <a [routerLink]="['/becas-aplicadas', item.id, 'editar']">Editar</a>
-
-            </td>
+            <td><a [routerLink]="['/becas-aplicadas', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button></td>
           }
         </tr>
       } @empty {

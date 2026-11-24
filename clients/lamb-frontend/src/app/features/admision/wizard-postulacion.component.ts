@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 interface ReniecResponse {
   dni: string;
   nombres: string | null;
@@ -29,7 +30,7 @@ interface WizardResponse {
 @Component({
   selector: 'app-wizard-postulacion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [SinGuion, CommonModule, FormsModule],
   templateUrl: './wizard-postulacion.component.html',
   styleUrl: './wizard-postulacion.component.scss'
 })

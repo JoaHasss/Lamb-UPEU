@@ -38,7 +38,7 @@
         <td>{{ matricula.idPersona }}</td>
         <td>{{ matricula.periodo }}</td>
         <td>{{ matricula.fecha.slice(0, 16).replace('T', ' ') }}</td>
-        <td><span class="estado" [class]="matricula.estado">{{ matricula.estado }}</span></td>
+        <td><span class="estado" [class]="matricula.estado">{{ matricula.estado | sinGuion }}</span></td>
         <td>
           @for (detalle of matricula.detalles; track detalle.id) {
             <div>{{ nombreGrupo(detalle.idSeccion) }} · {{ detalle.creditos }} cr</div>

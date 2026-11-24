@@ -115,7 +115,7 @@
                         <option value="SIN_ASIGNAR" [selected]="true">SIN ASIGNAR</option>
                       }
                       @for (opt of field.options; track opt) {
-                        <option [value]="opt" [selected]="opt === form()[field.key]">{{ opt }}</option>
+                        <option [value]="opt" [selected]="opt === form()[field.key]">{{ opt | sinGuion }}</option>
                       }
                     </select>
                   </div>
@@ -339,7 +339,7 @@
                         @if (row[col.key] === 'SIN_ASIGNAR') {
                           <span class="chip chip--muted">SIN ASIGNAR</span>
                         } @else {
-                          <span [class]="chipClass(col, row[col.key])">{{ fmtCell(row, col) }}</span>
+                          <span [class]="chipClass(col, row[col.key])">{{ fmtCell(row, col) | sinGuion }}</span>
                         }
                       } @else {
                         {{ fmtCell(row, col) }}

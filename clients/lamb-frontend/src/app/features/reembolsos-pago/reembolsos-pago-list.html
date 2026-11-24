@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>reembolsos-pago</h2>
+  <h2>Reembolsos</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,10 +22,11 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Pago</th>
+          <th>Solicitud</th>
+          <th>Pago</th>
+          <th>Persona</th>
           <th>Monto reembolsado</th>
-          <th>Fecha reembolso</th>
-          <th>Estado</th>
+          <th>Fecha</th>
         @if (auth.tieneRol('ADMIN')) {
           <th>Acciones</th>
         }
@@ -35,19 +36,21 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idPago }}</td>
-            <td>{{ item.montoReembolsado }}</td>
-            <td>{{ item.fechaReembolso }}</td>
-            <td>{{ item.estado }}</td>
+            <td>#{{ item.idSolicitudDevolucion }} {{ solicitudes().get(item.idSolicitudDevolucion)?.motivo ?? '' }}</td>
+            <td>{{ solicitudes().get(item.idSolicitudDevolucion)?.idPago ?? '-' }}</td>
+            <td>{{ personas().get(item.idCuentaEstudiante) ?? '-' }}</td>
+            <td>S/ {{ item.montoReembolsado }}</td>
+            <td>{{ item.fecha.slice(0, 16).replace('T', ' ') }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/reembolsos-pago', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button>
 
             </td>
           }
         </tr>
       } @empty {
-        <tr><td colspan="6">Sin registros.</td></tr>
+        <tr><td colspan="7">Sin registros.</td></tr>
       }
     </tbody>
   </table>

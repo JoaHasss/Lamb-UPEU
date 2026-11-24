@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>conceptos-pago</h2>
+  <h2>Conceptos de pago</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -7,24 +7,29 @@
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
     <label>
-      ID Categoría
-      <input type="number" formControlName="idCategoriaConcepto" />
-    </label>
-    <label>
-      Código
-      <input type="text" formControlName="codigo" />
+      Categoría
+      <select formControlName="idCategoria">
+        <option [ngValue]="null" disabled>Seleccione una categoría...</option>
+        @for (c of categorias(); track c.id) {
+          <option [ngValue]="c.id">{{ c.nombre }}</option>
+        }
+      </select>
     </label>
     <label>
       Nombre
-      <input type="text" formControlName="nombre" />
+      <input type="text" formControlName="nombre" placeholder="Constancia de estudios" />
     </label>
     <label>
-      Descripción
-      <input type="text" formControlName="descripcion" />
+      Monto (S/)
+      <input type="number" step="0.01" min="0" formControlName="monto" />
     </label>
     <label>
-      <input type="checkbox" formControlName="activo" />
-      Activo
+      Vigente desde
+      <input type="date" formControlName="vigenciaDesde" />
+    </label>
+    <label>
+      Vigente hasta (opcional)
+      <input type="date" formControlName="vigenciaHasta" />
     </label>
 
     <button type="submit">Guardar</button>

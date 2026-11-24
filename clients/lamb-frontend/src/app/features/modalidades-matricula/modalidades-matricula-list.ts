@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { ModalidadesMatriculaResponse } from './modalidades-matricula.model';
 import { ModalidadesMatriculaService } from './modalidades-matricula-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-modalidades-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './modalidades-matricula-list.html',
 })
 export class ModalidadesMatriculaList {

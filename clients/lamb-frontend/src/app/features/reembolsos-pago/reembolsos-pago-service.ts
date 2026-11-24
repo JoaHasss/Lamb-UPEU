@@ -24,4 +24,8 @@ export class ReembolsosPagoService {
   actualizar(id: number, request: ReembolsosPagoRequest): Observable<ReembolsosPagoResponse> {
     return this.http.put<ReembolsosPagoResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

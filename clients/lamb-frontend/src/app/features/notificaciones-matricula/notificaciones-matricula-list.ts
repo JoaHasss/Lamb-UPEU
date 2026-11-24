@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { NotificacionesMatriculaResponse } from './notificaciones-matricula.model';
 import { NotificacionesMatriculaService } from './notificaciones-matricula-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-notificaciones-matricula-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './notificaciones-matricula-list.html',
 })
 export class NotificacionesMatriculaList {

@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>ampliaciones-plazo-matricula</h2>
+  <h2>Ampliación de plazo de matrícula</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,7 +22,7 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Cronograma</th>
+          <th>Cronograma</th>
           <th>Fecha ampliada</th>
           <th>Motivo</th>
           <th>Autorizado por</th>
@@ -35,13 +35,14 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idCronograma }}</td>
+            <td>{{ periodos().get(item.idCronograma) ?? item.idCronograma }}</td>
             <td>{{ item.fechaAmpliada }}</td>
             <td>{{ item.motivo }}</td>
             <td>{{ item.autorizadoPor }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/ampliaciones-plazo-matricula', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button>
 
             </td>
           }

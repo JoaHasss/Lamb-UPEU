@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { MatriculasCondicionalesResponse } from './matriculas-condicionales.model';
 import { MatriculasCondicionalesService } from './matriculas-condicionales-service';
 
+import { SiNo } from '../../core/si-no.pipe';
 @Component({
   selector: 'app-matriculas-condicionales-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SiNo, RouterLink],
   templateUrl: './matriculas-condicionales-list.html',
 })
 export class MatriculasCondicionalesList {

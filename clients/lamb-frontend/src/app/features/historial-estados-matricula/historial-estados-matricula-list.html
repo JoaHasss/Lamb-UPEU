@@ -37,8 +37,8 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.idMatricula }}</td>
-            <td>{{ item.estadoAnterior }}</td>
-            <td>{{ item.estadoNuevo }}</td>
+            <td>{{ item.estadoAnterior | sinGuion }}</td>
+            <td>{{ item.estadoNuevo | sinGuion }}</td>
             <td>{{ item.fechaCambio }}</td>
             <td>{{ item.observacion }}</td>
           @if (auth.tieneRol('ADMIN')) {

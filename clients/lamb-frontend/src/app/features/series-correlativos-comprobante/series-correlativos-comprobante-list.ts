@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { SeriesCorrelativosComprobanteResponse } from './series-correlativos-comprobante.model';
 import { SeriesCorrelativosComprobanteService } from './series-correlativos-comprobante-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-series-correlativos-comprobante-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './series-correlativos-comprobante-list.html',
 })
 export class SeriesCorrelativosComprobanteList {

@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>cuentas</h2>
+  <h2>Cuentas de estudiante</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -7,16 +7,17 @@
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
     <label>
-      ID Persona
-      <input type="number" formControlName="idPersona" />
+      Persona
+      <select formControlName="idPersona">
+        <option [ngValue]="null" disabled>Seleccione una persona...</option>
+        @for (p of personas(); track p.id) {
+          <option [ngValue]="p.id">{{ p.apellidos }}, {{ p.nombres }} ({{ p.numeroDocumento }})</option>
+        }
+      </select>
     </label>
     <label>
-      Saldo
-      <input type="number" formControlName="saldo" step="0.01" />
-    </label>
-    <label>
-      Estado
-      <input type="text" formControlName="estado" />
+      Saldo actual (S/), lo que adeuda el estudiante
+      <input type="number" step="0.01" formControlName="saldoActual" />
     </label>
 
     <button type="submit">Guardar</button>

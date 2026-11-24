@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { ReclamosPagoResponse } from './reclamos-pago.model';
 import { ReclamosPagoService } from './reclamos-pago-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-reclamos-pago-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './reclamos-pago-list.html',
 })
 export class ReclamosPagoList {

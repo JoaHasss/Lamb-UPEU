@@ -28,6 +28,7 @@
       <th>Estado</th>
       <th>Fecha</th>
       <th>Origen</th>
+      <th>Detalles</th>
       @if (auth.tieneRol('ADMIN', 'COORDINADOR')) {
         <th>Acciones</th>
       }
@@ -40,12 +41,20 @@
         <td>{{ pago.idPersona }}</td>
         <td>{{ pago.concepto }}</td>
         <td>S/ {{ pago.monto }}</td>
-        <td>{{ pago.metodo ?? '-' }}</td>
-        <td><span class="estado" [class]="pago.estado">{{ pago.estado }}</span></td>
+        <td>{{ (pago.metodo ?? '-') | sinGuion }}</td>
+        <td><span class="estado" [class]="pago.estado">{{ pago.estado.replace('_', ' ') }}</span></td>
         <td>{{ pago.fechaPago.slice(0, 16).replace('T', ' ') }}</td>
         <td>{{ pago.matriculaId ? 'Matricula ' + pago.matriculaId : 'Caja' }}</td>
+        <td>
+          <button type="button" (click)="verDetalles(pago)">
+            {{ seleccionado() === pago.id ? 'Ocultar' : 'Ver detalles' }}
+          </button>
+        </td>
         @if (auth.tieneRol('ADMIN', 'COORDINADOR')) {
           <td>
+            @if (pago.estado === 'PENDIENTE') {
+              <button type="button" (click)="pagar(pago)">Pagar</button>
+            }
             @if (pago.estado === 'EN_PROCESO') {
               <button type="button" (click)="aceptar(pago)">Aceptar</button>
               <button type="button" class="peligro" (click)="rechazar(pago)">Rechazar</button>
@@ -56,9 +65,61 @@
           </td>
         }
       </tr>
+      @if (seleccionado() === pago.id) {
+        <tr class="detalle">
+          <td colspan="10">
+            <div class="detalle-grid">
+              <div>
+                <h4>Pago #{{ pago.id }}</h4>
+                <dl>
+                  <dt>Persona</dt><dd>{{ pago.idPersona }}</dd>
+                  <dt>Concepto</dt><dd>{{ pago.concepto }}</dd>
+                  <dt>Monto</dt><dd>S/ {{ pago.monto }}</dd>
+                  <dt>Estado</dt><dd>{{ pago.estado.replace('_', ' ') }}</dd>
+                  <dt>Metodo</dt><dd>{{ (pago.metodo ?? 'Sin elegir') | sinGuion }}</dd>
+                  <dt>Fecha</dt><dd>{{ fecha(pago.fechaPago) }}</dd>
+                  <dt>Referencia</dt><dd>{{ pago.referenciaExterna ?? '-' }}</dd>
+                </dl>
+              </div>
+
+              @if (pago.numeroOperacion || pago.bancoReferencia) {
+                <div>
+                  <h4>Voucher</h4>
+                  <dl>
+                    <dt>Banco</dt><dd>{{ pago.bancoReferencia ?? '-' }}</dd>
+                    <dt>N° operacion</dt><dd>{{ pago.numeroOperacion ?? '-' }}</dd>
+                    <dt>Fecha voucher</dt><dd>{{ fecha(pago.fechaVoucher) }}</dd>
+                    <dt>Archivo</dt><dd>{{ pago.archivoVoucher ?? 'No adjunto' }}</dd>
+                  </dl>
+                </div>
+              }
+
+              <div>
+                <h4>Origen</h4>
+                @if (!pago.matriculaId) {
+                  <p>Pago directo en caja, sin matricula asociada.</p>
+                } @else if (errorMatricula()) {
+                  <p class="error">{{ errorMatricula() }}</p>
+                } @else if (matricula(); as m) {
+                  <dl>
+                    <dt>Matricula</dt><dd><a routerLink="/matriculas">#{{ m.id }}</a></dd>
+                    <dt>Periodo</dt><dd>{{ m.periodo }}</dd>
+                    <dt>Estado</dt><dd>{{ m.estado | sinGuion }}</dd>
+                    <dt>Registrada</dt><dd>{{ fecha(m.fecha) }}</dd>
+                    <dt>Cursos</dt><dd>{{ m.detalles.length }} ({{ creditos(m) }} creditos)</dd>
+                  </dl>
+                } @else {
+                  <p>Cargando matricula {{ pago.matriculaId }}...</p>
+                }
+              </div>
+            </div>
+            <p class="ayuda">{{ ayudaEstado[pago.estado] }}</p>
+          </td>
+        </tr>
+      }
     } @empty {
       <tr>
-        <td colspan="9">No hay pagos registrados.</td>
+        <td colspan="10">No hay pagos registrados.</td>
       </tr>
     }
   </tbody>

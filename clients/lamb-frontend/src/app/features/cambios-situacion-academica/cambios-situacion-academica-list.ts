@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { CambiosSituacionAcademicaResponse } from './cambios-situacion-academica.model';
 import { CambiosSituacionAcademicaService } from './cambios-situacion-academica-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-cambios-situacion-academica-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './cambios-situacion-academica-list.html',
 })
 export class CambiosSituacionAcademicaList {

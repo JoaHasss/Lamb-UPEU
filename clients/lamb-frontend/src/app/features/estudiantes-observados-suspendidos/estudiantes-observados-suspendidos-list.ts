@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { EstudiantesObservadosSuspendidosResponse } from './estudiantes-observados-suspendidos.model';
 import { EstudiantesObservadosSuspendidosService } from './estudiantes-observados-suspendidos-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-estudiantes-observados-suspendidos-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './estudiantes-observados-suspendidos-list.html',
 })
 export class EstudiantesObservadosSuspendidosList {

@@ -22,7 +22,6 @@ export class TiposBecaForm {
 
   protected readonly form = this.fb.group({
       nombre: ['', [Validators.required]],
-      porcentajeCobertura: [0, [Validators.required]],
       descripcion: ['', []],
   });
 

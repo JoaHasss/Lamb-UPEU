@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { HistorialesEstadoCobroResponse } from './historiales-estado-cobro.model';
 import { HistorialesEstadoCobroService } from './historiales-estado-cobro-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-historiales-estado-cobro-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './historiales-estado-cobro-list.html',
 })
 export class HistorialesEstadoCobroList {

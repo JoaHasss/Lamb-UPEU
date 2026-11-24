@@ -14,7 +14,7 @@
     <label for="gradoAcademico">Grado academico</label>
     <select id="gradoAcademico" formControlName="gradoAcademico">
       @for (grado of grados; track grado) {
-        <option [value]="grado">{{ grado }}</option>
+        <option [value]="grado">{{ grado | sinGuion }}</option>
       }
     </select>
   </div>

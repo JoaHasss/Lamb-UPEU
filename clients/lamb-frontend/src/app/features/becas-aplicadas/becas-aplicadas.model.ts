@@ -1,15 +1,15 @@
+// Igual que BecaAplicadaRequest/Response de lamb-finanzas-ms (/api/v1/descuentos-becas/becas-aplicadas)
 export interface BecasAplicadasRequest {
-  id?: number;
   idPersona: number;
   idTipoBeca: number;
-  periodo: string;
-  estado?: string;
+  porcentaje: number;
+  fechaInicio: string;
 }
 
 export interface BecasAplicadasResponse {
   id: number;
   idPersona: number;
   idTipoBeca: number;
-  periodo: string;
-  estado: string;
+  porcentaje: number;
+  fechaInicio: string;
 }

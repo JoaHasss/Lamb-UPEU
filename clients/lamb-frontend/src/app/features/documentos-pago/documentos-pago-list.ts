@@ -6,10 +6,11 @@ import { mensajeError } from '../../core/http/mensaje-error';
 import { DocumentosPagoResponse } from './documentos-pago.model';
 import { DocumentosPagoService } from './documentos-pago-service';
 
+import { SinGuion } from '../../core/sin-guion.pipe';
 @Component({
   selector: 'app-documentos-pago-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SinGuion, RouterLink],
   templateUrl: './documentos-pago-list.html',
 })
 export class DocumentosPagoList {

@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>reembolsos-pago</h2>
+  <h2>Reembolsos</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -7,20 +7,32 @@
 
   <form [formGroup]="form" (ngSubmit)="guardar()">
     <label>
-      ID Pago
-      <input type="number" formControlName="idPago" />
+      Solicitud de devolución
+      <select formControlName="idSolicitudDevolucion" (change)="alElegirSolicitud()">
+        <option [ngValue]="null" disabled>Seleccione una solicitud...</option>
+        @for (s of solicitudes(); track s.id) {
+          <option [ngValue]="s.id">
+            #{{ s.id }} · Pago {{ s.idPago }} · S/ {{ s.montoSolicitado }} · {{ s.estado | sinGuion }} · {{ s.motivo }}
+          </option>
+        }
+      </select>
     </label>
     <label>
-      Monto reembolsado
-      <input type="number" formControlName="montoReembolsado" step="0.01" />
+      Cuenta del estudiante
+      <select formControlName="idCuentaEstudiante">
+        <option [ngValue]="null" disabled>Seleccione una cuenta...</option>
+        @for (c of cuentas(); track c.id) {
+          <option [ngValue]="c.id">Cuenta #{{ c.id }} · Persona {{ c.idPersona }} · saldo S/ {{ c.saldoActual }}</option>
+        }
+      </select>
     </label>
     <label>
-      Fecha reembolso
-      <input type="datetime-local" formControlName="fechaReembolso" />
+      Monto reembolsado (S/)
+      <input type="number" step="0.01" min="0.01" formControlName="montoReembolsado" />
     </label>
     <label>
-      Estado
-      <input type="text" formControlName="estado" />
+      Fecha del reembolso
+      <input type="datetime-local" formControlName="fecha" />
     </label>
 
     <button type="submit">Guardar</button>

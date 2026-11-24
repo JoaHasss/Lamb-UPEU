@@ -37,10 +37,10 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.idMatricula }}</td>
-            <td>{{ item.tipo }}</td>
-            <td>{{ item.canal }}</td>
+            <td>{{ item.tipo | sinGuion }}</td>
+            <td>{{ item.canal | sinGuion }}</td>
             <td>{{ item.fechaEnvio }}</td>
-            <td>{{ item.estadoEnvio }}</td>
+            <td>{{ item.estadoEnvio | sinGuion }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/notificaciones-matricula', item.id, 'editar']">Editar</a>

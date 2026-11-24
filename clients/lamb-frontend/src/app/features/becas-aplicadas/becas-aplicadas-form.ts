@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { OpcionesFinanzasMatricula, PersonaOpcion, TipoBecaOpcion } from '../../core/catalogos/opciones-finanzas-matricula';
 import { mensajeError } from '../../core/http/mensaje-error';
 import { BecasAplicadasRequest } from './becas-aplicadas.model';
 import { BecasAplicadasService } from './becas-aplicadas-service';
@@ -19,15 +20,20 @@ export class BecasAplicadasForm {
 
   protected readonly error = signal<string | null>(null);
   protected readonly id = this.ruta.snapshot.paramMap.get('id');
+  protected readonly personas = signal<PersonaOpcion[]>([]);
+  protected readonly tiposBeca = signal<TipoBecaOpcion[]>([]);
 
   protected readonly form = this.fb.group({
-      idPersona: [0, [Validators.required]],
-      idTipoBeca: [0, [Validators.required]],
-      periodo: ['', [Validators.required]],
-      estado: ['', []],
+      idPersona: [null as number | null, [Validators.required]],
+      idTipoBeca: [null as number | null, [Validators.required]],
+      porcentaje: [null as number | null, [Validators.required, Validators.min(1), Validators.max(100)]],
+      fechaInicio: ['', [Validators.required]],
   });
 
   constructor() {
+    const opciones = inject(OpcionesFinanzasMatricula);
+    opciones.personas().subscribe((p) => this.personas.set(p));
+    opciones.tiposBeca().subscribe((t) => this.tiposBeca.set(t));
     if (this.id) {
       this.servicio.obtener(Number(this.id)).subscribe({
         next: (data) => this.form.patchValue(data),
@@ -42,7 +48,8 @@ export class BecasAplicadasForm {
       return;
     }
     this.error.set(null);
-    const request = this.form.getRawValue() as BecasAplicadasRequest;
+    const valores = this.form.getRawValue();
+    const request = valores as BecasAplicadasRequest;
     const obs = this.id
       ? this.servicio.actualizar(Number(this.id), request)
       : this.servicio.crear(request);

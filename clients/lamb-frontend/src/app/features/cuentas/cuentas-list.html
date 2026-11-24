@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>cuentas</h2>
+  <h2>Cuentas de estudiante</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,9 +22,9 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Persona</th>
-          <th>Saldo</th>
-          <th>Estado</th>
+          <th>Persona</th>
+          <th>Saldo (adeuda)</th>
+          <th>Apertura</th>
         @if (auth.tieneRol('ADMIN')) {
           <th>Acciones</th>
         }
@@ -34,14 +34,12 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idPersona }}</td>
-            <td>{{ item.saldo }}</td>
-            <td>{{ item.estado }}</td>
+            <td>{{ persona(item.idPersona) }}</td>
+            <td>S/ {{ item.saldoActual }}</td>
+            <td>{{ item.fechaApertura.slice(0, 10) }}</td>
           @if (auth.tieneRol('ADMIN')) {
-            <td>
-              <a [routerLink]="['/cuentas', item.id, 'editar']">Editar</a>
-
-            </td>
+            <td><a [routerLink]="['/cuentas', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button></td>
           }
         </tr>
       } @empty {

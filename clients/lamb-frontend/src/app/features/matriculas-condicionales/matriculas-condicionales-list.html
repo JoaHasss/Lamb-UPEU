@@ -38,7 +38,7 @@
             <td>{{ item.idMatricula }}</td>
             <td>{{ item.motivo }}</td>
             <td>{{ item.fechaCondicion }}</td>
-            <td>{{ item.levantada }}</td>
+            <td>{{ item.levantada | siNo }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/matriculas-condicionales', item.id, 'editar']">Editar</a>

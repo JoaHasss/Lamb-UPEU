@@ -24,4 +24,8 @@ export class SolicitudesDevolucionService {
   actualizar(id: number, request: SolicitudesDevolucionRequest): Observable<SolicitudesDevolucionResponse> {
     return this.http.put<SolicitudesDevolucionResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

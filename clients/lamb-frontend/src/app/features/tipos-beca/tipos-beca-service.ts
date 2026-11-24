@@ -24,4 +24,8 @@ export class TiposBecaService {
   actualizar(id: number, request: TiposBecaRequest): Observable<TiposBecaResponse> {
     return this.http.put<TiposBecaResponse>(`${this.baseUrl}/${id}`, request);
   }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

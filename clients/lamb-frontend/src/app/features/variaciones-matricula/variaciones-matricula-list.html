@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>variaciones-matricula</h2>
+  <h2>Variación de matrícula</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -22,7 +22,7 @@
     <thead>
       <tr>
           <th>ID</th>
-          <th>ID Cronograma</th>
+          <th>Cronograma</th>
           <th>Tipo</th>
           <th>Fecha inicio</th>
           <th>Fecha fin</th>
@@ -36,14 +36,15 @@
       @for (item of items(); track item.id) {
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.idCronograma }}</td>
-            <td>{{ item.tipo }}</td>
+            <td>{{ periodos().get(item.idCronograma) ?? item.idCronograma }}</td>
+            <td>{{ item.tipo | sinGuion }}</td>
             <td>{{ item.fechaInicio }}</td>
             <td>{{ item.fechaFin }}</td>
             <td>{{ item.descripcion }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/variaciones-matricula', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button>
 
             </td>
           }

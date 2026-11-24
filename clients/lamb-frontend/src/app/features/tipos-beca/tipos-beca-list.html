@@ -1,5 +1,5 @@
 <div class="pagina">
-  <h2>tipos-beca</h2>
+  <h2>Becas</h2>
 
   @if (error()) {
     <div class="error">{{ error() }}</div>
@@ -23,7 +23,6 @@
       <tr>
           <th>ID</th>
           <th>Nombre</th>
-          <th>% cobertura</th>
           <th>Descripción</th>
         @if (auth.tieneRol('ADMIN')) {
           <th>Acciones</th>
@@ -35,11 +34,11 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.nombre }}</td>
-            <td>{{ item.porcentajeCobertura }}</td>
             <td>{{ item.descripcion }}</td>
           @if (auth.tieneRol('ADMIN')) {
             <td>
               <a [routerLink]="['/tipos-beca', item.id, 'editar']">Editar</a>
+              <button type="button" class="peligro" (click)="eliminar(item.id)">Eliminar</button>
 
             </td>
           }
