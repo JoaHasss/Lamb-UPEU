@@ -14,7 +14,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:db/migration,classpath:db/seed-dev
   kafka:
     bootstrap-servers: localhost:18092
     producer:
@@ -59,12 +59,21 @@ app:
       matricula: matricula-eventos
       pago-aceptado: pago-aceptado-eventos
 
-# Credenciales de prueba (sandbox) de Mercado Pago. Public key no es secreta.
-# access-token SI es secreto: reemplazar el placeholder de abajo con el token real
-# (ojito en el panel de Mercado Pago) solo en tu copia local, nunca commitear el valor real.
+# ============================================================================================
+# CREDENCIALES DE MERCADO PAGO (pegar las tuyas aqui, solo en tu copia local)
+#   1. Entra a https://www.mercadopago.com.pe/developers/panel/app con tu cuenta.
+#   2. Abre tu aplicacion > "Credenciales de prueba".
+#   3. Copia la "Public Key" en public-key y el "Access Token" en access-token (abajo).
+#   4. Copia la MISMA Public Key en clients/lamb-frontend/src/environments/environment.ts
+#      (mercadoPago.publicKey).
+#   5. Reinicia lamb-config y lamb-finanzas-ms.
+# El access-token es SECRETO: no lo subas a GitHub. Para no commitearlo por error, despues de
+# pegarlo ejecuta: git update-index --skip-worktree infra/lamb-config/config-repo/lamb-finanzas-ms-dev.yml
+# Sin credenciales reales el sistema arranca igual; solo falla el boton de pagar con Mercado Pago.
+# ============================================================================================
 mercadopago:
-  public-key: APP_USR-849c20b2-4269-4196-aded-4e3d353529a1
-  access-token: APP_USR-3007949062468393-112007-34ebc67479d3632dc8a4b042bc7e1800-3858850659
+  public-key: PEGA_AQUI_TU_PUBLIC_KEY_DE_PRUEBA
+  access-token: PEGA_AQUI_TU_ACCESS_TOKEN_DE_PRUEBA
   # Checkout Pro: a donde vuelve el navegador segun el resultado. pagoId se agrega solo
   # (PasarelaPagoService.crearPreferencia) para que esa pantalla sepa que pago confirmar.
   back-url-success: http://localhost:4200/pagos/resultado
