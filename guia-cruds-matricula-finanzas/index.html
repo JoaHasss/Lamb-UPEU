@@ -1461,6 +1461,51 @@ Tipo de beca ─► Beca aplicada (a una Persona)
 <p>Al registrarlo, el pago pasa a <strong>REEMBOLSADO</strong>. Al editarlo se puede cambiar el monto, la fecha o la cuenta, pero no la solicitud. Al eliminarlo, el pago vuelve a APROBADO.
 4. <strong>Botón "Reembolsar" del pago.</strong> Es un atajo que solo marca el pago como REEMBOLSADO, sin registrar el reembolso. También exige una solicitud APROBADA. Lo recomendable es registrar el reembolso, que guarda el monto, la fecha y la cuenta.
 5. <strong>Saldo.</strong> Un reembolso no cambia el saldo de la cuenta: ese cargo ya estaba pagado (tenía su ABONO), y el dinero vuelve al estudiante fuera de la cuenta.</p>
+<p><strong>Casos que trae el demo</strong> (<code>R__demo_pagos.sql</code>, se carga solo en dev):</p>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Beca / descuento</th>
+<th>Cobro de demo</th>
+<th>Saldo de la cuenta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Beca 50% + pronto pago 10%</td>
+<td>Pensión S/ 500 → <strong>S/ 200</strong> (60%)</td>
+<td>S/ 0: todo pagado</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sin beca, hermanos 15%</td>
+<td>Pensión S/ 500 → <strong>S/ 425</strong></td>
+<td>S/ 375: matrícula pendiente + carnet sin validar</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Beca deportiva 30%, <strong>suspendida</strong> en octubre y <strong>renovada</strong> en noviembre</td>
+<td>Octubre S/ 500 → <strong>S/ 500</strong> (suspendida); noviembre → <strong>S/ 350</strong></td>
+<td>S/ 365: matrícula + mora por ajuste manual</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ninguno</td>
+<td>Carnet S/ 25 → <strong>S/ 25</strong></td>
+<td>S/ 0: cargo de matrícula <strong>cancelado</strong> (matrícula anulada)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Beca 25% + convenio 80% = 105%</td>
+<td>Pensión S/ 500 → <strong>S/ 0</strong> (<strong>tope 100%</strong>)</td>
+<td><strong>S/ -20</strong>: saldo a favor por ajuste manual</td>
+</tr>
+</tbody>
+</table>
+<p>También hay solicitudes de devolución (una aprobada y reembolsada, una pendiente y una rechazada) y dos convenios institucionales de catálogo.</p>
+<p>Los cargos de matrícula del demo son anteriores a las becas (que rigen desde el 2026-09-01), por eso se cobraron completos. Para ver un cargo de matrícula con beca, registra una matrícula nueva de la persona 1, 3 o 5 desde la app: el cargo sale con <code>monto_original</code> y <code>monto_descuento</code>.</p>
 <p>Al eliminar, la base protege las relaciones con claves foráneas: no se borra un <em>tipo de beca</em> asignado, una <em>solicitud</em> con reembolso ni una <em>cuenta</em> con reembolsos (409).</p>
 <h3 id="24-el-recorrido-en-el-frontend-pantalla-por-pantalla">2.4 El recorrido en el frontend, pantalla por pantalla<a class="headerlink" href="#24-el-recorrido-en-el-frontend-pantalla-por-pantalla" title="Permanent link">&para;</a></h3>
 <p>Abre <code>http://localhost:4200</code> y entra al módulo desde la portada o desde el menú de módulos. En cada apartado, <strong>"Nuevo"</strong> abre el formulario, <strong>"Editar"</strong> lo modifica y <strong>"Eliminar"</strong> pide confirmación. Los campos que dependen de otro registro son <strong>desplegables</strong> con lo que ya existe; por eso hay que respetar el orden.</p>
