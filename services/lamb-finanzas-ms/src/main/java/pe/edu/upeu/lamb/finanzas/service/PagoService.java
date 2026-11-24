@@ -3,6 +3,7 @@ package pe.edu.upeu.lamb.finanzas.service;
 import pe.edu.upeu.lamb.finanzas.dto.PagoRequest;
 import pe.edu.upeu.lamb.finanzas.dto.PagoResponse;
 import pe.edu.upeu.lamb.finanzas.entity.EstadoPago;
+import pe.edu.upeu.lamb.finanzas.entity.EstadoSolicitudDevolucion;
 import pe.edu.upeu.lamb.finanzas.entity.Pago;
 import pe.edu.upeu.lamb.finanzas.event.MatriculaConfirmadaEvento;
 import pe.edu.upeu.lamb.finanzas.event.PagoAceptadoEvento;
@@ -11,6 +12,7 @@ import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.PagoMapper;
 import pe.edu.upeu.lamb.finanzas.messaging.PagoEventosProducer;
 import pe.edu.upeu.lamb.finanzas.repository.PagoRepository;
+import pe.edu.upeu.lamb.finanzas.repository.SolicitudDevolucionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class PagoService {
     private final PagoEventosProducer pagoEventosProducer;
     private final CalculoDescuentoService calculoDescuentoService;
     private final SaldoCuentaService saldoCuentaService;
+    private final SolicitudDevolucionRepository solicitudDevolucionRepository;
 
     /**
      * Idempotente por matriculaId: si el evento matricula.confirmada se reentrega, no genera
@@ -141,6 +144,9 @@ public class PagoService {
     public PagoResponse reembolsar(Long id) {
         Pago pago = buscarOFallar(id);
         validarEstado(pago, EstadoPago.APROBADO, "reembolsar");
+        if (!solicitudDevolucionRepository.existsByPagoIdAndEstadoIn(id, List.of(EstadoSolicitudDevolucion.APROBADA))) {
+            throw new BusinessRuleException("El pago " + id + " no tiene una solicitud de devolucion APROBADA");
+        }
         pago.setEstado(EstadoPago.REEMBOLSADO);
         return pagoMapper.toResponse(pagoRepository.save(pago));
     }

@@ -163,6 +163,25 @@ El saldo ya no se escribe a mano: cada cambio deja un **movimiento de cuenta**, 
 - La fila de la cuenta se bloquea mientras se actualiza, para que dos movimientos simultáneos no se pisen.
 - En los datos de demo, los saldos de las cuentas están explicados por sus movimientos (`R__demo_pagos.sql`).
 
+**Devoluciones: solicitud → aprobación → reembolso** (`SolicitudDevolucionService`, `ReembolsoPagoService`):
+
+```
+Pago APROBADO ─► Solicitud PENDIENTE ─► APROBADA ─► Reembolso ─► Pago REEMBOLSADO
+                                    └─► RECHAZADA (el pago sigue APROBADO; se puede pedir otra)
+```
+
+1. **Solicitud de devolución.** Solo sobre un pago APROBADO (es decir, dinero cobrado). El monto debe ser mayor a 0 y no mayor a lo pagado. Un pago tiene una sola solicitud viva (PENDIENTE o APROBADA); después de una RECHAZADA se puede pedir otra.
+2. **Aprobar o rechazar.** Se edita la solicitud y se cambia su estado. Una solicitud que ya tiene reembolso queda cerrada y no se modifica.
+3. **Reembolso.** Es la devolución efectiva del dinero. Exige:
+   - una solicitud APROBADA y sin otro reembolso;
+   - un pago todavía APROBADO;
+   - un monto mayor a 0 y no mayor a lo solicitado;
+   - una cuenta de estudiante de la misma persona que hizo el pago.
+
+   Al registrarlo, el pago pasa a **REEMBOLSADO**. Al editarlo se puede cambiar el monto, la fecha o la cuenta, pero no la solicitud. Al eliminarlo, el pago vuelve a APROBADO.
+4. **Botón "Reembolsar" del pago.** Es un atajo que solo marca el pago como REEMBOLSADO, sin registrar el reembolso. También exige una solicitud APROBADA. Lo recomendable es registrar el reembolso, que guarda el monto, la fecha y la cuenta.
+5. **Saldo.** Un reembolso no cambia el saldo de la cuenta: ese cargo ya estaba pagado (tenía su ABONO), y el dinero vuelve al estudiante fuera de la cuenta.
+
 Al eliminar, la base protege las relaciones con claves foráneas: no se borra un *tipo de beca* asignado, una *solicitud* con reembolso ni una *cuenta* con reembolsos (409).
 
 ### 2.4 El recorrido en el frontend, pantalla por pantalla

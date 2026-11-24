@@ -7,12 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.SolicitudDevolucionRequest;
 import pe.edu.upeu.lamb.finanzas.dto.SolicitudDevolucionResponse;
 import pe.edu.upeu.lamb.finanzas.entity.EstadoPago;
+import pe.edu.upeu.lamb.finanzas.entity.EstadoSolicitudDevolucion;
 import pe.edu.upeu.lamb.finanzas.entity.Pago;
 import pe.edu.upeu.lamb.finanzas.entity.SolicitudDevolucion;
 import pe.edu.upeu.lamb.finanzas.exception.BusinessRuleException;
 import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.SolicitudDevolucionMapper;
 import pe.edu.upeu.lamb.finanzas.repository.PagoRepository;
+import pe.edu.upeu.lamb.finanzas.repository.ReembolsoPagoRepository;
 import pe.edu.upeu.lamb.finanzas.repository.SolicitudDevolucionRepository;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class SolicitudDevolucionService {
 
     private final SolicitudDevolucionRepository solicitudDevolucionRepository;
     private final PagoRepository pagoRepository;
+    private final ReembolsoPagoRepository reembolsoPagoRepository;
     private final SolicitudDevolucionMapper solicitudDevolucionMapper;
 
     public List<SolicitudDevolucionResponse> listar() {
@@ -40,6 +43,11 @@ public class SolicitudDevolucionService {
         Pago pago = pagoRepository.findById(request.getIdPago())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontro el pago con id " + request.getIdPago()));
         validarPagoDevolvible(pago, request, true);
+        // Una sola solicitud viva por pago: PENDIENTE o APROBADA. Tras una RECHAZADA se puede pedir de nuevo.
+        if (solicitudDevolucionRepository.existsByPagoIdAndEstadoIn(pago.getId(),
+                List.of(EstadoSolicitudDevolucion.PENDIENTE, EstadoSolicitudDevolucion.APROBADA))) {
+            throw new BusinessRuleException("El pago " + pago.getId() + " ya tiene una solicitud de devolucion pendiente o aprobada");
+        }
 
         SolicitudDevolucion entity = SolicitudDevolucion.builder()
                 .pago(pago)
@@ -55,6 +63,10 @@ public class SolicitudDevolucionService {
     @Transactional
     public SolicitudDevolucionResponse actualizar(Long id, SolicitudDevolucionRequest request) {
         SolicitudDevolucion entity = buscarOFallar(id);
+        // Con el reembolso ya hecho la solicitud queda cerrada
+        if (reembolsoPagoRepository.existsBySolicitudDevolucionId(id)) {
+            throw new BusinessRuleException("La solicitud " + id + " ya tiene un reembolso registrado: no se puede modificar");
+        }
         Pago pago = pagoRepository.findById(request.getIdPago())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontro el pago con id " + request.getIdPago()));
         validarPagoDevolvible(pago, request, !pago.getId().equals(entity.getPago().getId()));
@@ -81,6 +93,9 @@ public class SolicitudDevolucionService {
         if (exigirAprobado && pago.getEstado() != EstadoPago.APROBADO) {
             throw new BusinessRuleException("Solo se puede pedir la devolucion de un pago APROBADO; el pago "
                     + pago.getId() + " esta " + pago.getEstado());
+        }
+        if (request.getMontoSolicitado().signum() <= 0) {
+            throw new BusinessRuleException("El monto solicitado debe ser mayor a 0");
         }
         if (request.getMontoSolicitado().compareTo(pago.getMonto()) > 0) {
             throw new BusinessRuleException("El monto solicitado (S/ " + request.getMontoSolicitado()
