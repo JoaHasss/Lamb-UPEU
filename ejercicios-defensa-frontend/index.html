@@ -1,0 +1,1437 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema universitario integrado - historias de usuario, microservicios y arquitectura">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Ejercicios para la defensa del frontend - Lamb UPeU 2.0</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ejercicios-para-la-defensa-del-frontend" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="Lamb UPeU 2.0" class="md-header__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lamb UPeU 2.0
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ejercicios para la defensa del frontend
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lamb UPeU 2.0" class="md-nav__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lamb UPeU 2.0
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mercado-pago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pagos con Mercado Pago
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-mercado-pago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: Mercado Pago explicado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-cruds-matricula-finanzas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: CRUDs de Matrícula y Finanzas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parte-1-el-mapa-como-esta-armado-el-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 1. El mapa: cómo está armado el frontend
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 1. El mapa: cómo está armado el frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#piezas-y-carpetas-clientslamb-frontendsrcapp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Piezas y carpetas (clients/lamb-frontend/src/app/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cada-modulo-sigue-el-mismo-molde-de-4-archivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cada módulo sigue el mismo molde de 4 archivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#el-camino-de-una-peticion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        El camino de una petición
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conceptos-de-angular-que-aparecen-en-el-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conceptos de Angular que aparecen en el código
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-2-tu-flujo-de-trabajo-guion-de-2-minutos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 2. Tu flujo de trabajo (guion de 2 minutos)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-3-nivel-1-cambios-rapidos-retos-de-cambia-este-texto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 3. Nivel 1: cambios rápidos (retos de "cambia este texto")
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 3. Nivel 1: cambios rápidos (retos de &#34;cambia este texto&#34;)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#textos-y-donde-estan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textos y dónde están
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retos-con-la-solucion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retos con la solución
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-4-nivel-2-explica-esta-funcion-facil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 4. Nivel 2: explica esta función (fácil)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 4. Nivel 2: explica esta función (fácil)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-esvigente-pagospago-formts-linea-60" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. esVigente (pagos/pago-form.ts, ~línea 60)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-autocompletar-el-monto-al-elegir-concepto-pago-formts-linea-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Autocompletar el monto al elegir concepto (pago-form.ts, ~línea 51)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-guardar-del-formulario-de-pago-pago-formts-linea-67" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. guardar() del formulario de pago (pago-form.ts, ~línea 67)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-mensajeerror-corehttpmensaje-errorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4. mensajeError (core/http/mensaje-error.ts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-verdetalles-pagospago-listts63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5. verDetalles (pagos/pago-list.ts:63)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rolguard-coreauthrol-guardts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6. rolGuard (core/auth/rol-guard.ts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-el-authinterceptor-coreauthauth-interceptorts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7. El authInterceptor (core/auth/auth-interceptor.ts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-5-nivel-3-logica-compleja-con-respuesta-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 5. Nivel 3: lógica compleja (con respuesta modelo)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parte 5. Nivel 3: lógica compleja (con respuesta modelo)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-becas-y-descuentos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1. Becas y descuentos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-cuentas-de-estudiante-saldo-a-favor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2. Cuentas de estudiante (saldo a favor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-devoluciones-y-reembolsos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3. Devoluciones y reembolsos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-de-la-matricula-a-finanzas-la-saga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4. De la matrícula a finanzas (la "saga")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-pago-con-mercado-pago-resumen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5. Pago con Mercado Pago (resumen)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-6-preguntas-trampa-para-no-caer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 6. Preguntas trampa (para no caer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-7-retos-practicos-para-ensayar-en-vivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 7. Retos prácticos para ensayar en vivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parte-8-chuleta-de-puertos-y-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parte 8. Chuleta de puertos y comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lista-de-repaso-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lista de repaso final
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ejercicios-para-la-defensa-del-frontend">Ejercicios para la defensa del frontend<a class="headerlink" href="#ejercicios-para-la-defensa-del-frontend" title="Permanent link">&para;</a></h1>
+<p>Guía para explicarle al ingeniero tu flujo de trabajo y prepararte para sus preguntas: desde "cambia el texto de este botón" hasta explicar la lógica de becas, reembolsos, cuentas de estudiante y cómo una matrícula llega a finanzas.</p>
+<p>Cómo usarla:
+1. Lee la <strong>Parte 1</strong> (el mapa) hasta poder dibujarlo de memoria.
+2. Haz los <strong>retos de la Parte 3</strong> en tu PC, con el frontend levantado (<code>npm start</code>).
+3. Ensaya en voz alta las <strong>explicaciones de la Parte 4 y 5</strong> sin mirar la respuesta modelo.
+4. Repasa las <strong>preguntas trampa de la Parte 6</strong>.</p>
+<blockquote>
+<p>Las referencias <code>archivo:línea</code> son del código al momento de escribir esta guía. Si editas esos archivos, las líneas se corren unas posiciones: busca el texto.</p>
+</blockquote>
+<hr />
+<h2 id="parte-1-el-mapa-como-esta-armado-el-frontend">Parte 1. El mapa: cómo está armado el frontend<a class="headerlink" href="#parte-1-el-mapa-como-esta-armado-el-frontend" title="Permanent link">&para;</a></h2>
+<h3 id="piezas-y-carpetas-clientslamb-frontendsrcapp">Piezas y carpetas (<code>clients/lamb-frontend/src/app/</code>)<a class="headerlink" href="#piezas-y-carpetas-clientslamb-frontendsrcapp" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Carpeta</th>
+<th>Qué contiene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>features/</code></td>
+<td>Una carpeta por pantalla o módulo (95 en total): <code>pagos/</code>, <code>matriculas/</code>, <code>becas-aplicadas/</code>, <code>cuentas/</code>, etc.</td>
+</tr>
+<tr>
+<td><code>core/</code></td>
+<td>Lo compartido: login, interceptores HTTP, guards de rol, <code>mensajeError</code>, pipes.</td>
+</tr>
+<tr>
+<td><code>layout/</code></td>
+<td><code>shell.component.*</code>: el marco de la app (menú lateral y contenido).</td>
+</tr>
+<tr>
+<td><code>app.routes.ts</code></td>
+<td>Qué URL abre qué componente.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cada-modulo-sigue-el-mismo-molde-de-4-archivos">Cada módulo sigue el mismo molde de 4 archivos<a class="headerlink" href="#cada-modulo-sigue-el-mismo-molde-de-4-archivos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>features/pagos/
+├── pago.model.ts       → tipos TypeScript (PagoRequest, PagoResponse...) = el "contrato" con el backend
+├── pago-service.ts     → llamadas HTTP (listar, crear, aceptar...) al Gateway
+├── pago-list.ts / .html → pantalla de la tabla
+└── pago-form.ts / .html → pantalla del formulario
+</code></pre></div>
+<ul>
+<li><strong><code>.html</code></strong>: lo que ve el usuario (textos, botones, tabla).</li>
+<li><strong><code>.ts</code></strong>: la lógica (qué pasa al hacer clic, qué se carga, validaciones).</li>
+<li><strong><code>service</code></strong>: solo habla con el backend; no tiene pantalla.</li>
+<li><strong><code>model</code></strong>: describe la forma de los datos.</li>
+</ul>
+<h3 id="el-camino-de-una-peticion">El camino de una petición<a class="headerlink" href="#el-camino-de-una-peticion" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Pantalla (pago-list.ts)
+   │  this.service.listar()
+   ▼
+PagoService  ──HTTP──►  authInterceptor (agrega "Authorization: Bearer &lt;token&gt;")
+                              │
+                              ▼
+                  Gateway :18080  ──►  lamb-finanzas-ms  ──►  PostgreSQL
+</code></pre></div>
+<ul>
+<li>La URL base sale de <code>environment.apiBaseUrl</code> (<code>http://localhost:18080</code>, el <strong>Gateway</strong>).</li>
+<li>El <strong>token</strong> lo da Keycloak al iniciar sesión (<code>core/auth/</code>). El <code>authInterceptor</code> lo añade a cada petición y lo renueva si está por vencer (dura 5 minutos).</li>
+<li>Si algo falla, <code>mensajeError()</code> convierte el error HTTP en un texto entendible.</li>
+</ul>
+<h3 id="conceptos-de-angular-que-aparecen-en-el-codigo">Conceptos de Angular que aparecen en el código<a class="headerlink" href="#conceptos-de-angular-que-aparecen-en-el-codigo" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>Qué es</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>signal</strong></td>
+<td>Una variable "reactiva": cuando cambia, la pantalla se actualiza sola.</td>
+<td><code>protected readonly pagos = signal&lt;PagoResponse[]&gt;([])</code> y se cambia con <code>.set(...)</code></td>
+</tr>
+<tr>
+<td><strong>inject()</strong></td>
+<td>Pide a Angular una dependencia (un servicio).</td>
+<td><code>private readonly service = inject(PagoService)</code></td>
+</tr>
+<tr>
+<td><strong>Formulario reactivo</strong></td>
+<td>Un formulario definido en TypeScript con sus validaciones.</td>
+<td><code>this.fb.nonNullable.group({...})</code></td>
+</tr>
+<tr>
+<td><strong>subscribe</strong></td>
+<td>Las llamadas HTTP devuelven un "observable": nada ocurre hasta que te suscribes.</td>
+<td><code>.subscribe({ next: ..., error: ... })</code></td>
+</tr>
+<tr>
+<td><strong><code>@if</code> / <code>@for</code></strong></td>
+<td>Condicionales y bucles en el <code>.html</code>.</td>
+<td><code>@if (auth.tieneRol('ADMIN'))</code></td>
+</tr>
+<tr>
+<td><strong>rutas lazy</strong></td>
+<td>Cada pantalla se descarga solo cuando se visita.</td>
+<td><code>loadComponent: () =&gt; import(...)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h3>
+<p><code>auth.tieneRol('ADMIN', 'COORDINADOR')</code> devuelve <code>true</code> si el usuario tiene al menos uno de esos roles. Se usa en dos lugares:
+- En el <code>.html</code>, para <strong>mostrar u ocultar botones</strong> (por ejemplo <code>pago-list.html:14</code>).
+- En <code>rolGuard</code> (<code>core/auth/rol-guard.ts</code>), para <strong>bloquear una ruta entera</strong>.</p>
+<blockquote>
+<p>Ocultar un botón no es seguridad: el backend también valida el rol (por eso un 403 se traduce en <code>mensaje-error.ts</code>).</p>
+</blockquote>
+<hr />
+<h2 id="parte-2-tu-flujo-de-trabajo-guion-de-2-minutos">Parte 2. Tu flujo de trabajo (guion de 2 minutos)<a class="headerlink" href="#parte-2-tu-flujo-de-trabajo-guion-de-2-minutos" title="Permanent link">&para;</a></h2>
+<p>Puedes decirlo así:</p>
+<ol>
+<li>"Levanto la infraestructura: base de datos, <code>lamb-config</code>, Eureka, el Gateway, Keycloak y los microservicios."</li>
+<li>"Arranco el frontend con <code>npm start</code> y lo abro en <code>http://localhost:4200</code>."</li>
+<li>"Inicio sesión con Keycloak; el token viaja en cada petición al Gateway."</li>
+<li>"Para cambiar una pantalla, busco su carpeta en <code>features/</code>. El texto está en el <code>.html</code>; la lógica, en el <code>.ts</code>; las llamadas al backend, en el <code>service</code>."</li>
+<li>"Angular recompila al guardar, y compruebo en el navegador. Antes de subir, verifico que compile con <code>ng build</code>."</li>
+<li>"Subo con <code>git add</code>, <code>git commit</code> y <code>git push</code> a <code>main</code>."</li>
+</ol>
+<p>Comandos útiles:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">Practica</span><span class="p">\</span><span class="n">Lamb-UPEU</span><span class="p">\</span><span class="n">clients</span><span class="p">\</span><span class="n">lamb-frontend</span>
+<span class="n">npm</span> <span class="nb">start </span>                                   <span class="c"># servidor de desarrollo, http://localhost:4200</span>
+<span class="n">npx</span> <span class="n">ng</span> <span class="n">build</span> <span class="p">-</span><span class="n">-configuration</span> <span class="n">development</span>     <span class="c"># comprueba que todo compila</span>
+</code></pre></div>
+<hr />
+<h2 id="parte-3-nivel-1-cambios-rapidos-retos-de-cambia-este-texto">Parte 3. Nivel 1: cambios rápidos (retos de "cambia este texto")<a class="headerlink" href="#parte-3-nivel-1-cambios-rapidos-retos-de-cambia-este-texto" title="Permanent link">&para;</a></h2>
+<p>El ingeniero te dirá algo como "cambia el texto de este botón". El método es siempre el mismo:</p>
+<blockquote>
+<p><strong>1)</strong> Identifica la pantalla y su carpeta en <code>features/</code>. <strong>2)</strong> Abre el <code>.html</code>. <strong>3)</strong> Busca el texto (Ctrl+F). <strong>4)</strong> Cámbialo y guarda. <strong>5)</strong> Mira el navegador.</p>
+</blockquote>
+<h3 id="textos-y-donde-estan">Textos y dónde están<a class="headerlink" href="#textos-y-donde-estan" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Texto en pantalla</th>
+<th>Archivo y línea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Título "Pagos"</td>
+<td><code>features/pagos/pago-list.html:1</code></td>
+</tr>
+<tr>
+<td>Botón "Nuevo pago"</td>
+<td><code>features/pagos/pago-list.html:15</code></td>
+</tr>
+<tr>
+<td>Botón "Pagar"</td>
+<td><code>features/pagos/pago-list.html:61</code></td>
+</tr>
+<tr>
+<td>Botones "Aceptar" y "Rechazar"</td>
+<td><code>features/pagos/pago-list.html:64</code> y <code>:65</code></td>
+</tr>
+<tr>
+<td>"Ver detalles" / "Ocultar"</td>
+<td><code>features/pagos/pago-list.html:55</code></td>
+</tr>
+<tr>
+<td>Título "Nuevo pago"</td>
+<td><code>features/pagos/pago-form.html:1</code></td>
+</tr>
+<tr>
+<td>Etiqueta "Monto (S/)"</td>
+<td><code>features/pagos/pago-form.html:33</code></td>
+</tr>
+<tr>
+<td>Botón "Procesar pago" y su texto de espera</td>
+<td><code>features/pagos/pago-form.html:38</code></td>
+</tr>
+<tr>
+<td>Enlace "Cancelar"</td>
+<td><code>features/pagos/pago-form.html:39</code></td>
+</tr>
+<tr>
+<td>Título "Matriculas"</td>
+<td><code>features/matriculas/matricula-list.html:1</code></td>
+</tr>
+<tr>
+<td>Botón "Nueva matricula"</td>
+<td><code>features/matriculas/matricula-list.html:15</code></td>
+</tr>
+<tr>
+<td>Botones "Confirmar", "Eliminar" y "Anular"</td>
+<td><code>features/matriculas/matricula-list.html:52</code>, <code>:54</code> y <code>:57</code></td>
+</tr>
+<tr>
+<td>Opción "Pagos" del menú lateral</td>
+<td><code>layout/shell.component.html:194</code></td>
+</tr>
+<tr>
+<td>Opción "Conceptos de pago" del menú</td>
+<td><code>layout/shell.component.html:198</code></td>
+</tr>
+<tr>
+<td>Etiqueta "Porcentaje (%)" de becas</td>
+<td><code>features/becas-aplicadas/becas-aplicadas-form.html:28</code></td>
+</tr>
+<tr>
+<td>Etiqueta "Rige desde" de becas</td>
+<td><code>features/becas-aplicadas/becas-aplicadas-form.html:32</code></td>
+</tr>
+<tr>
+<td>Mensajes de error por estado HTTP (sesión expirada, sin permiso...)</td>
+<td><code>core/http/mensaje-error.ts:11-20</code></td>
+</tr>
+<tr>
+<td>Explicación de cada estado de pago ("Cargo generado y aún sin pagar...")</td>
+<td><code>features/pagos/pago-list.ts:13-19</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="retos-con-la-solucion">Retos con la solución<a class="headerlink" href="#retos-con-la-solucion" title="Permanent link">&para;</a></h3>
+<p><strong>Reto 1: cambia el botón "Nuevo pago" por "Registrar pago".</strong>
+Solución: en <code>pago-list.html:15</code>, cambia el texto entre las etiquetas <code>&lt;a&gt;...&lt;/a&gt;</code>. Solo es texto.</p>
+<p><strong>Reto 2: cambia "Pagos" del menú lateral por "Cobros".</strong>
+Solución: <code>shell.component.html:194</code>, dentro de <code>&lt;span class="nav-item__label"&gt;</code>. Ojo: cambia solo el texto del menú; el título de la página sigue siendo "Pagos" porque está en otro archivo (<code>pago-list.html:1</code>). Si te piden cambiar ambos, son dos archivos.</p>
+<p><strong>Reto 3: haz que el botón "Nuevo pago" también lo vea el rol ESTUDIANTE.</strong>
+Solución: <code>pago-list.html:14</code>, cambia <code>auth.tieneRol('ADMIN', 'COORDINADOR')</code> por <code>auth.tieneRol('ADMIN', 'COORDINADOR', 'ESTUDIANTE')</code>. Comenta que el backend también debe permitirlo, o recibirá un 403.</p>
+<p><strong>Reto 4: cambia el mensaje cuando no hay permiso (403).</strong>
+Solución: <code>mensaje-error.ts:16</code>, texto "Tu rol no tiene permiso para esta operacion." Es un solo lugar y afecta a <strong>todas</strong> las pantallas, porque todas usan <code>mensajeError</code>.</p>
+<p><strong>Reto 5: el porcentaje máximo de una beca debe ser 80 y no 100.</strong>
+Solución: hay que cambiarlo en <strong>dos sitios</strong>:
+- <code>becas-aplicadas-form.html:29</code>: <code>max="100"</code> → <code>max="80"</code> (el límite del campo en pantalla).
+- <code>becas-aplicadas-form.ts:29</code>: <code>Validators.max(100)</code> → <code>Validators.max(80)</code> (la validación que bloquea el envío).</p>
+<p>Responde también: "el backend no valida ese tope", así que alguien podría saltarse el límite llamando directo a la API. Verifícalo antes de afirmarlo.</p>
+<p><strong>Reto 6: pide confirmación antes de rechazar un pago.</strong>
+Solución: en <code>pago-list.ts</code>, método <code>rechazar</code> (línea ~101), añade al principio:
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">confirm</span><span class="p">(</span><span class="sb">`Rechazar el pago </span><span class="si">${</span><span class="nx">pago</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb">?`</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+El patrón <code>confirm(...)</code> + <code>return</code> es el que tenía el botón de reembolso que se quitó.</p>
+<p><strong>Reto 7: cambia el nombre de un estado, por ejemplo "EN_PROCESO", en el texto de ayuda.</strong>
+Solución: <code>pago-list.ts:15</code>. Ojo: <strong>no cambies la clave <code>EN_PROCESO</code></strong>, solo el texto. La clave es el valor real que viene del backend; si la cambias, la ayuda deja de aparecer.</p>
+<p><strong>Reto 8: oculta el botón "Eliminar" de las matrículas.</strong>
+Solución: borra o comenta <code>matricula-list.html:54</code>. Y explica la diferencia: ocultar un botón no quita la funcionalidad del backend.</p>
+<hr />
+<h2 id="parte-4-nivel-2-explica-esta-funcion-facil">Parte 4. Nivel 2: explica esta función (fácil)<a class="headerlink" href="#parte-4-nivel-2-explica-esta-funcion-facil" title="Permanent link">&para;</a></h2>
+<p>Para cada una: lee el código, explícalo con tus palabras y compara con la respuesta modelo.</p>
+<h3 id="41-esvigente-pagospago-formts-linea-60">4.1. <code>esVigente</code> (<code>pagos/pago-form.ts</code>, ~línea 60)<a class="headerlink" href="#41-esvigente-pagospago-formts-linea-60" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">private</span><span class="w"> </span><span class="nx">esVigente</span><span class="p">(</span><span class="nx">c</span><span class="o">:</span><span class="w"> </span><span class="kt">ConceptosPagoResponse</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">hoy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">().</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">vigenciaDesde</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nx">hoy</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">vigenciaHasta</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">vigenciaHasta</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nx">hoy</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Respuesta modelo:</strong> "Decide si un concepto de pago se puede usar hoy. Saca la fecha de hoy en formato <code>AAAA-MM-DD</code>. Un concepto es vigente si ya empezó (<code>vigenciaDesde</code> es hoy o antes) y no ha vencido: o no tiene fecha de fin (<code>vigenciaHasta</code> es <code>null</code>) o la fecha de fin es hoy o después. Como el formato es <code>AAAA-MM-DD</code>, comparar los textos funciona igual que comparar fechas."</p>
+<p><strong>Pregunta de seguimiento:</strong> "¿Por qué usas <code>slice(0, 10)</code>?" → <code>toISOString()</code> devuelve <code>2026-11-24T19:11:18.424Z</code>; <code>slice(0, 10)</code> se queda solo con la fecha.</p>
+<h3 id="42-autocompletar-el-monto-al-elegir-concepto-pago-formts-linea-51">4.2. Autocompletar el monto al elegir concepto (<code>pago-form.ts</code>, ~línea 51)<a class="headerlink" href="#42-autocompletar-el-monto-al-elegir-concepto-pago-formts-linea-51" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">idConcepto</span><span class="p">.</span><span class="nx">valueChanges</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">concepto</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">conceptos</span><span class="p">().</span><span class="nx">find</span><span class="p">((</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nb">Number</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">concepto</span><span class="o">?</span><span class="p">.</span><span class="nx">monto</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">monto</span><span class="p">.</span><span class="nx">setValue</span><span class="p">(</span><span class="nx">concepto</span><span class="p">.</span><span class="nx">monto</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+<p><strong>Respuesta modelo:</strong> "Cada vez que el usuario cambia el concepto del desplegable, esto se dispara. Busca ese concepto en la lista cargada y, si tiene monto, lo pone en el campo Monto. El usuario todavía puede editarlo. Uso <code>Number(id)</code> porque el valor del <code>&lt;select&gt;</code> puede llegar como texto."</p>
+<h3 id="43-guardar-del-formulario-de-pago-pago-formts-linea-67">4.3. <code>guardar()</code> del formulario de pago (<code>pago-form.ts</code>, ~línea 67)<a class="headerlink" href="#43-guardar-del-formulario-de-pago-pago-formts-linea-67" title="Permanent link">&para;</a></h3>
+<p><strong>Respuesta modelo (en pasos):</strong>
+1. Si el formulario es inválido, marca todos los campos como tocados para que salgan los errores y se detiene.
+2. Pone <code>enviando</code> en <code>true</code> para deshabilitar el botón y mostrar "Redirigiendo a Mercado Pago...".
+3. Busca el concepto elegido; si no lo encuentra, muestra un error.
+4. Llama a <code>procesar(...)</code>, que crea el pago en el backend en estado <code>EN_PROCESO</code>.
+5. Con <code>switchMap</code> encadena una segunda llamada, <code>crearPreferencia(pago.id)</code>, usando el <code>id</code> del pago recién creado.
+6. Si todo sale bien, redirige el navegador a <code>initPoint</code>, la página de pago de Mercado Pago. Si falla, muestra el error y reactiva el botón.</p>
+<p><strong>Pregunta de seguimiento:</strong> "¿Para qué sirve <code>switchMap</code>?" → Para hacer una llamada <strong>después</strong> de otra y usar su resultado; aquí necesito el <code>id</code> del pago antes de crear la preferencia.</p>
+<h3 id="44-mensajeerror-corehttpmensaje-errorts">4.4. <code>mensajeError</code> (<code>core/http/mensaje-error.ts</code>)<a class="headerlink" href="#44-mensajeerror-corehttpmensaje-errorts" title="Permanent link">&para;</a></h3>
+<p><strong>Respuesta modelo:</strong> "Recibe el error y un texto por defecto, y devuelve un mensaje para el usuario. Si no es un error HTTP, devuelve el texto por defecto. Si lo es, mira el código de estado: 0 significa que no hay conexión con el Gateway, 401 que la sesión expiró, 403 que su rol no tiene permiso, 503 que el microservicio no está disponible. Para el resto, intenta mostrar el motivo que mandó el backend, y si no hay, muestra el código HTTP. Está en <code>core</code> porque lo usan todas las pantallas."</p>
+<h3 id="45-verdetalles-pagospago-listts63">4.5. <code>verDetalles</code> (<code>pagos/pago-list.ts:63</code>)<a class="headerlink" href="#45-verdetalles-pagospago-listts63" title="Permanent link">&para;</a></h3>
+<p><strong>Respuesta modelo:</strong> "Abre o cierra el panel de detalles de un pago. Si ya estaba abierto el mismo, lo cierra. Si no, lo selecciona, limpia los datos anteriores, y si el pago viene de una matrícula, la pide a <code>lamb-matricula-ms</code> para mostrarla en el panel."</p>
+<h3 id="46-rolguard-coreauthrol-guardts">4.6. <code>rolGuard</code> (<code>core/auth/rol-guard.ts</code>)<a class="headerlink" href="#46-rolguard-coreauthrol-guardts" title="Permanent link">&para;</a></h3>
+<p><strong>Respuesta modelo:</strong> "Es un guard de ruta. Si el usuario tiene alguno de los roles requeridos, deja pasar. Si no, muestra una alerta y lo redirige al inicio. Sirve para proteger pantallas completas, no solo botones."</p>
+<h3 id="47-el-authinterceptor-coreauthauth-interceptorts">4.7. El <code>authInterceptor</code> (<code>core/auth/auth-interceptor.ts</code>)<a class="headerlink" href="#47-el-authinterceptor-coreauthauth-interceptorts" title="Permanent link">&para;</a></h3>
+<p><strong>Respuesta modelo:</strong> "Intercepta todas las peticiones HTTP. Antes de enviar, pide un token vigente (lo renueva si está por vencer) y lo agrega en la cabecera <code>Authorization: Bearer</code>. Si el backend responde 401, intenta renovar el token una vez y reenviar; si no se puede, manda al usuario a iniciar sesión otra vez."</p>
+<hr />
+<h2 id="parte-5-nivel-3-logica-compleja-con-respuesta-modelo">Parte 5. Nivel 3: lógica compleja (con respuesta modelo)<a class="headerlink" href="#parte-5-nivel-3-logica-compleja-con-respuesta-modelo" title="Permanent link">&para;</a></h2>
+<h3 id="51-becas-y-descuentos">5.1. Becas y descuentos<a class="headerlink" href="#51-becas-y-descuentos" title="Permanent link">&para;</a></h3>
+<p><strong>Dónde:</strong> <code>lamb-finanzas-ms</code> → <code>service/CalculoDescuentoService.java</code>.
+<strong>Pantalla:</strong> menú Finanzas → Becas aplicadas, con su formulario (<code>becas-aplicadas-form</code>: persona, tipo de beca, porcentaje 1-100, "Rige desde").</p>
+<p><strong>Reglas</strong> (están en el comentario de la clase):
+1. Una beca está <strong>vigente</strong> si su fecha de inicio es hoy o antes <strong>y</strong> su último movimiento hasta esa fecha no es una <code>SUSPENSION</code>. Una <code>RENOVACION</code> posterior la reactiva (<code>estaSuspendida</code>, línea 71).
+2. Si hay <strong>varias becas</strong> vigentes se toma la de <strong>mayor porcentaje</strong>: no se suman entre sí (línea 67). Lo mismo con los descuentos (línea 51).
+3. <strong>Beca + descuento sí se suman</strong>, con <strong>tope de 100 %</strong> (línea 80: <code>.min(CIEN).max(ZERO)</code>).
+4. Los montos se redondean a 2 decimales con <code>HALF_UP</code>.</p>
+<p><strong>Ejemplos con los datos de demo</strong> (cargo base de pensión S/ 500):</p>
+<table>
+<thead>
+<tr>
+<th>Caso</th>
+<th>Cálculo</th>
+<th>Se cobra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Persona 1: beca 50 % + descuento 10 %</td>
+<td>60 % de 500 = 300 de descuento</td>
+<td><strong>S/ 200</strong></td>
+</tr>
+<tr>
+<td>Persona 2: sin beca, descuento 15 %</td>
+<td>75 de descuento</td>
+<td><strong>S/ 425</strong></td>
+</tr>
+<tr>
+<td>Persona 3 en octubre: beca deportiva 30 % <strong>suspendida</strong></td>
+<td>no cuenta, 0 %</td>
+<td><strong>S/ 500</strong></td>
+</tr>
+<tr>
+<td>Persona 3 en noviembre: beca <strong>renovada</strong></td>
+<td>30 % = 150 de descuento</td>
+<td><strong>S/ 350</strong></td>
+</tr>
+<tr>
+<td>Persona 5: beca 25 % + convenio 80 % = 105 %</td>
+<td>tope 100 %</td>
+<td><strong>S/ 0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cómo se usa en la matrícula:</strong> al generar el cargo de una matrícula (<code>PagoService.generarCargoDeMatricula</code>, línea 51) se llama a <code>calcular(...)</code>. El <code>Pago</code> guarda <code>monto</code> (lo que se cobra), <code>montoOriginal</code> y <code>montoDescuento</code>.</p>
+<p><strong>Explicación modelo (30 segundos):</strong> "Cuando se genera un cargo, finanzas busca la beca vigente del estudiante y el mejor descuento. Una beca no está vigente si su último movimiento hasta esa fecha es una suspensión; una renovación posterior la reactiva. Si hay varias becas se usa la mayor, no se suman. Luego suma beca más descuento, topa en 100 % y calcula el monto de descuento sobre el original. El pago guarda el monto original, el descuento y el monto final."</p>
+<p><strong>Preguntas probables:</strong>
+- <em>"¿Qué pasa si una persona tiene dos becas, una de 50 % y otra de 30 %?"</em> → Se aplica solo la de 50 %, no 80 %.
+- <em>"¿Y una beca de 50 % y un descuento de 20 %?"</em> → Se suman: 70 %.
+- <em>"¿Y si suman 120 %?"</em> → Se limita a 100 %; el cargo queda en S/ 0.
+- <em>"¿Una beca suspendida se pierde?"</em> → No: se reactiva con una renovación posterior; el cálculo mira el último movimiento hasta la fecha del cargo.
+- <em>"¿Se recalculan los cargos ya generados si cambia la beca?"</em> → No. El cálculo se hace al generar el cargo y queda guardado en el pago.</p>
+<h3 id="52-cuentas-de-estudiante-saldo-a-favor">5.2. Cuentas de estudiante (saldo a favor)<a class="headerlink" href="#52-cuentas-de-estudiante-saldo-a-favor" title="Permanent link">&para;</a></h3>
+<p><strong>Dónde:</strong> <code>lamb-finanzas-ms</code> → <code>service/SaldoCuentaService.java</code>.
+<strong>Pantallas:</strong> Finanzas → Cuentas (<code>features/cuentas/</code>), Movimientos y Ajustes manuales.</p>
+<p><strong>Idea:</strong> cada estudiante tiene una cuenta con un <strong>saldo a favor</strong>, como un monedero. Cada cambio deja un <strong>movimiento</strong> para poder explicar el saldo.</p>
+<table>
+<thead>
+<tr>
+<th>Tipo de movimiento</th>
+<th>Efecto</th>
+<th>Línea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ABONO</code></td>
+<td><strong>Suma</strong> saldo a favor</td>
+<td><code>SaldoCuentaService.java:56</code></td>
+</tr>
+<tr>
+<td><code>CARGO</code></td>
+<td><strong>Descuenta</strong> saldo</td>
+<td><code>SaldoCuentaService.java:56</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>saldo = suma(ABONO) − suma(CARGO)</code>. <strong>Negativo significa que el estudiante debe</strong> ese monto.</p>
+<p><strong>Flujos:</strong>
+- <strong>Crear la cuenta con un saldo inicial</strong> (<code>CuentaEstudianteService.crear</code>): un monto positivo se guarda como <code>ABONO</code> ("Saldo inicial"). La cuenta siempre se crea en 0 y el saldo inicial es un movimiento más.
+- <strong>Pago aprobado</strong> (<code>descontarPago</code>, línea 79): se registra un <code>CARGO</code> por el monto del pago. Si el saldo no alcanza, queda negativo.
+- <strong>Ajuste manual</strong> (<code>AjusteManualSaldoService</code>): monto positivo suma saldo; negativo lo descuenta.
+- <strong>El saldo no se edita a mano</strong> (<code>CuentaEstudianteService.actualizar</code>): solo cambia con movimientos.
+- <strong>Idempotencia:</strong> <code>descontarPago</code> no descuenta dos veces el mismo pago (revisa si ya hay un <code>CARGO</code> de ese pago).</p>
+<p><strong>Los datos de demo:</strong> cada uno de los 5 estudiantes parte con un abono de S/ 1000 (movimientos 18 a 22 del seed <code>R__demo_pagos.sql</code>).</p>
+<p><strong>Explicación modelo:</strong> "La cuenta es un monedero. Los movimientos son el historial y el saldo es la suma de los abonos menos los cargos. Cuando un pago pasa a APROBADO, finanzas descuenta su monto del saldo con un cargo. Si el saldo no alcanza, queda negativo y se interpreta como deuda. El saldo nunca se edita a mano: siempre cambia a través de un movimiento, así el saldo siempre se puede explicar."</p>
+<p><strong>Preguntas probables:</strong>
+- <em>"¿Cuándo se descuenta el saldo, al crear el pago o al aprobarlo?"</em> → Al <strong>aprobarlo</strong>. Un pago pendiente no toca el saldo.
+- <em>"¿Por qué el saldo no se edita directamente?"</em> → Para que cada cambio deje rastro en los movimientos.
+- <em>"¿Qué pasa con un reembolso?"</em> → El código actual <strong>no devuelve el saldo</strong> (ver 5.3).</p>
+<h3 id="53-devoluciones-y-reembolsos">5.3. Devoluciones y reembolsos<a class="headerlink" href="#53-devoluciones-y-reembolsos" title="Permanent link">&para;</a></h3>
+<p><strong>Dónde:</strong> <code>SolicitudDevolucionService</code> y <code>ReembolsoPagoService</code>.
+<strong>Pantallas:</strong> Solicitudes de devolución y Reembolsos de pago.
+El botón "Reembolsar" de la lista de Pagos <strong>ya no existe</strong>: se quitó. El flujo vive en esas dos pantallas.</p>
+<div class="highlight"><pre><span></span><code>Pago APROBADO ──► Solicitud de devolución ──► (aprobada) ──► Reembolso ──► Pago REEMBOLSADO
+                  PENDIENTE / APROBADA / RECHAZADA
+</code></pre></div>
+<p><strong>Paso 1: Solicitud</strong> (<code>SolicitudDevolucionService.crear</code>, línea 42). Reglas (<code>validarPagoDevolvible</code>, línea 92):
+- Solo un pago <strong>APROBADO</strong> (un pendiente o rechazado no cobró nada).
+- El monto debe ser mayor que 0 y <strong>no mayor que lo pagado</strong>.
+- <strong>Una sola solicitud viva por pago</strong> (PENDIENTE o APROBADA, línea 47). Si se rechazó, se puede pedir de nuevo.
+- En la pantalla (<code>solicitudes-devolucion-form.html</code>) solo aparecen los pagos aprobados en la lista.</p>
+<p><strong>Paso 2: Reembolso</strong> (<code>ReembolsoPagoService.crear</code>, línea 47). Reglas:
+- La solicitud debe estar <strong>APROBADA</strong>.
+- La solicitud no debe tener ya un reembolso.
+- El pago debe seguir <strong>APROBADO</strong>.
+- <code>validarReembolso</code> (línea 113): monto mayor que 0, <strong>no mayor que lo solicitado</strong>, y la cuenta debe ser de <strong>la misma persona</strong> que hizo el pago.
+- Efecto (línea 69): el pago pasa a <strong>REEMBOLSADO</strong>.</p>
+<p><strong>Eliminar un reembolso</strong> (línea 100) deja el pago otra vez en <strong>APROBADO</strong>.</p>
+<p><strong>Dato importante:</strong> el reembolso <strong>no cambia el saldo de la cuenta</strong> (comentario de <code>ReembolsoPagoService.java:68</code>). Esa regla viene de cuando el saldo era "lo que se debe"; ahora que el saldo es a favor y un pago aprobado lo descuenta, ese comportamiento merece revisarse.</p>
+<p><strong>Explicación modelo:</strong> "Devolver dinero es un proceso de dos pasos con validaciones. Primero se crea una solicitud sobre un pago aprobado, por un monto que no supere lo pagado, y solo una solicitud viva por pago. Cuando se aprueba, se registra el reembolso: no puede exceder lo solicitado, debe ir a la cuenta de la misma persona y el pago pasa a REEMBOLSADO. Si se elimina el reembolso, el pago vuelve a APROBADO."</p>
+<p><strong>Preguntas probables:</strong>
+- <em>"¿Se puede pedir devolución de un pago pendiente?"</em> → No, solo de uno aprobado.
+- <em>"¿Y pedir más de lo que se pagó?"</em> → No; el backend lo rechaza con un mensaje.
+- <em>"¿Se pueden hacer dos solicitudes sobre el mismo pago?"</em> → No mientras una esté pendiente o aprobada.
+- <em>"¿Qué pasa si se borra un reembolso?"</em> → El pago vuelve a APROBADO.
+- <em>"¿Por qué quitaron el botón Reembolsar de Pagos?"</em> → Porque se decidió que el reembolso se gestiona por su flujo de solicitud y reembolso, con validaciones.</p>
+<h3 id="54-de-la-matricula-a-finanzas-la-saga">5.4. De la matrícula a finanzas (la "saga")<a class="headerlink" href="#54-de-la-matricula-a-finanzas-la-saga" title="Permanent link">&para;</a></h3>
+<p>La pregunta típica: <strong>"cuando creo una matrícula, ¿cómo la jala finanzas?"</strong></p>
+<p><strong>Respuesta corta:</strong> finanzas <strong>no la jala</strong>. Matrícula <strong>publica un evento</strong> en Kafka y finanzas lo <strong>escucha</strong>. Los microservicios no se llaman directamente; se avisan por eventos.</p>
+<div class="highlight"><pre><span></span><code> FRONTEND             lamb-matricula-ms              KAFKA                 lamb-finanzas-ms
+ ────────             ─────────────────              ─────                 ────────────────
+ "Nueva matricula" ─► crear()  [MatriculaService:60]
+                      · valida secciones ABIERTAS
+                      · guarda: estado REGISTRADA
+                      · publica ───────►  matricula-eventos  ───────►  MatriculaEventosConsumer:19
+                         [:78]  evento "matricula.registrada"           ► generarCargoDeMatricula [PagoService:51]
+                                                                           · evita duplicados (existsByMatriculaId)
+                                                                           · calcula beca y descuento
+                                                                           · crea Pago PENDIENTE
+
+ Lista de Pagos ──► "Pagar" ──► Mercado Pago ──► pago aprobado
+                                                  · descontarPago (saldo a favor)
+                                                  · publica "pago.aceptado"
+                      PagoEventosConsumer:19  ◄──── pago-aceptado-eventos ◄─┘
+                      confirmar() [MatriculaService:96]
+                      · estado CONFIRMADA
+</code></pre></div>
+<p><strong>Pasos para explicarlo:</strong>
+1. Creas la matrícula en el frontend → <code>POST /api/v1/matriculas</code> → <code>MatriculaService.crear</code>.
+2. Matrícula guarda la matrícula como <strong>REGISTRADA</strong> y publica el evento <code>matricula.registrada</code> (solo <strong>después del commit</strong>, para no avisar de algo que luego se revierta).
+3. Finanzas, que está suscrita al topic <code>matricula-eventos</code>, recibe el evento y <strong>crea un pago en estado PENDIENTE</strong> con el monto, aplicando beca y descuento.
+4. El pago aparece en la lista de Pagos con el origen "Matrícula N". El usuario pulsa <strong>Pagar</strong>.
+5. Al aprobarse el pago, finanzas descuenta el saldo y publica <code>pago.aceptado</code>.
+6. Matrícula escucha ese evento y <strong>confirma</strong> la matrícula (CONFIRMADA).</p>
+<p><strong>Por qué así y no con una llamada HTTP directa:</strong>
+- Cada microservicio tiene <strong>su propia base de datos</strong>; no existe una transacción única que abarque las dos.
+- Si finanzas estuviera caída, la matrícula se registra igual y el cargo se genera cuando finanzas vuelva a estar disponible.
+- Los dos servicios quedan desacoplados.</p>
+<p><strong>Protecciones:</strong>
+- <strong>Idempotencia:</strong> si Kafka reenvía el mismo evento, finanzas no duplica el cargo (<code>existsByMatriculaId</code>) y matrícula ignora la confirmación si ya está CONFIRMADA o ANULADA.
+- <strong>Publicar tras el commit</strong> (<code>publicarTrasCommit</code>).</p>
+<p><strong>Limitación honesta:</strong> si el pago se <strong>rechaza</strong>, no se publica ningún evento y la matrícula queda REGISTRADA. Si Kafka falla al enviar, solo se registra el error en el log (no hay patrón <em>outbox</em>).</p>
+<p><strong>Preguntas probables:</strong>
+- <em>"¿Cómo sabe finanzas que hay una matrícula nueva?"</em> → Por el evento <code>matricula.registrada</code> en Kafka.
+- <em>"¿Qué pasa si finanzas está apagado al crear la matrícula?"</em> → La matrícula se guarda; el evento queda en Kafka y finanzas lo procesa al volver.
+- <em>"¿Qué pasa si llega el mismo evento dos veces?"</em> → No se duplica el cargo (idempotencia).
+- <em>"¿Quién confirma la matrícula?"</em> → El evento <code>pago.aceptado</code> que finanzas publica al aprobarse el pago.
+- <em>"¿Por qué hay un botón 'Confirmar' en la lista de matrículas?"</em> → Permite confirmar a mano una matrícula REGISTRADA; <code>confirmar()</code> es idempotente.</p>
+<h3 id="55-pago-con-mercado-pago-resumen">5.5. Pago con Mercado Pago (resumen)<a class="headerlink" href="#55-pago-con-mercado-pago-resumen" title="Permanent link">&para;</a></h3>
+<p>Detalle completo en <a href="../integracion-mercadopago/"><code>integracion-mercadopago.md</code></a>. Para explicarlo en 30 segundos:</p>
+<p>"En Nuevo pago el usuario elige persona, concepto y monto. El frontend crea el pago y luego una <em>preferencia</em> en Mercado Pago, y redirige al navegador a su página de pago. Ahí el usuario elige el método. Al terminar, Mercado Pago lo devuelve a <code>/pagos/resultado</code> con el id del pago; el frontend le pide al backend confirmarlo, el backend consulta a Mercado Pago el estado real y, si está aprobado, descuenta el saldo y publica el evento que confirma la matrícula."</p>
+<hr />
+<h2 id="parte-6-preguntas-trampa-para-no-caer">Parte 6. Preguntas trampa (para no caer)<a class="headerlink" href="#parte-6-preguntas-trampa-para-no-caer" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>"Cambia el texto de este botón, pero no veo el cambio."</strong>
+   Comprueba: ¿editaste el archivo correcto? ¿Está <code>npm start</code> corriendo? ¿Recargaste el navegador (Ctrl+F5)? ¿El texto está en el <code>.html</code> o viene del backend? Algunos textos (los mensajes de error de negocio) los escribe el backend, no el frontend.</p>
+</li>
+<li>
+<p><strong>"Quiero cambiar el estado 'APROBADO' a 'PAGADO'."</strong>
+   No es solo un texto: <code>APROBADO</code> es un <strong>valor del backend</strong> (enum <code>EstadoPago</code>) que se usa en la lógica, en el seed y en los <code>@if</code>. Cambiar solo lo que ve el usuario es fácil (un pipe o un mapa de etiquetas); cambiar el valor real afecta a todo el sistema.</p>
+</li>
+<li>
+<p><strong>"¿Por qué el botón 'Aceptar' no aparece para un pago aprobado?"</strong>
+   Solo aparece con <code>pago.estado === 'EN_PROCESO'</code> (<code>pago-list.html:63</code>) y solo si el usuario es ADMIN o COORDINADOR.</p>
+</li>
+<li>
+<p><strong>"El comentario de <code>matricula-service.ts</code> dice 'confirmada ya generó el cobro'. ¿Es cierto?"</strong>
+   No del todo: el cobro se genera cuando la matrícula se <strong>registra</strong> (evento <code>matricula.registrada</code>), no cuando se confirma. El comentario está desactualizado.</p>
+</li>
+<li>
+<p><strong>"¿Por qué el saldo de una persona es negativo?"</strong>
+   Porque ha aprobado pagos por más de lo que tenía a favor. Negativo significa que debe.</p>
+</li>
+<li>
+<p><strong>"¿El frontend calcula la beca?"</strong>
+   No. La beca y el descuento los calcula siempre el backend (<code>CalculoDescuentoService</code>); el frontend solo muestra el resultado.</p>
+</li>
+<li>
+<p><strong>"Si ocultas un botón con <code>@if</code>, ¿ya es seguro?"</strong>
+   No. Solo mejora la experiencia. El backend valida el rol de nuevo y responde 403.</p>
+</li>
+<li>
+<p><strong>"¿Qué pasa si la sesión expira en medio de una acción?"</strong>
+   El <code>authInterceptor</code> intenta renovar el token una vez. Si no puede, lleva al usuario a iniciar sesión otra vez.</p>
+</li>
+</ol>
+<hr />
+<h2 id="parte-7-retos-practicos-para-ensayar-en-vivo">Parte 7. Retos prácticos para ensayar en vivo<a class="headerlink" href="#parte-7-retos-practicos-para-ensayar-en-vivo" title="Permanent link">&para;</a></h2>
+<p>Hazlos antes de la presentación, cada uno en menos de 3 minutos, y confirma que <code>npx ng build --configuration development</code> sigue compilando.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reto</th>
+<th>Archivos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Cambiar el texto de "Nuevo pago" a "Registrar pago".</td>
+<td><code>pago-list.html</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cambiar el nombre del menú "Pagos" a "Cobros".</td>
+<td><code>shell.component.html</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Mostrar el botón "Nuevo pago" también a ESTUDIANTE.</td>
+<td><code>pago-list.html</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Limitar el porcentaje de beca a 80.</td>
+<td><code>becas-aplicadas-form.html</code> y <code>.ts</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Pedir confirmación antes de rechazar un pago.</td>
+<td><code>pago-list.ts</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Cambiar el placeholder del campo "Motivo" de devoluciones.</td>
+<td><code>solicitudes-devolucion-form.html</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Cambiar el mensaje de "sin permiso" (403).</td>
+<td><code>mensaje-error.ts</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Cambiar el título de la columna "Metodo" de la tabla de pagos por "Medio de pago".</td>
+<td><code>pago-list.html:27</code></td>
+</tr>
+</tbody>
+</table>
+<p>Después de cada reto: <strong>deshaz el cambio</strong> con <code>git restore &lt;archivo&gt;</code> para dejar el proyecto limpio.</p>
+<hr />
+<h2 id="parte-8-chuleta-de-puertos-y-comandos">Parte 8. Chuleta de puertos y comandos<a class="headerlink" href="#parte-8-chuleta-de-puertos-y-comandos" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend</td>
+<td>http://localhost:4200</td>
+</tr>
+<tr>
+<td>Gateway (API)</td>
+<td>http://localhost:18080</td>
+</tr>
+<tr>
+<td>Keycloak</td>
+<td>http://localhost:18180</td>
+</tr>
+<tr>
+<td>Config Server</td>
+<td>http://localhost:18888</td>
+</tr>
+<tr>
+<td>Eureka</td>
+<td>http://localhost:18761</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>localhost:18092</td>
+</tr>
+<tr>
+<td>Base de finanzas</td>
+<td>localhost:15457 (<code>lamb_finanzas_db</code>)</td>
+</tr>
+<tr>
+<td>Grafana (logs y métricas, dev)</td>
+<td>http://localhost:13000</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c"># Frontend</span>
+<span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">Practica</span><span class="p">\</span><span class="n">Lamb-UPEU</span><span class="p">\</span><span class="n">clients</span><span class="p">\</span><span class="n">lamb-frontend</span>
+<span class="n">npm</span> <span class="nb">start</span>
+<span class="n">npx</span> <span class="n">ng</span> <span class="n">build</span> <span class="p">-</span><span class="n">-configuration</span> <span class="n">development</span>
+
+<span class="c"># Un microservicio (necesita JDK 21)</span>
+<span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">Practica</span><span class="p">\</span><span class="n">Lamb-UPEU</span><span class="p">\</span><span class="n">services</span><span class="p">\</span><span class="n">lamb-finanzas-ms</span>
+<span class="p">.\</span><span class="n">mvnw</span> <span class="n">spring-boot</span><span class="p">:</span><span class="n">run</span>
+
+<span class="c"># Git</span>
+<span class="n">git</span> <span class="n">status</span>
+<span class="n">git</span> <span class="n">add</span> <span class="p">&lt;</span><span class="n">archivos</span><span class="p">&gt;</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">"mensaje"</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
+</code></pre></div>
+<p>Orden recomendado de arranque: base de datos y Kafka → <code>lamb-config</code> → Eureka → Gateway → microservicios → frontend.</p>
+<hr />
+<h2 id="lista-de-repaso-final">Lista de repaso final<a class="headerlink" href="#lista-de-repaso-final" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Puedo dibujar el camino de una petición (pantalla → servicio → interceptor → Gateway → microservicio).</li>
+<li>[ ] Sé dónde está el texto de cualquier botón sin buscar más de 30 segundos.</li>
+<li>[ ] Explico <code>signal</code>, <code>inject</code>, <code>subscribe</code> y <code>switchMap</code> con un ejemplo del código.</li>
+<li>[ ] Explico las reglas de becas con un ejemplo numérico.</li>
+<li>[ ] Explico por qué el saldo puede ser negativo.</li>
+<li>[ ] Explico los dos pasos de un reembolso y sus validaciones.</li>
+<li>[ ] Explico cómo una matrícula llega a finanzas sin dar una respuesta de "se llama por HTTP".</li>
+<li>[ ] Sé qué decir cuando no sé algo: "voy a revisar el código" y abrir el archivo que corresponde.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top", "toc.follow", "content.code.copy", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
