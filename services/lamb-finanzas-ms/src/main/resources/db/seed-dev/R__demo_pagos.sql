@@ -32,15 +32,17 @@ INSERT INTO pagos (id, id_persona, concepto, monto, metodo, estado, fecha_pago, 
 (9, 5, 'Certificado de notas',    45.00, 'TARJETA',       'REEMBOLSADO', '2026-09-10 17:25', 'demo-09', NULL, NULL,     NULL,  NULL)
 ON CONFLICT (id) DO NOTHING;
 
--- Cuentas de estudiante (una por persona). saldo_actual = lo que adeuda hoy:
+-- Cuentas de estudiante (una por persona). saldo_actual = lo que DEBE hoy (negativo = saldo a favor):
 -- persona 2 debe la matricula (pago 3) y el carnet (pago 8, aun sin validar); persona 3 la matricula
--- (pago 4, voucher sin validar). Persona 4 no adeuda: su matricula se anulo.
+-- (pago 4, voucher sin validar) mas una mora por ajuste manual. Persona 4 no debe: su cargo se cancelo.
+-- Persona 5 tiene S/ 20 a favor por un ajuste manual. Al final del archivo el saldo se recalcula
+-- desde los movimientos, asi siempre cuadra.
 INSERT INTO cuentas_estudiante (id, id_persona, saldo_actual, fecha_apertura) VALUES
 (1, 1,   0.00, '2026-03-10 09:15'),
 (2, 2, 375.00, '2026-08-14 16:05'),
-(3, 3, 350.00, '2026-08-25 11:40'),
+(3, 3, 365.00, '2026-08-25 11:40'),
 (4, 4,   0.00, '2026-08-13 08:50'),
-(5, 5,   0.00, '2026-08-11 12:20')
+(5, 5, -20.00, '2026-08-11 12:20')
 ON CONFLICT (id) DO NOTHING;
 
 -- Movimientos de cuenta: explican cada saldo de arriba (CARGO suma a la deuda, ABONO la resta).
@@ -56,11 +58,25 @@ INSERT INTO movimientos_cuenta (id, id_cuenta, tipo, monto, concepto, fecha, id_
 ( 8, 2, 'CARGO',  25.00, 'Carnet universitario',                             '2026-09-05 10:00', 8),
 ( 9, 3, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-25 11:40', 4),
 (10, 4, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-13 08:50', 5),
-(11, 4, 'ABONO', 350.00, 'Cargo de matricula cancelado: Matricula 2026-2',   '2026-08-20 09:00', 5),
+(11, 4, 'ABONO', 350.00, 'Cargo de matricula cancelado: Matricula 2026-2',   '2026-08-29 18:00', 5),
 (12, 5, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-11 12:20', 6),
 (13, 5, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-2',                  '2026-08-11 12:26', 6),
 (14, 5, 'CARGO',  45.00, 'Certificado de notas',                             '2026-09-10 17:20', 9),
-(15, 5, 'ABONO',  45.00, 'Pago aprobado: Certificado de notas',              '2026-09-10 17:25', 9)
+(15, 5, 'ABONO',  45.00, 'Pago aprobado: Certificado de notas',              '2026-09-10 17:25', 9),
+-- Ajustes manuales (ver ajustes_manuales_saldo): uno sube la deuda, otro deja saldo a favor
+(16, 3, 'CARGO',  15.00, 'Ajuste manual: Mora por pago extemporaneo de matricula', '2026-09-01 10:00', NULL),
+(17, 5, 'ABONO',  20.00, 'Ajuste manual: Pago duplicado en ventanilla, queda a favor', '2026-09-20 12:00', NULL)
+ON CONFLICT (id) DO NOTHING;
+
+-- Ajustes manuales de saldo: positivo = el estudiante debe mas (CARGO), negativo = debe menos (ABONO)
+INSERT INTO ajustes_manuales_saldo (id, id_cuenta, monto, motivo, autorizado_por, fecha) VALUES
+(1, 3,  15.00, 'Mora por pago extemporaneo de matricula',  'Tesoreria', '2026-09-01 10:00'),
+(2, 5, -20.00, 'Pago duplicado en ventanilla, queda a favor', 'Tesoreria', '2026-09-20 12:00')
+ON CONFLICT (id) DO NOTHING;
+
+-- Cancelacion del cargo de la matricula 5 (persona 4): explica el ABONO 11 de arriba
+INSERT INTO cancelaciones_cargo_matricula (id, id_pago, id_matricula, motivo, fecha) VALUES
+(1, 5, 5, 'Matricula anulada por impago: pago rechazado', '2026-08-29 18:00')
 ON CONFLICT (id) DO NOTHING;
 
 -- Becas: tipos y a quien se aplican. Rigen desde 2026-09-01, despues de las matriculas 2026-2,
@@ -78,6 +94,52 @@ INSERT INTO becas_aplicadas (id, id_persona, id_tipo_beca, porcentaje, fecha_ini
 (3, 3, 3, 30.00, '2026-09-01')   -- seleccion de futsal de la universidad
 ON CONFLICT (id) DO NOTHING;
 
+-- Renovacion / suspension de beca: la deportiva de la persona 3 se suspende en octubre
+-- (deja de descontar) y se renueva en noviembre (vuelve a descontar). Ver detalles de cobro 3 y 4.
+INSERT INTO renovaciones_suspensiones_beca (id, id_beca_aplicada, tipo, fecha, motivo) VALUES
+(1, 3, 'SUSPENSION', '2026-10-01', 'No se presento a los entrenamientos de la seleccion'),
+(2, 3, 'RENOVACION', '2026-11-02', 'Reincorporado a la seleccion de futsal')
+ON CONFLICT (id) DO NOTHING;
+
+-- Descuentos: tipos y a quien se aplican (se suman a la beca, con tope de 100%)
+INSERT INTO tipos_descuento (id, nombre, porcentaje, descripcion) VALUES
+(1, 'Pronto pago',           10.00, 'Pago de la pension antes del vencimiento'),
+(2, 'Hermanos estudiando',   15.00, 'Dos o mas hermanos matriculados en la universidad'),
+(3, 'Convenio con empresa',  80.00, 'Hijo de trabajador de empresa con convenio')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO descuentos_aplicados (id, id_persona, id_tipo_descuento, porcentaje, fecha_inicio) VALUES
+(1, 1, 1, 10.00, '2026-09-01'),  -- persona 1: beca 50% + pronto pago 10% = 60%
+(2, 2, 2, 15.00, '2026-09-01'),  -- persona 2: sin beca, solo descuento 15%
+(3, 5, 3, 80.00, '2026-09-01')   -- persona 5: beca 25% + convenio 80% = 105% -> tope 100%
+ON CONFLICT (id) DO NOTHING;
+
+-- Convenios institucionales (catalogo; aun no se aplican solos en el cobro)
+INSERT INTO convenios_institucionales_descuento (id, nombre_institucion, porcentaje_descuento) VALUES
+(1, 'Colegio Adventista Union',     20.00),
+(2, 'Asociacion de exalumnos UPeU', 10.00)
+ON CONFLICT (id) DO NOTHING;
+
+-- Cobros de pension con beca/descuento aplicados (monto = lo que se cobra; monto_original y
+-- monto_descuento muestran el calculo). Un caso por situacion:
+INSERT INTO estados_cobro (id, id_cuenta_estudiante, estado, fecha) VALUES
+(1, 1, 'SIN_DEUDA', '2026-09-15'),
+(2, 2, 'CON_DEUDA', '2026-09-15'),
+(3, 3, 'CON_DEUDA', '2026-10-15'),
+(4, 3, 'CON_DEUDA', '2026-11-15'),
+(5, 4, 'SIN_DEUDA', '2026-09-15'),
+(6, 5, 'SIN_DEUDA', '2026-09-15')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO detalles_cobro (id, id_estado_cobro, concepto, monto, id_descuento_aplicado, monto_original, monto_descuento) VALUES
+(1, 1, 'Pension septiembre 2026', 200.00, 1,    500.00, 300.00),  -- beca 50% + descuento 10%
+(2, 2, 'Pension septiembre 2026', 425.00, 2,    500.00,  75.00),  -- solo descuento 15%
+(3, 3, 'Pension octubre 2026',    500.00, NULL, 500.00,   0.00),  -- beca suspendida: no descuenta
+(4, 4, 'Pension noviembre 2026',  350.00, NULL, 500.00, 150.00),  -- beca renovada: 30%
+(5, 5, 'Duplicado de carnet',      25.00, NULL,  25.00,   0.00),  -- sin beca ni descuento
+(6, 6, 'Pension septiembre 2026',   0.00, 3,    500.00, 500.00)   -- 25% + 80% topado en 100%
+ON CONFLICT (id) DO NOTHING;
+
 -- Solicitudes de devolucion: solo sobre pagos cobrados (APROBADO / REEMBOLSADO).
 -- 1: aprobada y ya reembolsada (pago 9 queda REEMBOLSADO).
 -- 2: pendiente de revision (pago 7 sigue APROBADO; no cambia el saldo de la persona 1).
@@ -92,6 +154,12 @@ INSERT INTO reembolsos_pago (id, id_solicitud_devolucion, id_cuenta_estudiante, 
 (1, 1, 5, 45.00, '2026-09-15 11:30')
 ON CONFLICT (id) DO NOTHING;
 
+-- El saldo de cada cuenta de demo es la suma de sus movimientos (CARGO suma, ABONO resta)
+UPDATE cuentas_estudiante c SET saldo_actual = COALESCE((
+    SELECT SUM(CASE WHEN m.tipo = 'CARGO' THEN m.monto ELSE -m.monto END)
+    FROM movimientos_cuenta m WHERE m.id_cuenta = c.id), 0)
+WHERE c.id BETWEEN 1 AND 5;  -- solo las cuentas de demo: no toca cuentas creadas desde la app
+
 -- Las siguientes altas desde la app continuan despues de los ids fijos
 SELECT setval(pg_get_serial_sequence('categorias_concepto', 'id'), (SELECT max(id) FROM categorias_concepto));
 SELECT setval(pg_get_serial_sequence('conceptos_pago', 'id'), (SELECT max(id) FROM conceptos_pago));
@@ -102,3 +170,11 @@ SELECT setval(pg_get_serial_sequence('tipos_beca', 'id'), (SELECT max(id) FROM t
 SELECT setval(pg_get_serial_sequence('becas_aplicadas', 'id'), (SELECT max(id) FROM becas_aplicadas));
 SELECT setval(pg_get_serial_sequence('solicitudes_devolucion', 'id'), (SELECT max(id) FROM solicitudes_devolucion));
 SELECT setval(pg_get_serial_sequence('reembolsos_pago', 'id'), (SELECT max(id) FROM reembolsos_pago));
+SELECT setval(pg_get_serial_sequence('ajustes_manuales_saldo', 'id'), (SELECT max(id) FROM ajustes_manuales_saldo));
+SELECT setval(pg_get_serial_sequence('cancelaciones_cargo_matricula', 'id'), (SELECT max(id) FROM cancelaciones_cargo_matricula));
+SELECT setval(pg_get_serial_sequence('renovaciones_suspensiones_beca', 'id'), (SELECT max(id) FROM renovaciones_suspensiones_beca));
+SELECT setval(pg_get_serial_sequence('tipos_descuento', 'id'), (SELECT max(id) FROM tipos_descuento));
+SELECT setval(pg_get_serial_sequence('descuentos_aplicados', 'id'), (SELECT max(id) FROM descuentos_aplicados));
+SELECT setval(pg_get_serial_sequence('convenios_institucionales_descuento', 'id'), (SELECT max(id) FROM convenios_institucionales_descuento));
+SELECT setval(pg_get_serial_sequence('estados_cobro', 'id'), (SELECT max(id) FROM estados_cobro));
+SELECT setval(pg_get_serial_sequence('detalles_cobro', 'id'), (SELECT max(id) FROM detalles_cobro));

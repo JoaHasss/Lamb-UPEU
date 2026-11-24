@@ -182,6 +182,20 @@ Pago APROBADO ─► Solicitud PENDIENTE ─► APROBADA ─► Reembolso ─►
 4. **Botón "Reembolsar" del pago.** Es un atajo que solo marca el pago como REEMBOLSADO, sin registrar el reembolso. También exige una solicitud APROBADA. Lo recomendable es registrar el reembolso, que guarda el monto, la fecha y la cuenta.
 5. **Saldo.** Un reembolso no cambia el saldo de la cuenta: ese cargo ya estaba pagado (tenía su ABONO), y el dinero vuelve al estudiante fuera de la cuenta.
 
+**Casos que trae el demo** (`R__demo_pagos.sql`, se carga solo en dev):
+
+| Persona | Beca / descuento | Cobro de demo | Saldo de la cuenta |
+|---|---|---|---|
+| 1 | Beca 50% + pronto pago 10% | Pensión S/ 500 → **S/ 200** (60%) | S/ 0: todo pagado |
+| 2 | Sin beca, hermanos 15% | Pensión S/ 500 → **S/ 425** | S/ 375: matrícula pendiente + carnet sin validar |
+| 3 | Beca deportiva 30%, **suspendida** en octubre y **renovada** en noviembre | Octubre S/ 500 → **S/ 500** (suspendida); noviembre → **S/ 350** | S/ 365: matrícula + mora por ajuste manual |
+| 4 | Ninguno | Carnet S/ 25 → **S/ 25** | S/ 0: cargo de matrícula **cancelado** (matrícula anulada) |
+| 5 | Beca 25% + convenio 80% = 105% | Pensión S/ 500 → **S/ 0** (**tope 100%**) | **S/ -20**: saldo a favor por ajuste manual |
+
+También hay solicitudes de devolución (una aprobada y reembolsada, una pendiente y una rechazada) y dos convenios institucionales de catálogo.
+
+Los cargos de matrícula del demo son anteriores a las becas (que rigen desde el 2026-09-01), por eso se cobraron completos. Para ver un cargo de matrícula con beca, registra una matrícula nueva de la persona 1, 3 o 5 desde la app: el cargo sale con `monto_original` y `monto_descuento`.
+
 Al eliminar, la base protege las relaciones con claves foráneas: no se borra un *tipo de beca* asignado, una *solicitud* con reembolso ni una *cuenta* con reembolsos (409).
 
 ### 2.4 El recorrido en el frontend, pantalla por pantalla
