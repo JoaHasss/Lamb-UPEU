@@ -1366,6 +1366,101 @@ Tipo de beca ─► Beca aplicada (a una Persona)
 </tr>
 </tbody>
 </table>
+<p><strong>Becas y descuentos en el cobro</strong> (<code>CalculoDescuentoService</code>):</p>
+<ul>
+<li>El cargo automático de matrícula aplica la beca vigente de la persona más su mejor descuento vigente. Una beca es vigente si ya rige (<code>fecha_inicio</code>) y su último movimiento no es una <em>suspensión</em> (una <em>renovación</em> posterior la reactiva).</li>
+<li>Si hay varias becas, se toma la de mayor porcentaje, sin sumarlas. Lo mismo con los descuentos. La beca y el descuento sí se suman, con un tope de 100%.</li>
+<li>El <em>detalle de cobro</em> aplica la beca vigente del estudiante de la cuenta, a la fecha del estado de cobro, más el descuento que se elija (debe ser de la misma persona).</li>
+<li><code>monto</code> es lo que se cobra. <code>monto_original</code> y <code>monto_descuento</code> guardan el precio antes del descuento y lo descontado. Un cargo ya generado no se recalcula si después cambia la beca.</li>
+<li>Los porcentajes de becas, descuentos, tipos de descuento y convenios se validan entre 0 y 100.</li>
+</ul>
+<p><strong>Saldo de la cuenta de estudiante</strong> (<code>SaldoCuentaService</code>):</p>
+<p>El saldo es <strong>lo que el estudiante debe</strong> a la universidad ("adeuda" = debe). S/ 350 = debe S/ 350; S/ 0 = al día; negativo = tiene saldo a favor.</p>
+<p>El saldo ya no se escribe a mano: cada cambio deja un <strong>movimiento de cuenta</strong>, así el saldo siempre se explica con su historial. Un <strong>CARGO</strong> suma a la deuda y un <strong>ABONO</strong> la resta.</p>
+<table>
+<thead>
+<tr>
+<th>Qué pasa</th>
+<th>Movimiento</th>
+<th>Efecto en el saldo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Se genera el cargo de una matrícula (ya con beca/descuento)</td>
+<td>CARGO por el monto final</td>
+<td>sube</td>
+</tr>
+<tr>
+<td>Se registra un pago de trámite (<em>Nuevo pago</em> sin matrícula, o con una matrícula que aún no tiene cargo)</td>
+<td>CARGO</td>
+<td>sube</td>
+</tr>
+<tr>
+<td>Se registra el pago de una matrícula que ya tiene cargo</td>
+<td>ninguno (la deuda ya está)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Se aprueba un pago (admin o Mercado Pago)</td>
+<td>ABONO</td>
+<td>baja</td>
+</tr>
+<tr>
+<td>Se rechaza un pago de <strong>trámite</strong></td>
+<td>ABONO que revierte su cargo</td>
+<td>baja</td>
+</tr>
+<tr>
+<td>Se rechaza un pago de <strong>matrícula</strong></td>
+<td>ninguno: la matrícula se sigue debiendo</td>
+<td>—</td>
+</tr>
+<tr>
+<td><em>Cancelación de cargo de matrícula</em> (solo si el cargo no se pagó; una sola vez)</td>
+<td>ABONO que revierte el cargo</td>
+<td>baja</td>
+</tr>
+<tr>
+<td><em>Ajuste manual de saldo</em></td>
+<td>positivo → CARGO, negativo → ABONO</td>
+<td>sube / baja</td>
+</tr>
+<tr>
+<td><em>Movimiento de cuenta</em> creado a mano (monto &gt; 0)</td>
+<td>el tipo elegido</td>
+<td>sube / baja</td>
+</tr>
+<tr>
+<td>Reembolso de un pago</td>
+<td>ninguno: el cargo ya se pagó; el dinero vuelve fuera de la cuenta</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Si la persona no tiene cuenta, se abre sola (en 0) con su primer cargo.</li>
+<li>Al crear una cuenta a mano se puede poner un <em>saldo inicial</em>: queda como movimiento "Saldo inicial". Al editar la cuenta, el saldo no cambia.</li>
+<li>Cada movimiento que viene de un pago guarda <code>id_pago</code>, y no se registra dos veces el mismo cargo o abono de un pago.</li>
+<li>La fila de la cuenta se bloquea mientras se actualiza, para que dos movimientos simultáneos no se pisen.</li>
+<li>En los datos de demo, los saldos de las cuentas están explicados por sus movimientos (<code>R__demo_pagos.sql</code>).</li>
+</ul>
+<p><strong>Devoluciones: solicitud → aprobación → reembolso</strong> (<code>SolicitudDevolucionService</code>, <code>ReembolsoPagoService</code>):</p>
+<div class="highlight"><pre><span></span><code>Pago APROBADO ─► Solicitud PENDIENTE ─► APROBADA ─► Reembolso ─► Pago REEMBOLSADO
+                                    └─► RECHAZADA (el pago sigue APROBADO; se puede pedir otra)
+</code></pre></div>
+<ol>
+<li><strong>Solicitud de devolución.</strong> Solo sobre un pago APROBADO (es decir, dinero cobrado). El monto debe ser mayor a 0 y no mayor a lo pagado. Un pago tiene una sola solicitud viva (PENDIENTE o APROBADA); después de una RECHAZADA se puede pedir otra.</li>
+<li><strong>Aprobar o rechazar.</strong> Se edita la solicitud y se cambia su estado. Una solicitud que ya tiene reembolso queda cerrada y no se modifica.</li>
+<li><strong>Reembolso.</strong> Es la devolución efectiva del dinero. Exige:</li>
+<li>una solicitud APROBADA y sin otro reembolso;</li>
+<li>un pago todavía APROBADO;</li>
+<li>un monto mayor a 0 y no mayor a lo solicitado;</li>
+<li>una cuenta de estudiante de la misma persona que hizo el pago.</li>
+</ol>
+<p>Al registrarlo, el pago pasa a <strong>REEMBOLSADO</strong>. Al editarlo se puede cambiar el monto, la fecha o la cuenta, pero no la solicitud. Al eliminarlo, el pago vuelve a APROBADO.
+4. <strong>Botón "Reembolsar" del pago.</strong> Es un atajo que solo marca el pago como REEMBOLSADO, sin registrar el reembolso. También exige una solicitud APROBADA. Lo recomendable es registrar el reembolso, que guarda el monto, la fecha y la cuenta.
+5. <strong>Saldo.</strong> Un reembolso no cambia el saldo de la cuenta: ese cargo ya estaba pagado (tenía su ABONO), y el dinero vuelve al estudiante fuera de la cuenta.</p>
 <p>Al eliminar, la base protege las relaciones con claves foráneas: no se borra un <em>tipo de beca</em> asignado, una <em>solicitud</em> con reembolso ni una <em>cuenta</em> con reembolsos (409).</p>
 <h3 id="24-el-recorrido-en-el-frontend-pantalla-por-pantalla">2.4 El recorrido en el frontend, pantalla por pantalla<a class="headerlink" href="#24-el-recorrido-en-el-frontend-pantalla-por-pantalla" title="Permanent link">&para;</a></h3>
 <p>Abre <code>http://localhost:4200</code> y entra al módulo desde la portada o desde el menú de módulos. En cada apartado, <strong>"Nuevo"</strong> abre el formulario, <strong>"Editar"</strong> lo modifica y <strong>"Eliminar"</strong> pide confirmación. Los campos que dependen de otro registro son <strong>desplegables</strong> con lo que ya existe; por eso hay que respetar el orden.</p>
@@ -1481,7 +1576,7 @@ Tipo de beca ─► Beca aplicada (a una Persona)
 <td>5</td>
 <td>Cuentas de estudiante</td>
 <td>Nuevo</td>
-<td>Saldo actual (lo que adeuda)</td>
+<td>Saldo inicial, opcional (lo que ya debe)</td>
 <td><strong>Persona</strong> (una cuenta por persona)</td>
 </tr>
 <tr>
