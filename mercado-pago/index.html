@@ -14,6 +14,8 @@
         <link rel="prev" href="../u2-producto/">
       
       
+        <link rel="next" href="../guia-mercado-pago/">
+      
       
         
       
@@ -495,6 +497,60 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-mercado-pago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: Mercado Pago explicado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-cruds-matricula-finanzas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: CRUDs de Matrícula y Finanzas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -914,7 +970,8 @@
 <li><strong><code>auto_return</code> no se usa</strong>: Mercado Pago lo exige con una URL pública <code>https</code>, y en localhost la rechaza. El usuario vuelve pulsando el botón de Mercado Pago.</li>
 <li><strong>Webhook (<code>notification-url</code>)</strong>: en local Mercado Pago no puede llegar a <code>localhost</code>, así que <strong>la confirmación depende de que el usuario vuelva a <code>/pagos/resultado</code></strong>. Si cierra la pestaña antes, el pago queda <code>EN_PROCESO</code> en LAMB aunque se haya cobrado en Mercado Pago. En ese caso se puede llamar a mano a <code>confirmar-mercadopago</code> con el <code>payment_id</code> del panel de Mercado Pago.</li>
 <li>Las credenciales son de <strong>usuario de prueba</strong> (<code>APP_USR</code>): por eso se usa <code>initPoint</code> y no <code>sandboxInitPoint</code>.</li>
-<li>⚠️ El <code>access-token</code> real está commiteado en el repositorio privado <code>JoaHasss/Lamb-UPEU</code> por decisión del equipo. Si el repositorio se hace público o se suman colaboradores externos, <strong>genera un token nuevo</strong> en el panel de Mercado Pago.</li>
+<li><strong>Las credenciales ya no están en el repositorio.</strong> El yml y <code>environment.ts</code> traen los marcadores <code>PEGA_AQUI_TU_PUBLIC_KEY_DE_PRUEBA</code> y <code>PEGA_AQUI_TU_ACCESS_TOKEN_DE_PRUEBA</code>; cada integrante pega las suyas (los pasos están en el comentario del yml). Sin credenciales el sistema arranca igual: solo falla el pago con Mercado Pago.</li>
+<li>⚠️ El <code>access-token</code> anterior quedó en el <strong>historial de git</strong> (commits <code>2cefa41</code> y <code>141a0da</code>). Quitarlo del archivo no lo borra de ahí: el dueño de esa cuenta debería <strong>regenerarlo</strong> en el panel de Mercado Pago.</li>
 </ul>
 <hr />
 <h2 id="7-pendientes-y-cosas-a-saber">7. Pendientes y cosas a saber<a class="headerlink" href="#7-pendientes-y-cosas-a-saber" title="Permanent link">&para;</a></h2>

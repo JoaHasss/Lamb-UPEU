@@ -1,0 +1,1763 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema universitario integrado - historias de usuario, microservicios y arquitectura">
+      
+      
+      
+      
+        <link rel="prev" href="../guia-mercado-pago/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Guía: CRUDs de Matrícula y Finanzas - Lamb UPeU 2.0</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-de-estudio-los-crud-de-matricula-ms-y-finanzas-ms" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href=".." title="Lamb UPeU 2.0" class="md-header__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lamb UPeU 2.0
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guía: CRUDs de Matrícula y Finanzas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="amber"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lamb UPeU 2.0" class="md-nav__button md-logo" aria-label="Lamb UPeU 2.0" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lamb UPeU 2.0
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AyniSyst/Lamb_UPeU_v2.0" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyniSyst/Lamb_UPeU_v2.0
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mercado-pago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pagos con Mercado Pago
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia-mercado-pago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: Mercado Pago explicado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: CRUDs de Matrícula y Finanzas
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía: CRUDs de Matrícula y Finanzas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-el-molde-las-6-capas-de-un-crud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. El molde: las 6 capas de un CRUD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. El molde: las 6 capas de un CRUD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#las-5-operaciones-y-su-codigo-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Las 5 operaciones y su código HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#los-errores-salen-siempre-igual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Los errores salen siempre igual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-orden-para-crear-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Orden para crear la información
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Orden para crear la información">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-fuera-de-estos-dos-servicios-se-necesitan-antes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Fuera de estos dos servicios (se necesitan antes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-matricula-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 matricula-ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-finanzas-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 finanzas-ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-el-recorrido-en-el-frontend-pantalla-por-pantalla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 El recorrido en el frontend, pantalla por pantalla
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 El recorrido en el frontend, pantalla por pantalla">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modulo-matricula-matriculas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Módulo Matrícula (/matriculas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulo-finanzas-pagos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Módulo Finanzas (/pagos)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nivel-1-crud-de-catalogo-lo-mas-simple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Nivel 1 — CRUD de catálogo (lo más simple)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-nivel-2-crud-con-relacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Nivel 2 — CRUD con relación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Nivel 2 — CRUD con relación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-relacion-dentro-del-mismo-servicio-con-clave-foranea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Relación dentro del mismo servicio (con clave foránea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-relacion-con-otro-microservicio-solo-el-id-sin-clave-foranea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Relación con otro microservicio (solo el id, sin clave foránea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-relacion-sin-clave-foranea-dentro-del-mismo-servicio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Relación sin clave foránea dentro del mismo servicio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nivel-3-crud-con-reglas-de-estado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Nivel 3 — CRUD con reglas de estado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Nivel 3 — CRUD con reglas de estado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pago-pagoservice-pasarelapagoservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pago (PagoService, PasarelaPagoService)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matrícula
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-nivel-4-crud-que-habla-con-otros-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Nivel 4 — CRUD que habla con otros servicios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Nivel 4 — CRUD que habla con otros servicios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-llamada-sincrona-con-plan-b-crear-matricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Llamada síncrona con plan B: crear Matrícula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-comunicacion-asincrona-la-saga-matricula-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Comunicación asíncrona: la saga matrícula ↔ pago
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-llamada-a-una-api-externa-mercado-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Llamada a una API externa: Mercado Pago
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-como-llegan-los-datos-de-prueba-seeds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cómo llegan los datos de prueba (seeds)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-resumen-para-repasar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Resumen para repasar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-el-molde-las-6-capas-de-un-crud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. El molde: las 6 capas de un CRUD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. El molde: las 6 capas de un CRUD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#las-5-operaciones-y-su-codigo-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Las 5 operaciones y su código HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#los-errores-salen-siempre-igual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Los errores salen siempre igual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-orden-para-crear-la-informacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Orden para crear la información
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Orden para crear la información">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-fuera-de-estos-dos-servicios-se-necesitan-antes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Fuera de estos dos servicios (se necesitan antes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-matricula-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 matricula-ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-finanzas-ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 finanzas-ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-el-recorrido-en-el-frontend-pantalla-por-pantalla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 El recorrido en el frontend, pantalla por pantalla
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 El recorrido en el frontend, pantalla por pantalla">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modulo-matricula-matriculas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Módulo Matrícula (/matriculas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulo-finanzas-pagos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Módulo Finanzas (/pagos)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-nivel-1-crud-de-catalogo-lo-mas-simple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Nivel 1 — CRUD de catálogo (lo más simple)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-nivel-2-crud-con-relacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Nivel 2 — CRUD con relación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Nivel 2 — CRUD con relación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-relacion-dentro-del-mismo-servicio-con-clave-foranea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Relación dentro del mismo servicio (con clave foránea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-relacion-con-otro-microservicio-solo-el-id-sin-clave-foranea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Relación con otro microservicio (solo el id, sin clave foránea)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-relacion-sin-clave-foranea-dentro-del-mismo-servicio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Relación sin clave foránea dentro del mismo servicio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-nivel-3-crud-con-reglas-de-estado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Nivel 3 — CRUD con reglas de estado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Nivel 3 — CRUD con reglas de estado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pago-pagoservice-pasarelapagoservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pago (PagoService, PasarelaPagoService)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matrícula
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-nivel-4-crud-que-habla-con-otros-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Nivel 4 — CRUD que habla con otros servicios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Nivel 4 — CRUD que habla con otros servicios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-llamada-sincrona-con-plan-b-crear-matricula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Llamada síncrona con plan B: crear Matrícula
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-comunicacion-asincrona-la-saga-matricula-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Comunicación asíncrona: la saga matrícula ↔ pago
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-llamada-a-una-api-externa-mercado-pago" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Llamada a una API externa: Mercado Pago
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-como-llegan-los-datos-de-prueba-seeds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Cómo llegan los datos de prueba (seeds)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-resumen-para-repasar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Resumen para repasar
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-de-estudio-los-crud-de-matricula-ms-y-finanzas-ms">Guía de estudio: los CRUD de <code>matricula-ms</code> y <code>finanzas-ms</code><a class="headerlink" href="#guia-de-estudio-los-crud-de-matricula-ms-y-finanzas-ms" title="Permanent link">&para;</a></h1>
+<p>Esta guía va <strong>de lo más simple a lo más complejo</strong>. Primero, la estructura que repiten todos los CRUD. Después, en qué orden se crean los datos. Al final, los casos con reglas de negocio, otros microservicios y eventos.</p>
+<blockquote>
+<p>Consejo: abre los archivos citados mientras lees. Casi todo el código sigue el mismo molde, así que entender un CRUD simple es entender la mitad del proyecto.</p>
+</blockquote>
+<hr />
+<h2 id="1-el-molde-las-6-capas-de-un-crud">1. El molde: las 6 capas de un CRUD<a class="headerlink" href="#1-el-molde-las-6-capas-de-un-crud" title="Permanent link">&para;</a></h2>
+<p>Todos los CRUD de ambos servicios tienen las mismas piezas. Ejemplo con <strong>Tipo de beca</strong> (<code>finanzas-ms</code>):</p>
+<div class="highlight"><pre><span></span><code>Petición HTTP
+   │
+   ▼
+Controller   DescuentosBecasController     recibe la petición, valida el JSON (@Valid), llama al service
+   │
+   ▼
+Service      TipoBecaService               reglas de negocio y transacciones (@Transactional)
+   │
+   ├──► Mapper      TipoBecaMapper         convierte Request → Entity y Entity → Response
+   │
+   ▼
+Repository   TipoBecaRepository            acceso a la base (Spring Data JPA, sin SQL escrito)
+   │
+   ▼
+Entity       TipoBeca                      la tabla tipos_beca como clase Java (@Entity)
+</code></pre></div>
+<p>Y los <strong>DTO</strong> (<code>TipoBecaRequest</code> / <code>TipoBecaResponse</code>): lo que entra y lo que sale por la API.</p>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Responsabilidad</th>
+<th>Qué NO hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller</td>
+<td>Mapear URL y método HTTP, validar formato</td>
+<td>No tiene reglas de negocio</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Reglas, transacciones, buscar o fallar</td>
+<td>No sabe de HTTP</td>
+</tr>
+<tr>
+<td>Mapper</td>
+<td>Copiar campos entre DTO y entidad</td>
+<td>No accede a la base</td>
+</tr>
+<tr>
+<td>Repository</td>
+<td>Guardar, buscar, borrar</td>
+<td>No decide nada</td>
+</tr>
+<tr>
+<td>Entity</td>
+<td>Representar la tabla</td>
+<td>No se devuelve directamente al cliente</td>
+</tr>
+<tr>
+<td>DTO</td>
+<td>Contrato de la API</td>
+<td>No es la tabla</td>
+</tr>
+</tbody>
+</table>
+<p><strong>¿Por qué separar Entity y DTO?</strong> Para no exponer la base tal cual: la API puede cambiar sin cambiar la tabla y al revés. Por ejemplo, <code>ConceptoPago</code> tiene un objeto <code>categoria</code>, pero la API solo recibe y devuelve <code>idCategoria</code>.</p>
+<h3 id="las-5-operaciones-y-su-codigo-http">Las 5 operaciones y su código HTTP<a class="headerlink" href="#las-5-operaciones-y-su-codigo-http" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Operación</th>
+<th>HTTP</th>
+<th>Ruta (ejemplo)</th>
+<th>Respuesta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Listar</td>
+<td><code>GET</code></td>
+<td><code>/api/v1/descuentos-becas/tipos-beca</code></td>
+<td>200 + lista</td>
+</tr>
+<tr>
+<td>Obtener</td>
+<td><code>GET</code></td>
+<td><code>.../tipos-beca/{id}</code></td>
+<td>200, o 404 si no existe</td>
+</tr>
+<tr>
+<td>Crear</td>
+<td><code>POST</code></td>
+<td><code>.../tipos-beca</code></td>
+<td><strong>201 Created</strong></td>
+</tr>
+<tr>
+<td>Editar</td>
+<td><code>PUT</code></td>
+<td><code>.../tipos-beca/{id}</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td>Eliminar</td>
+<td><code>DELETE</code></td>
+<td><code>.../tipos-beca/{id}</code></td>
+<td><strong>204 No Content</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="los-errores-salen-siempre-igual">Los errores salen siempre igual<a class="headerlink" href="#los-errores-salen-siempre-igual" title="Permanent link">&para;</a></h3>
+<p>Cada servicio tiene un <code>GlobalExceptionHandler</code> (<code>@RestControllerAdvice</code>) que convierte excepciones en respuestas JSON:</p>
+<table>
+<thead>
+<tr>
+<th>Excepción</th>
+<th>HTTP</th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MethodArgumentNotValidException</code></td>
+<td><strong>400</strong></td>
+<td>El JSON no cumple <code>@NotNull</code>, <code>@NotBlank</code>, <code>@Size</code>...</td>
+</tr>
+<tr>
+<td><code>ResourceNotFoundException</code></td>
+<td><strong>404</strong></td>
+<td><code>buscarOFallar(id)</code> no encuentra el registro</td>
+</tr>
+<tr>
+<td><code>BusinessRuleException</code></td>
+<td><strong>409</strong></td>
+<td>Se rompe una regla de negocio ("no se puede aceptar un pago PENDIENTE")</td>
+</tr>
+<tr>
+<td><code>DataIntegrityViolationException</code></td>
+<td><strong>409</strong></td>
+<td>La base lo impide: clave foránea o valor único duplicado</td>
+</tr>
+</tbody>
+</table>
+<p>Así el service no se llena de <code>try/catch</code>: lanza la excepción y el manejador responde.</p>
+<hr />
+<h2 id="2-orden-para-crear-la-informacion">2. Orden para crear la información<a class="headerlink" href="#2-orden-para-crear-la-informacion" title="Permanent link">&para;</a></h2>
+<p>Un registro no se puede crear si el registro que necesita aún no existe. Este es el orden, de arriba hacia abajo. (Al <strong>eliminar</strong>, el orden es el inverso: primero lo de abajo.)</p>
+<blockquote>
+<p>Al clonar el proyecto no hace falta crear nada a mano: los seeds de <code>db/seed-dev</code> cargan todo esto en orden. Esta sección sirve para entender las dependencias y para crear datos nuevos.</p>
+</blockquote>
+<h3 id="21-fuera-de-estos-dos-servicios-se-necesitan-antes">2.1 Fuera de estos dos servicios (se necesitan antes)<a class="headerlink" href="#21-fuera-de-estos-dos-servicios-se-necesitan-antes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>personas-ms ── Persona (estudiantes)
+planificacion-ms ── Tipo de periodo → Periodo académico → Curso → Oferta académica → Grupo (ABIERTO)
+</code></pre></div>
+<ul>
+<li><strong>Persona:</strong> casi todo en matrícula y finanzas pertenece a una persona (<code>idPersona</code>).</li>
+<li><strong>Grupo:</strong> lo que el estudiante elige al matricularse. Depende de un periodo y de un curso (vía la oferta).</li>
+<li><em>Tipo de periodo</em> y <em>Periodo académico</em> aparecen en el menú de Matrícula, pero sus datos viven en <code>planificacion-ms</code>.</li>
+</ul>
+<h3 id="22-matricula-ms">2.2 <code>matricula-ms</code><a class="headerlink" href="#22-matricula-ms" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>                     ┌─► Variación de matrícula
+Cronograma ──────────┤
+                     └─► Ampliación de plazo
+
+Tipo de matrícula ─────┐
+Modalidad de matrícula ┼─► Matrícula ──(evento)──► cargo PENDIENTE en finanzas
+Persona + Grupo(s) ────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Apartado</th>
+<th>Necesita antes</th>
+<th>Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Tipo de matrícula</strong></td>
+<td>—</td>
+<td>Catálogo. Ya viene cargado (MAT-001..010, migración V9).</td>
+</tr>
+<tr>
+<td>1</td>
+<td><strong>Modalidad de matrícula</strong></td>
+<td>—</td>
+<td>Catálogo. Ya viene cargado (Presencial, Semipresencial, A distancia).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Cronograma de matrícula</strong></td>
+<td>—</td>
+<td>Periodo (texto, p. ej. <code>2026-2</code>) y fechas de matrícula.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Variación de matrícula</strong></td>
+<td>Cronograma</td>
+<td>Rectificación o retiro dentro de ese cronograma.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Ampliación de plazo</strong></td>
+<td>Cronograma</td>
+<td>Extiende la fecha del cronograma.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Matrícula</strong></td>
+<td>Persona, Tipo, Modalidad, Grupo(s)</td>
+<td>Al guardarla, <code>finanzas-ms</code> crea su cargo <code>PENDIENTE</code> (sección 5).</td>
+</tr>
+</tbody>
+</table>
+<p>Al eliminar: un <strong>cronograma</strong> con variaciones o ampliaciones no se puede borrar (409); primero se borran esas.</p>
+<h3 id="23-finanzas-ms">2.3 <code>finanzas-ms</code><a class="headerlink" href="#23-finanzas-ms" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Categoría de concepto ─► Concepto de pago
+
+Persona ─► Cuenta de estudiante ─────────────────────────────┐
+Persona ─► Pago (Nuevo pago)  o  Matrícula ─► cargo PENDIENTE │
+                     │                                        │
+                     ▼ (cuando está APROBADO)                 │
+              Solicitud de devolución ──(APROBADA)──► Reembolso
+Tipo de beca ─► Beca aplicada (a una Persona)
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Apartado</th>
+<th>Necesita antes</th>
+<th>Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Categoría de concepto</strong></td>
+<td>—</td>
+<td>No está en el menú; viene en el seed (Académico, Trámites).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Concepto de pago</strong></td>
+<td>Categoría</td>
+<td>El tarifario: Matrícula S/ 350, Constancia S/ 30...</td>
+</tr>
+<tr>
+<td>1</td>
+<td><strong>Tipo de beca</strong></td>
+<td>—</td>
+<td>Excelencia, Socioeconómica, Deportiva...</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Beca aplicada</strong></td>
+<td>Persona, Tipo de beca</td>
+<td>Porcentaje y fecha desde la que rige.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Cuenta de estudiante</strong></td>
+<td>Persona</td>
+<td><strong>Una sola por persona</strong> (si ya tiene, 409).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Pago</strong></td>
+<td>Persona</td>
+<td>Con <em>Nuevo pago</em>, o automático al registrar una matrícula.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Solicitud de devolución</strong></td>
+<td>Pago (cobrado)</td>
+<td>Estados: Pendiente, Aprobada, Rechazada.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Reembolso</strong></td>
+<td>Solicitud de devolución, Cuenta de estudiante</td>
+<td>La devolución efectiva del dinero.</td>
+</tr>
+</tbody>
+</table>
+<p>Al eliminar, la base protege las relaciones con claves foráneas: no se borra un <em>tipo de beca</em> asignado, una <em>solicitud</em> con reembolso ni una <em>cuenta</em> con reembolsos (409).</p>
+<h3 id="24-el-recorrido-en-el-frontend-pantalla-por-pantalla">2.4 El recorrido en el frontend, pantalla por pantalla<a class="headerlink" href="#24-el-recorrido-en-el-frontend-pantalla-por-pantalla" title="Permanent link">&para;</a></h3>
+<p>Abre <code>http://localhost:4200</code> y entra al módulo desde la portada o desde el menú de módulos. En cada apartado, <strong>"Nuevo"</strong> abre el formulario, <strong>"Editar"</strong> lo modifica y <strong>"Eliminar"</strong> pide confirmación. Los campos que dependen de otro registro son <strong>desplegables</strong> con lo que ya existe; por eso hay que respetar el orden.</p>
+<h4 id="modulo-matricula-matriculas">Módulo Matrícula (<code>/matriculas</code>)<a class="headerlink" href="#modulo-matricula-matriculas" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Paso</th>
+<th>Menú lateral</th>
+<th>Botón</th>
+<th>Qué llenar</th>
+<th>Desplegables que usa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Tipo de matrícula</td>
+<td>Nuevo</td>
+<td>Código, nombre, descripción, artículo legal, créditos mínimos, días hábiles, máx. veces desaprobado, ¿requiere pago?, ¿activo?</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Modalidad de matrícula</td>
+<td>Nuevo</td>
+<td>Código, nombre, descripción, artículo legal, créditos mínimos...</td>
+<td>Modalidad de estudio</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Cronograma de matrícula</td>
+<td>Nuevo</td>
+<td>Periodo (<code>2026-2</code>), fecha inicio, fecha fin, descripción</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Variación de matrícula</td>
+<td>Nuevo</td>
+<td>Tipo (Rectificación, Retiro...), fechas, descripción</td>
+<td><strong>Cronograma</strong> (del paso 3)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Ampliación de plazo de matrícula</td>
+<td>Nuevo</td>
+<td>Fecha ampliada, motivo, autorizado por</td>
+<td><strong>Cronograma</strong> (del paso 3)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Matrículas</td>
+<td><strong>Nueva matrícula</strong></td>
+<td>Ver abajo</td>
+<td><strong>Estudiante, Tipo, Modalidad, Grupo</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Paso 6 en detalle (Nueva matrícula):</strong></p>
+<ol>
+<li><strong>Estudiante:</strong> elige a la persona (viene de <code>personas-ms</code>).</li>
+<li><strong>Tipo de matrícula</strong> y <strong>Modalidad de matrícula:</strong> vienen de los pasos 1 y 2.</li>
+<li><strong>Agregar curso</strong> → en <strong>Grupo</strong> elige un grupo abierto (viene de <code>planificacion-ms</code>). Al elegirlo se completan solos el <strong>Periodo</strong> y los <strong>Créditos</strong>. Repite "Agregar curso" por cada curso; "Quitar" elimina una fila.</li>
+<li><strong>Guardar.</strong> La matrícula queda <code>REGISTRADA</code>.</li>
+<li>Ve a <strong>Finanzas → Pagos</strong>: aparece un cargo <code>PENDIENTE</code> de S/ 350 con origen "Matrícula N". Lo creó <code>finanzas-ms</code> solo, al recibir el evento de Kafka.</li>
+</ol>
+<p>En la lista de matrículas, <strong>Confirmar</strong> y <strong>Anular</strong> cambian el estado a mano; normalmente la confirmación llega sola cuando se aprueba el pago.</p>
+<blockquote>
+<p><em>Periodo académico</em> y <em>Tipo de periodo</em> también están en el menú de Matrícula, pero sus datos son de <code>planificacion-ms</code>. Ya vienen cargados; solo hay que tocarlos para abrir un periodo nuevo.</p>
+</blockquote>
+<h4 id="modulo-finanzas-pagos">Módulo Finanzas (<code>/pagos</code>)<a class="headerlink" href="#modulo-finanzas-pagos" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Paso</th>
+<th>Menú lateral</th>
+<th>Botón</th>
+<th>Qué llenar</th>
+<th>Desplegables que usa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><em>(sin menú: <code>/categorias-concepto</code>)</em></td>
+<td>Nuevo</td>
+<td>Nombre de la categoría</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Conceptos de pago</td>
+<td>Nuevo</td>
+<td>Nombre, monto, vigente desde/hasta</td>
+<td><strong>Categoría</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Becas</td>
+<td>Nuevo</td>
+<td>Nombre, descripción del tipo de beca</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Becas aplicadas</td>
+<td>Nuevo</td>
+<td>Porcentaje, rige desde</td>
+<td><strong>Persona, Tipo de beca</strong> (paso 3)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cuentas de estudiante</td>
+<td>Nuevo</td>
+<td>Saldo actual (lo que adeuda)</td>
+<td><strong>Persona</strong> (una cuenta por persona)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Pagos</td>
+<td><strong>Nuevo pago</strong></td>
+<td>Concepto, monto → <strong>Procesar pago</strong> (va a Mercado Pago)</td>
+<td><strong>Persona</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Pagos</td>
+<td><strong>Pagar</strong> / <strong>Aceptar</strong> / <strong>Rechazar</strong></td>
+<td>Cobrar el cargo o validarlo a mano</td>
+<td>—</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Solicitudes de devolución</td>
+<td>Nuevo</td>
+<td>Motivo, monto (se propone el del pago), estado, fecha</td>
+<td><strong>Pago</strong> — solo pagos <strong>APROBADOS</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Reembolsos</td>
+<td>Nuevo</td>
+<td>Monto (se propone el solicitado), fecha</td>
+<td><strong>Solicitud de devolución</strong> (paso 8), <strong>Cuenta</strong> (paso 5, se propone sola)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>El flujo completo de una matrícula pagada, de punta a punta:</strong></p>
+<ol>
+<li><em>Matrícula → Matrículas → Nueva matrícula</em> → Guardar → queda <code>REGISTRADA</code>.</li>
+<li><em>Finanzas → Pagos</em> → aparece su cargo <code>PENDIENTE</code>.</li>
+<li><strong>Pagar</strong> → Mercado Pago → tarjeta de prueba con titular <code>APRO</code> → "Volver al sitio" → el pago queda <code>APROBADO</code>.
+   <em>(Sin credenciales de Mercado Pago, <strong>Pagar</strong> muestra un error y el cargo sigue <code>PENDIENTE</code>: el cambio a <code>EN PROCESO</code> solo ocurre si Mercado Pago creó el cobro. <strong>Aceptar</strong> solo aparece en pagos <code>EN PROCESO</code>.)</em></li>
+<li><em>Matrícula → Matrículas</em> → la matrícula ya está <code>CONFIRMADA</code> (llegó el evento <code>pago.aceptado</code>).</li>
+<li>Si hay que devolver el dinero: <em>Solicitudes de devolución → Nuevo</em> (elige ese pago) → estado <code>APROBADA</code> → <em>Reembolsos → Nuevo</em>.</li>
+</ol>
+<p><strong>Botón "Ver detalles"</strong> en Pagos: muestra el voucher (si lo hay) y, si el pago viene de una matrícula, su periodo, estado y cursos.</p>
+<hr />
+<h2 id="3-nivel-1-crud-de-catalogo-lo-mas-simple">3. Nivel 1 — CRUD de catálogo (lo más simple)<a class="headerlink" href="#3-nivel-1-crud-de-catalogo-lo-mas-simple" title="Permanent link">&para;</a></h2>
+<p><strong>Ejemplos:</strong> Tipo de beca, Tipo de matrícula, Modalidad de matrícula, Cronograma.</p>
+<p>Solo guardan datos propios, sin relaciones. El service casi no tiene lógica:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">TipoBecaResponse</span><span class="w"> </span><span class="nf">crear</span><span class="p">(</span><span class="n">TipoBecaRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TipoBeca</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tipoBecaMapper</span><span class="p">.</span><span class="na">toEntity</span><span class="p">(</span><span class="n">request</span><span class="p">);</span><span class="w">      </span><span class="c1">// DTO → entidad</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tipoBecaMapper</span><span class="p">.</span><span class="na">toResponse</span><span class="p">(</span><span class="n">tipoBecaRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">entity</span><span class="p">));</span><span class="w"> </span><span class="c1">// guardar → DTO</span>
+<span class="p">}</span>
+
+<span class="nd">@Transactional</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">TipoBecaResponse</span><span class="w"> </span><span class="nf">actualizar</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">TipoBecaRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TipoBeca</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buscarOFallar</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w">   </span><span class="c1">// 404 si no existe</span>
+<span class="w">    </span><span class="n">entity</span><span class="p">.</span><span class="na">setNombre</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getNombre</span><span class="p">());</span>
+<span class="w">    </span><span class="n">entity</span><span class="p">.</span><span class="na">setDescripcion</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getDescripcion</span><span class="p">());</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tipoBecaMapper</span><span class="p">.</span><span class="na">toResponse</span><span class="p">(</span><span class="n">tipoBecaRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">entity</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kd">private</span><span class="w"> </span><span class="n">TipoBeca</span><span class="w"> </span><span class="nf">buscarOFallar</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tipoBecaRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">orElseThrow</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ResourceNotFoundException</span><span class="p">(</span><span class="s">"Tipo de beca no encontrado: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Ideas a dominar:</p>
+<ul>
+<li><strong><code>buscarOFallar</code></strong>: patrón repetido en todos los services. Centraliza el 404.</li>
+<li><strong><code>@Transactional</code></strong>: si algo falla a mitad de camino, se deshace todo.</li>
+<li><strong>Validación en el DTO</strong>: <code>@NotBlank String nombre</code> hace que un nombre vacío dé 400 sin escribir un <code>if</code>.</li>
+<li><strong>Ruta agrupada</strong>: varios catálogos comparten controlador. Por ejemplo <code>CalendarioPeriodosController</code> atiende <code>/calendario-periodos/cronogramas</code>, <code>/variaciones</code>, <code>/tipos</code>, <code>/modalidades</code> y <code>/ampliaciones-plazo</code>.</li>
+</ul>
+<hr />
+<h2 id="4-nivel-2-crud-con-relacion">4. Nivel 2 — CRUD con relación<a class="headerlink" href="#4-nivel-2-crud-con-relacion" title="Permanent link">&para;</a></h2>
+<h3 id="41-relacion-dentro-del-mismo-servicio-con-clave-foranea">4.1 Relación dentro del mismo servicio (con clave foránea)<a class="headerlink" href="#41-relacion-dentro-del-mismo-servicio-con-clave-foranea" title="Permanent link">&para;</a></h3>
+<p><strong>Ejemplos:</strong> Concepto de pago → Categoría; Beca aplicada → Tipo de beca; Reembolso → Solicitud y Cuenta.</p>
+<p>El Request trae un <strong>id</strong> (<code>idCategoria</code>); el service busca la entidad y la asocia:</p>
+<div class="highlight"><pre><span></span><code><span class="n">CategoriaConcepto</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">categoriaConceptoRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getIdCategoria</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="na">orElseThrow</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ResourceNotFoundException</span><span class="p">(</span><span class="s">"Categoria de concepto no encontrada: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">...));</span>
+<span class="n">ConceptoPago</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConceptoPago</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">categoria</span><span class="p">(</span><span class="n">categoria</span><span class="p">)</span><span class="w">          </span><span class="c1">// @ManyToOne en la entidad</span>
+<span class="w">        </span><span class="p">.</span><span class="na">nombre</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getNombre</span><span class="p">())</span>
+<span class="w">        </span><span class="p">...</span>
+</code></pre></div>
+<ul>
+<li>Si el id no existe → <strong>404</strong> (antes de tocar la base).</li>
+<li>La entidad usa <code>@ManyToOne</code> + <code>@JoinColumn</code>; en la tabla hay una <strong>clave foránea</strong> real. Por eso la base impide borrar una categoría que tiene conceptos (<strong>409</strong>).</li>
+<li>En el frontend, el id se elige con un <strong>desplegable</strong> que carga los registros existentes, no se escribe a mano.</li>
+</ul>
+<h3 id="42-relacion-con-otro-microservicio-solo-el-id-sin-clave-foranea">4.2 Relación con otro microservicio (solo el id, sin clave foránea)<a class="headerlink" href="#42-relacion-con-otro-microservicio-solo-el-id-sin-clave-foranea" title="Permanent link">&para;</a></h3>
+<p><strong>Ejemplos:</strong> <code>idPersona</code> en Matrícula, Pago, Cuenta y Beca aplicada; <code>idSeccion</code> (grupo) en el detalle de matrícula.</p>
+<p>Cada microservicio tiene <strong>su propia base de datos</strong> ("base de datos por servicio"). Una base no puede tener clave foránea hacia otra, así que se guarda solo el número.</p>
+<ul>
+<li><strong>Ventaja:</strong> los servicios son independientes; si <code>personas-ms</code> cae, finanzas sigue funcionando.</li>
+<li><strong>Costo:</strong> nadie garantiza que la persona exista. Se valida en la aplicación (ver Matrícula, nivel 4) o se acepta el riesgo.</li>
+</ul>
+<h3 id="43-relacion-sin-clave-foranea-dentro-del-mismo-servicio">4.3 Relación sin clave foránea dentro del mismo servicio<a class="headerlink" href="#43-relacion-sin-clave-foranea-dentro-del-mismo-servicio" title="Permanent link">&para;</a></h3>
+<p><strong>Ejemplo:</strong> Variación y Ampliación guardan <code>id_cronograma</code> sin clave foránea. Por eso <code>CronogramaMatriculaService.eliminar</code> lo valida a mano:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">variacionMatriculaRepository</span><span class="p">.</span><span class="na">existsByIdCronograma</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ampliacionPlazoMatriculaRepository</span><span class="p">.</span><span class="na">existsByIdCronograma</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BusinessRuleException</span><span class="p">(</span><span class="s">"No se puede eliminar el cronograma "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">": tiene variaciones o ampliaciones..."</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>existsByIdCronograma</code> es una <strong>consulta derivada</strong> de Spring Data: el nombre del método se convierte en SQL automáticamente.</p>
+<hr />
+<h2 id="5-nivel-3-crud-con-reglas-de-estado">5. Nivel 3 — CRUD con reglas de estado<a class="headerlink" href="#5-nivel-3-crud-con-reglas-de-estado" title="Permanent link">&para;</a></h2>
+<h3 id="pago-pagoservice-pasarelapagoservice">Pago (<code>PagoService</code>, <code>PasarelaPagoService</code>)<a class="headerlink" href="#pago-pagoservice-pasarelapagoservice" title="Permanent link">&para;</a></h3>
+<p>Un pago no se edita libremente: <strong>cambia de estado</strong> con acciones concretas.</p>
+<div class="highlight"><pre><span></span><code>PENDIENTE ──Pagar──► EN_PROCESO ──Aceptar / Mercado Pago approved──► APROBADO ──Reembolsar──► REEMBOLSADO
+                          └──Rechazar / Mercado Pago rejected──► RECHAZADO
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Acción</th>
+<th>Endpoint</th>
+<th>Regla</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pagar</td>
+<td><code>POST /pagos/{id}/preferencia</code></td>
+<td>Solo <code>PENDIENTE</code> o <code>EN_PROCESO</code></td>
+</tr>
+<tr>
+<td>Aceptar / Rechazar</td>
+<td><code>POST /pagos/{id}/aceptar</code> · <code>/rechazar</code></td>
+<td>Solo <code>EN_PROCESO</code></td>
+</tr>
+<tr>
+<td>Reembolsar</td>
+<td><code>POST /pagos/{id}/reembolsar</code></td>
+<td>Solo <code>APROBADO</code></td>
+</tr>
+</tbody>
+</table>
+<p>Si no se cumple → <code>BusinessRuleException</code> → <strong>409</strong>. Esto se llama <strong>máquina de estados</strong>: la regla vive en el service, no en el frontend, así nadie la salta llamando a la API directamente.</p>
+<p><strong>¿Por qué Pagos no tiene Eliminar?</strong> Es un registro contable: un pago no se borra, se rechaza o se reembolsa. Así queda el historial.</p>
+<h3 id="matricula">Matrícula<a class="headerlink" href="#matricula" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>REGISTRADA ──pago.aceptado──► CONFIRMADA
+     └──────anular──────────► ANULADA
+</code></pre></div>
+<p><code>confirmar()</code> es <strong>idempotente</strong>: si ya está <code>CONFIRMADA</code> (o <code>ANULADA</code>) no hace nada. Importa porque Kafka puede entregar el mismo evento dos veces.</p>
+<hr />
+<h2 id="6-nivel-4-crud-que-habla-con-otros-servicios">6. Nivel 4 — CRUD que habla con otros servicios<a class="headerlink" href="#6-nivel-4-crud-que-habla-con-otros-servicios" title="Permanent link">&para;</a></h2>
+<h3 id="61-llamada-sincrona-con-plan-b-crear-matricula">6.1 Llamada síncrona con plan B: crear Matrícula<a class="headerlink" href="#61-llamada-sincrona-con-plan-b-crear-matricula" title="Permanent link">&para;</a></h3>
+<p><code>MatriculaService.crear</code> pregunta a <code>planificacion-ms</code> si cada grupo está <code>ABIERTO</code>, usando <strong>Feign</strong> (<code>PlanificacionClient</code>): un cliente HTTP declarado como interfaz, que encuentra el servicio por su nombre en <strong>Eureka</strong>.</p>
+<p>La llamada está protegida con un <strong>Circuit Breaker</strong> (Resilience4j, <code>@CircuitBreaker(name = "planificacion")</code>):</p>
+<ul>
+<li>Si planificación responde y el grupo no está abierto → <strong>409</strong>, no se matricula.</li>
+<li>Si planificación <strong>no responde</strong>, se ejecuta el <code>fallbackSeccion</code> → devuelve <code>null</code> → la matrícula <strong>se registra igual</strong> y la sección se valida después.</li>
+<li>Si falla muchas veces seguidas (50% de 5 llamadas, según el yml), el circuito "se abre" y deja de intentar por un tiempo: no se espera a un servicio caído en cada petición.</li>
+</ul>
+<blockquote>
+<p><strong>Detalle técnico a conocer:</strong> <code>PlanificacionClient</code> llama a <code>GET /api/v1/secciones/{id}</code>, pero hoy <code>planificacion-ms</code> expone <code>/api/v1/grupos</code>. La llamada falla siempre y entra el fallback, así que en la práctica <strong>no se valida</strong> el estado del grupo. Es un pendiente para corregir.</p>
+<p><strong>Truco de Spring:</strong> el método con <code>@CircuitBreaker</code> está en un bean aparte (<code>PlanificacionConsultaService</code>). Si estuviera dentro de <code>MatriculaService</code>, la llamada sería interna y el proxy de Spring no la interceptaría: el circuit breaker no funcionaría.</p>
+</blockquote>
+<h3 id="62-comunicacion-asincrona-la-saga-matricula-pago">6.2 Comunicación asíncrona: la saga matrícula ↔ pago<a class="headerlink" href="#62-comunicacion-asincrona-la-saga-matricula-pago" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>matricula-ms                         Kafka                          finanzas-ms
+crear() ──► matricula.registrada ──► topic matricula-eventos ──► genera cargo PENDIENTE (S/ 350)
+                                                                       │
+                                                         Pagar / Aceptar → APROBADO
+                                                                       │
+confirmar() ◄── topic pago-aceptado-eventos ◄── pago.aceptado ◄────────┘
+</code></pre></div>
+<ul>
+<li><strong>Asíncrono:</strong> matrícula no espera a finanzas. Si finanzas está caído, el evento queda en Kafka y se procesa al volver.</li>
+<li><strong>Publicar tras el commit</strong> (<code>publicarTrasCommit</code>): el evento sale solo si la transacción en la base terminó bien.</li>
+<li><strong>Idempotencia del consumidor:</strong> <code>generarCargoDeMatricula</code> revisa si ya existe un cargo para esa <code>matriculaId</code>; si el evento llega dos veces, no duplica el cobro.</li>
+<li><strong>Saga:</strong> una operación de negocio repartida en varios servicios, sin una transacción única. Cada paso se confirma por su cuenta y se coordina con eventos.</li>
+</ul>
+<h3 id="63-llamada-a-una-api-externa-mercado-pago">6.3 Llamada a una API externa: Mercado Pago<a class="headerlink" href="#63-llamada-a-una-api-externa-mercado-pago" title="Permanent link">&para;</a></h3>
+<p>Ver <a href="../guia-mercado-pago/">guia-mercado-pago.md</a>. Es el caso más complejo: credenciales, redirección del navegador, confirmación contra un servicio de terceros y traducción de sus estados a los nuestros.</p>
+<hr />
+<h2 id="7-como-llegan-los-datos-de-prueba-seeds">7. Cómo llegan los datos de prueba (seeds)<a class="headerlink" href="#7-como-llegan-los-datos-de-prueba-seeds" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Migraciones versionadas</strong> (<code>db/migration/V1__...sql</code>): crean y modifican tablas. Corren <strong>una sola vez</strong> y en orden. Ej.: <code>V9__seed_tipos_matricula.sql</code> inserta los tipos de matrícula (catálogo que también usa producción).</li>
+<li><strong>Seeds de demo</strong> (<code>db/seed-dev/R__demo_*.sql</code>): migraciones <strong>repetibles</strong> de Flyway. Corren cuando su contenido cambia. Solo los lee el perfil dev (<code>locations: classpath:db/migration,classpath:db/seed-dev</code>); producción no.</li>
+<li>Usan <strong>ids fijos + <code>ON CONFLICT DO NOTHING</code></strong>: se pueden ejecutar varias veces sin duplicar, y los ids coinciden entre servicios (la matrícula 3 de <code>matricula-ms</code> es la <code>matricula_id</code> 3 de <code>finanzas-ms</code>).</li>
+<li>Al final hacen <code>setval(...)</code> para que el próximo registro creado desde la app no choque con un id del seed.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Servicio</th>
+<th>Seed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>personas-ms</td>
+<td><code>R__demo_personas.sql</code> — 5 estudiantes</td>
+</tr>
+<tr>
+<td>planificacion-ms</td>
+<td><code>R__demo_planificacion.sql</code> — periodos, cursos, ofertas, grupos</td>
+</tr>
+<tr>
+<td>matricula-ms</td>
+<td><code>R__demo_matriculas.sql</code> — cronogramas, variaciones, ampliación, matrículas e historial</td>
+</tr>
+<tr>
+<td>finanzas-ms</td>
+<td><code>R__demo_pagos.sql</code> — conceptos, pagos, cuentas, becas, solicitudes y reembolso</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-resumen-para-repasar">8. Resumen para repasar<a class="headerlink" href="#8-resumen-para-repasar" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Nivel 1:</strong> Controller → Service → Mapper → Repository → Entity, con DTO de entrada y salida.</li>
+<li><strong>Errores:</strong> 400 validación, 404 no existe, 409 regla de negocio o integridad.</li>
+<li><strong>Nivel 2:</strong> relaciones por id; con clave foránea dentro del servicio, sin ella entre servicios.</li>
+<li><strong>Nivel 3:</strong> máquinas de estado (Pago, Matrícula); los registros contables no se borran.</li>
+<li><strong>Nivel 4:</strong> Feign + Eureka + Circuit Breaker (síncrono) y Kafka + saga (asíncrono), con publicación tras commit e idempotencia.</li>
+<li><strong>Orden de datos:</strong> catálogos y personas primero, luego lo que los usa; al borrar, al revés.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top", "toc.follow", "content.code.copy", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
