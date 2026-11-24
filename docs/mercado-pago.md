@@ -149,7 +149,8 @@ mercadopago:
 - **`auto_return` no se usa**: Mercado Pago lo exige con una URL pública `https`, y en localhost la rechaza. El usuario vuelve pulsando el botón de Mercado Pago.
 - **Webhook (`notification-url`)**: en local Mercado Pago no puede llegar a `localhost`, así que **la confirmación depende de que el usuario vuelva a `/pagos/resultado`**. Si cierra la pestaña antes, el pago queda `EN_PROCESO` en LAMB aunque se haya cobrado en Mercado Pago. En ese caso se puede llamar a mano a `confirmar-mercadopago` con el `payment_id` del panel de Mercado Pago.
 - Las credenciales son de **usuario de prueba** (`APP_USR`): por eso se usa `initPoint` y no `sandboxInitPoint`.
-- ⚠️ El `access-token` real está commiteado en el repositorio privado `JoaHasss/Lamb-UPEU` por decisión del equipo. Si el repositorio se hace público o se suman colaboradores externos, **genera un token nuevo** en el panel de Mercado Pago.
+- **Las credenciales ya no están en el repositorio.** El yml y `environment.ts` traen los marcadores `PEGA_AQUI_TU_PUBLIC_KEY_DE_PRUEBA` y `PEGA_AQUI_TU_ACCESS_TOKEN_DE_PRUEBA`; cada integrante pega las suyas (los pasos están en el comentario del yml). Sin credenciales el sistema arranca igual: solo falla el pago con Mercado Pago.
+- ⚠️ El `access-token` anterior quedó en el **historial de git** (commits `2cefa41` y `141a0da`). Quitarlo del archivo no lo borra de ahí: el dueño de esa cuenta debería **regenerarlo** en el panel de Mercado Pago.
 
 ---
 

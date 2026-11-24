@@ -34,6 +34,8 @@ nav:
   - Inicio: index.md
   - Producto U2: u2-producto.md
   - Pagos con Mercado Pago: mercado-pago.md
+  - "Guía: Mercado Pago explicado": guia-mercado-pago.md
+  - "Guía: CRUDs de Matrícula y Finanzas": guia-cruds-matricula-finanzas.md
 
 extra_css:
   - stylesheets/extra.css
