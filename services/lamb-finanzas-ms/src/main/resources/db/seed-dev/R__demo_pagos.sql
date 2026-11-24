@@ -43,6 +43,26 @@ INSERT INTO cuentas_estudiante (id, id_persona, saldo_actual, fecha_apertura) VA
 (5, 5,   0.00, '2026-08-11 12:20')
 ON CONFLICT (id) DO NOTHING;
 
+-- Movimientos de cuenta: explican cada saldo de arriba (CARGO suma a la deuda, ABONO la resta).
+-- Cada pago genera su CARGO; al aprobarse, su ABONO. Persona 4: matricula anulada, cargo revertido.
+INSERT INTO movimientos_cuenta (id, id_cuenta, tipo, monto, concepto, fecha, id_pago) VALUES
+( 1, 1, 'CARGO', 350.00, 'Matricula 2026-1',                                 '2026-03-10 09:15', 1),
+( 2, 1, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-1',                  '2026-03-10 09:20', 1),
+( 3, 1, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-12 10:30', 2),
+( 4, 1, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-2',                  '2026-08-12 10:34', 2),
+( 5, 1, 'CARGO',  30.00, 'Constancia de estudios',                           '2026-09-02 15:05', 7),
+( 6, 1, 'ABONO',  30.00, 'Pago aprobado: Constancia de estudios',            '2026-09-02 15:10', 7),
+( 7, 2, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-14 16:05', 3),
+( 8, 2, 'CARGO',  25.00, 'Carnet universitario',                             '2026-09-05 10:00', 8),
+( 9, 3, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-25 11:40', 4),
+(10, 4, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-13 08:50', 5),
+(11, 4, 'ABONO', 350.00, 'Cargo de matricula cancelado: Matricula 2026-2',   '2026-08-20 09:00', 5),
+(12, 5, 'CARGO', 350.00, 'Matricula 2026-2',                                 '2026-08-11 12:20', 6),
+(13, 5, 'ABONO', 350.00, 'Pago aprobado: Matricula 2026-2',                  '2026-08-11 12:26', 6),
+(14, 5, 'CARGO',  45.00, 'Certificado de notas',                             '2026-09-10 17:20', 9),
+(15, 5, 'ABONO',  45.00, 'Pago aprobado: Certificado de notas',              '2026-09-10 17:25', 9)
+ON CONFLICT (id) DO NOTHING;
+
 -- Becas: tipos y a quien se aplican. Rigen desde 2026-09-01, despues de las matriculas 2026-2,
 -- por eso esos cargos se pagaron completos (S/ 350).
 INSERT INTO tipos_beca (id, nombre, descripcion) VALUES
@@ -77,6 +97,7 @@ SELECT setval(pg_get_serial_sequence('categorias_concepto', 'id'), (SELECT max(i
 SELECT setval(pg_get_serial_sequence('conceptos_pago', 'id'), (SELECT max(id) FROM conceptos_pago));
 SELECT setval(pg_get_serial_sequence('pagos', 'id'), (SELECT max(id) FROM pagos));
 SELECT setval(pg_get_serial_sequence('cuentas_estudiante', 'id'), (SELECT max(id) FROM cuentas_estudiante));
+SELECT setval(pg_get_serial_sequence('movimientos_cuenta', 'id'), (SELECT max(id) FROM movimientos_cuenta));
 SELECT setval(pg_get_serial_sequence('tipos_beca', 'id'), (SELECT max(id) FROM tipos_beca));
 SELECT setval(pg_get_serial_sequence('becas_aplicadas', 'id'), (SELECT max(id) FROM becas_aplicadas));
 SELECT setval(pg_get_serial_sequence('solicitudes_devolucion', 'id'), (SELECT max(id) FROM solicitudes_devolucion));

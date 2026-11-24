@@ -16,6 +16,9 @@ export interface PagoResponse {
   matriculaId: number | null;
   concepto: string;
   monto: number;
+  // Precio antes de beca/descuento y lo descontado (null en pagos sin calculo)
+  montoOriginal?: number | null;
+  montoDescuento?: number | null;
   // null mientras el cargo esta PENDIENTE
   metodo: MetodoPago | null;
   estado: EstadoPago;

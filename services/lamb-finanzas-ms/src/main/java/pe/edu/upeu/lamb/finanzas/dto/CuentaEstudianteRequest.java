@@ -13,6 +13,6 @@ public class CuentaEstudianteRequest {
     @NotNull
     private Long idPersona;
 
-    @NotNull
+    // Opcional y solo al crear: queda como movimiento "Saldo inicial". Al editar se ignora.
     private BigDecimal saldoActual;
 }

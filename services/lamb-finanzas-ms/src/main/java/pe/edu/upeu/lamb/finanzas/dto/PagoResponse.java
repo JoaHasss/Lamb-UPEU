@@ -23,6 +23,8 @@ public class PagoResponse {
     private Long matriculaId;
     private String concepto;
     private BigDecimal monto;
+    private BigDecimal montoOriginal;
+    private BigDecimal montoDescuento;
     private MetodoPago metodo;
     private EstadoPago estado;
     private Instant fechaPago;

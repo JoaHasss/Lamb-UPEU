@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.CuentaEstudianteRequest;
 import pe.edu.upeu.lamb.finanzas.dto.CuentaEstudianteResponse;
 import pe.edu.upeu.lamb.finanzas.entity.CuentaEstudiante;
+import pe.edu.upeu.lamb.finanzas.entity.TipoMovimientoCuenta;
 import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.CuentaEstudianteMapper;
 import pe.edu.upeu.lamb.finanzas.repository.CuentaEstudianteRepository;
 
 import java.time.Instant;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -21,6 +23,7 @@ public class CuentaEstudianteService {
 
     private final CuentaEstudianteRepository cuentaEstudianteRepository;
     private final CuentaEstudianteMapper cuentaEstudianteMapper;
+    private final SaldoCuentaService saldoCuentaService;
 
     public List<CuentaEstudianteResponse> listar() {
         return cuentaEstudianteRepository.findAll().stream()
@@ -34,16 +37,26 @@ public class CuentaEstudianteService {
 
     @Transactional
     public CuentaEstudianteResponse crear(CuentaEstudianteRequest request) {
+        // La cuenta abre en 0; un saldo inicial queda como movimiento, asi el saldo
+        // siempre se explica con su historial.
         CuentaEstudiante entity = cuentaEstudianteMapper.toEntity(request);
+        entity.setSaldoActual(BigDecimal.ZERO);
         entity.setFechaApertura(Instant.now());
-        return cuentaEstudianteMapper.toResponse(cuentaEstudianteRepository.save(entity));
+        CuentaEstudiante guardada = cuentaEstudianteRepository.save(entity);
+        BigDecimal inicial = request.getSaldoActual();
+        if (inicial != null && inicial.signum() != 0) {
+            saldoCuentaService.registrar(guardada.getId(),
+                    inicial.signum() > 0 ? TipoMovimientoCuenta.CARGO : TipoMovimientoCuenta.ABONO,
+                    inicial.abs(), "Saldo inicial", null);
+        }
+        return cuentaEstudianteMapper.toResponse(guardada);
     }
 
     @Transactional
     public CuentaEstudianteResponse actualizar(Long id, CuentaEstudianteRequest request) {
         CuentaEstudiante entity = buscarOFallar(id);
+        // El saldo no se edita a mano: cambia solo con movimientos y ajustes manuales.
         entity.setIdPersona(request.getIdPersona());
-        entity.setSaldoActual(request.getSaldoActual());
         return cuentaEstudianteMapper.toResponse(cuentaEstudianteRepository.save(entity));
     }
 

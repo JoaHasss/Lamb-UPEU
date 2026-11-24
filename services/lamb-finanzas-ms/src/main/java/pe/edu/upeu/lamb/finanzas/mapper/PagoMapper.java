@@ -34,6 +34,8 @@ public class PagoMapper {
                 .matriculaId(pago.getMatriculaId())
                 .concepto(pago.getConcepto())
                 .monto(pago.getMonto())
+                .montoOriginal(pago.getMontoOriginal())
+                .montoDescuento(pago.getMontoDescuento())
                 .metodo(pago.getMetodo())
                 .estado(pago.getEstado())
                 .fechaPago(pago.getFechaPago())

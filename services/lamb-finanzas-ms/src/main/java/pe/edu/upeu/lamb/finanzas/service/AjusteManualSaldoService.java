@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.lamb.finanzas.dto.AjusteManualSaldoRequest;
 import pe.edu.upeu.lamb.finanzas.dto.AjusteManualSaldoResponse;
 import pe.edu.upeu.lamb.finanzas.entity.AjusteManualSaldo;
+import pe.edu.upeu.lamb.finanzas.exception.BusinessRuleException;
+import pe.edu.upeu.lamb.finanzas.entity.TipoMovimientoCuenta;
 import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.AjusteManualSaldoMapper;
 import pe.edu.upeu.lamb.finanzas.repository.AjusteManualSaldoRepository;
@@ -24,6 +26,7 @@ public class AjusteManualSaldoService {
 
     private final AjusteManualSaldoRepository ajusteManualSaldoRepository;
     private final AjusteManualSaldoMapper ajusteManualSaldoMapper;
+    private final SaldoCuentaService saldoCuentaService;
 
     public List<AjusteManualSaldoResponse> listar() {
         return ajusteManualSaldoRepository.findAll().stream()
@@ -37,6 +40,13 @@ public class AjusteManualSaldoService {
 
     @Transactional
     public AjusteManualSaldoResponse crear(AjusteManualSaldoRequest request) {
+        if (request.getMonto().signum() == 0) {
+            throw new BusinessRuleException("El monto del ajuste no puede ser 0");
+        }
+        // Positivo: el estudiante debe mas (CARGO). Negativo: debe menos (ABONO).
+        TipoMovimientoCuenta tipo = request.getMonto().signum() > 0 ? TipoMovimientoCuenta.CARGO : TipoMovimientoCuenta.ABONO;
+        saldoCuentaService.registrar(request.getIdCuenta(), tipo, request.getMonto().abs(),
+                "Ajuste manual: " + request.getMotivo(), null);
         AjusteManualSaldo entity = ajusteManualSaldoMapper.toEntity(request);
         entity.setFecha(Instant.now());
         return ajusteManualSaldoMapper.toResponse(ajusteManualSaldoRepository.save(entity));

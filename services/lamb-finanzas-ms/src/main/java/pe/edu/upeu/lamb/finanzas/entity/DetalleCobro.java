@@ -37,6 +37,13 @@ public class DetalleCobro {
     @Column(name = "monto", nullable = false, precision = 10, scale = 2)
     private BigDecimal monto;
 
+    // Precio antes de becas/descuentos y lo que se desconto. "monto" es lo que se cobra.
+    @Column(name = "monto_original", precision = 10, scale = 2)
+    private BigDecimal montoOriginal;
+
+    @Column(name = "monto_descuento", precision = 10, scale = 2)
+    private BigDecimal montoDescuento;
+
     @ManyToOne
     @JoinColumn(name = "id_descuento_aplicado")
     private DescuentoAplicado descuentoAplicado;

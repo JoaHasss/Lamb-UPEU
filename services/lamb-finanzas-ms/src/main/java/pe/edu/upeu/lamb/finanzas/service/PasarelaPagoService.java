@@ -62,6 +62,7 @@ public class PasarelaPagoService {
     private final PagoEventosProducer pagoEventosProducer;
     private final IngresosPagosPasarelaClient pasarelaClient;
     private final MercadoPagoProperties propiedades;
+    private final SaldoCuentaService saldoCuentaService;
 
     @Transactional
     public PagoResponse pagarConTarjeta(Long idPago, String cardToken, String payerEmail) {
@@ -186,6 +187,11 @@ public class PasarelaPagoService {
         pago.setReferenciaExterna(referenciaExterna);
         pago.setEstado(aprobado ? EstadoPago.APROBADO : pendiente ? EstadoPago.EN_PROCESO : EstadoPago.RECHAZADO);
         Pago guardado = pagoRepository.save(pago);
+        if (aprobado) {
+            saldoCuentaService.abonarPago(guardado);
+        } else if (!pendiente && guardado.getMatriculaId() == null) {
+            saldoCuentaService.anularCargoPago(guardado, "Pago rechazado, se anula el cargo");
+        }
 
         registrarLog(guardado.getId(), referenciaExterna, estadoMp, detalleMp);
 

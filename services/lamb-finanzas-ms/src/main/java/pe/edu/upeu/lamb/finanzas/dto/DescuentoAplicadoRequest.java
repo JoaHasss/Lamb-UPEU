@@ -1,5 +1,7 @@
 package pe.edu.upeu.lamb.finanzas.dto;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,8 @@ public class DescuentoAplicadoRequest {
     private Long idTipoDescuento;
 
     @NotNull
+    @DecimalMin(value = "0.00", message = "El porcentaje no puede ser negativo")
+    @DecimalMax(value = "100.00", message = "El porcentaje no puede superar 100")
     private BigDecimal porcentaje;
 
     @NotNull

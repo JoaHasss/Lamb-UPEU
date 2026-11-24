@@ -13,6 +13,8 @@ public class DetalleCobroMapper {
                 .idEstadoCobro(entity.getEstadoCobro().getId())
                 .concepto(entity.getConcepto())
                 .monto(entity.getMonto())
+                .montoOriginal(entity.getMontoOriginal())
+                .montoDescuento(entity.getMontoDescuento())
                 .idDescuentoAplicado(entity.getDescuentoAplicado() != null ? entity.getDescuentoAplicado().getId() : null)
                 .build();
     }

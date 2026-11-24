@@ -40,7 +40,12 @@
         <td>{{ pago.id }}</td>
         <td>{{ pago.idPersona }}</td>
         <td>{{ pago.concepto }}</td>
-        <td>S/ {{ pago.monto }}</td>
+        <td>
+          S/ {{ pago.monto }}
+          @if (pago.montoDescuento) {
+            <br /><small>antes S/ {{ pago.montoOriginal }}, desc. S/ {{ pago.montoDescuento }}</small>
+          }
+        </td>
         <td>{{ (pago.metodo ?? '-') | sinGuion }}</td>
         <td><span class="estado" [class]="pago.estado">{{ pago.estado.replace('_', ' ') }}</span></td>
         <td>{{ pago.fechaPago.slice(0, 16).replace('T', ' ') }}</td>
@@ -74,6 +79,10 @@
                 <dl>
                   <dt>Persona</dt><dd>{{ pago.idPersona }}</dd>
                   <dt>Concepto</dt><dd>{{ pago.concepto }}</dd>
+                  @if (pago.montoDescuento) {
+                    <dt>Monto original</dt><dd>S/ {{ pago.montoOriginal }}</dd>
+                    <dt>Descuento (beca/descuento)</dt><dd>- S/ {{ pago.montoDescuento }}</dd>
+                  }
                   <dt>Monto</dt><dd>S/ {{ pago.monto }}</dd>
                   <dt>Estado</dt><dd>{{ pago.estado.replace('_', ' ') }}</dd>
                   <dt>Metodo</dt><dd>{{ (pago.metodo ?? 'Sin elegir') | sinGuion }}</dd>

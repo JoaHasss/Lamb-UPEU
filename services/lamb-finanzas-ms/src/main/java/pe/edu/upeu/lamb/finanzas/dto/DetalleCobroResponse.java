@@ -19,5 +19,7 @@ public class DetalleCobroResponse {
     private Long idEstadoCobro;
     private String concepto;
     private BigDecimal monto;
+    private BigDecimal montoOriginal;
+    private BigDecimal montoDescuento;
     private Long idDescuentoAplicado;
 }

@@ -24,7 +24,7 @@ export class CuentasForm {
 
   protected readonly form = this.fb.group({
       idPersona: [null as number | null, [Validators.required]],
-      saldoActual: [0 as number | null, [Validators.required]],
+      saldoActual: [0 as number | null],
   });
 
   constructor() {

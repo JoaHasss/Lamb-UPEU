@@ -33,6 +33,11 @@ public class MovimientoCuenta {
     @Column(name = "concepto", nullable = false, length = 150)
     private String concepto;
 
+    // Pago que origino el movimiento (nulo en movimientos manuales y ajustes).
+    @ManyToOne
+    @JoinColumn(name = "id_pago")
+    private Pago pago;
+
     @Column(name = "fecha", nullable = false)
     private Instant fecha;
 }

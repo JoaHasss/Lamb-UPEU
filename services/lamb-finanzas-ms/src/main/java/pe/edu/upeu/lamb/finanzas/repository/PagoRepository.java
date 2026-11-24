@@ -10,4 +10,6 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
     List<Pago> findByIdPersona(Long idPersona);
 
     Optional<Pago> findByMatriculaId(Long matriculaId);
+
+    boolean existsByMatriculaId(Long matriculaId);
 }

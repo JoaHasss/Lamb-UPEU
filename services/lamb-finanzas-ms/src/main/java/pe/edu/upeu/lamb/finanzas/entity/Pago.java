@@ -35,6 +35,13 @@ public class Pago {
     @Column(name = "monto", nullable = false, precision = 10, scale = 2)
     private BigDecimal monto;
 
+    // Precio antes de becas/descuentos y lo que se desconto. "monto" es lo que se cobra.
+    @Column(name = "monto_original", precision = 10, scale = 2)
+    private BigDecimal montoOriginal;
+
+    @Column(name = "monto_descuento", precision = 10, scale = 2)
+    private BigDecimal montoDescuento;
+
     // Nulo mientras el cargo esta PENDIENTE (recien generado, sin canal de pago elegido todavia).
     @Enumerated(EnumType.STRING)
     @Column(name = "metodo", length = 20)

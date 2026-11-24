@@ -15,6 +15,7 @@ public class MovimientoCuentaMapper {
                 .monto(entity.getMonto())
                 .concepto(entity.getConcepto())
                 .fecha(entity.getFecha())
+                .idPago(entity.getPago() != null ? entity.getPago().getId() : null)
                 .build();
     }
 }

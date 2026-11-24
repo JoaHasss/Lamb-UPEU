@@ -22,4 +22,5 @@ public class MovimientoCuentaResponse {
     private BigDecimal monto;
     private String concepto;
     private Instant fecha;
+    private Long idPago;
 }

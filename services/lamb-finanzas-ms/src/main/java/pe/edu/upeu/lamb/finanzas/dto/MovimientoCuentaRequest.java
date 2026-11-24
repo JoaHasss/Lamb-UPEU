@@ -1,6 +1,7 @@
 package pe.edu.upeu.lamb.finanzas.dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class MovimientoCuentaRequest {
     private TipoMovimientoCuenta tipo;
 
     @NotNull
+    @DecimalMin(value = "0.01", message = "El monto debe ser mayor a 0")
     private BigDecimal monto;
 
     @NotNull

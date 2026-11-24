@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,9 +32,13 @@ public class PagoService {
     // Aqui se deja fijo porque el flujo de costo real aun no esta integrado con finanzas.
     private static final BigDecimal MONTO_MATRICULA_PLACEHOLDER = new BigDecimal("350.00");
 
+    private static final ZoneId ZONA_LIMA = ZoneId.of("America/Lima");
+
     private final PagoRepository pagoRepository;
     private final PagoMapper pagoMapper;
     private final PagoEventosProducer pagoEventosProducer;
+    private final CalculoDescuentoService calculoDescuentoService;
+    private final SaldoCuentaService saldoCuentaService;
 
     /**
      * Idempotente por matriculaId: si el evento matricula.confirmada se reentrega, no genera
@@ -40,22 +46,28 @@ public class PagoService {
      */
     @Transactional
     public void generarCargoDeMatricula(MatriculaConfirmadaEvento evento) {
-        if (pagoRepository.findByMatriculaId(evento.getMatriculaId()).isPresent()) {
+        if (pagoRepository.existsByMatriculaId(evento.getMatriculaId())) {
             log.warn("component=processor matriculaId={} status=ignored motivo=\"cargo ya generado\"",
                     evento.getMatriculaId());
             return;
         }
+        CalculoDescuentoService.Resultado calculo = calculoDescuentoService.calcular(
+                evento.getIdPersona(), MONTO_MATRICULA_PLACEHOLDER, LocalDate.now(ZONA_LIMA));
         Pago pago = Pago.builder()
                 .idPersona(evento.getIdPersona())
                 .matriculaId(evento.getMatriculaId())
                 .concepto("Matricula " + evento.getPeriodo())
-                .monto(MONTO_MATRICULA_PLACEHOLDER)
+                .monto(calculo.montoFinal())
+                .montoOriginal(calculo.montoOriginal())
+                .montoDescuento(calculo.montoDescuento())
                 .estado(EstadoPago.PENDIENTE)
                 .fechaPago(Instant.now())
                 .build();
         Pago guardado = pagoRepository.save(pago);
-        log.info("component=processor matriculaId={} idPersona={} pagoId={} estado={} status=processed",
-                evento.getMatriculaId(), evento.getIdPersona(), guardado.getId(), guardado.getEstado());
+        saldoCuentaService.cargarPago(guardado);
+        log.info("component=processor matriculaId={} idPersona={} pagoId={} estado={} montoOriginal={} becaPct={} descuentoPct={} montoFinal={} status=processed",
+                evento.getMatriculaId(), evento.getIdPersona(), guardado.getId(), guardado.getEstado(),
+                calculo.montoOriginal(), calculo.porcentajeBeca(), calculo.porcentajeDescuento(), calculo.montoFinal());
     }
 
     public List<PagoResponse> listar(Long idPersonaSolicitante, boolean privilegiado) {
@@ -77,11 +89,20 @@ public class PagoService {
      * El estudiante registra el pago (voucher) pero queda EN_PROCESO hasta que
      * ADMIN/COORDINADOR lo valide con aceptar()/rechazar() (saga paga-antes-de-confirmar).
      */
+    @Transactional
     public PagoResponse procesar(PagoRequest request) {
+        // Si la matricula ya tiene su cargo, este pago es solo el intento de pagarlo: la deuda
+        // ya esta en la cuenta. Si no (tramites), el pago trae su propio cargo.
+        boolean pagaCargoExistente = request.getMatriculaId() != null
+                && pagoRepository.existsByMatriculaId(request.getMatriculaId());
         Pago pago = pagoMapper.toEntity(request);
         pago.setEstado(EstadoPago.EN_PROCESO);
         pago.setReferenciaExterna(UUID.randomUUID().toString());
-        return pagoMapper.toResponse(pagoRepository.save(pago));
+        Pago guardado = pagoRepository.save(pago);
+        if (!pagaCargoExistente) {
+            saldoCuentaService.cargarPago(guardado);
+        }
+        return pagoMapper.toResponse(guardado);
     }
 
     @Transactional
@@ -90,6 +111,7 @@ public class PagoService {
         validarEstado(pago, EstadoPago.EN_PROCESO, "aceptar");
         pago.setEstado(EstadoPago.APROBADO);
         Pago guardado = pagoRepository.save(pago);
+        saldoCuentaService.abonarPago(guardado);
         pagoEventosProducer.publicarTrasCommit(PagoAceptadoEvento.builder()
                 .tipoEvento("pago.aceptado")
                 .idPago(guardado.getId())
@@ -101,13 +123,21 @@ public class PagoService {
         return pagoMapper.toResponse(guardado);
     }
 
+    @Transactional
     public PagoResponse rechazar(Long id) {
         Pago pago = buscarOFallar(id);
         validarEstado(pago, EstadoPago.EN_PROCESO, "rechazar");
         pago.setEstado(EstadoPago.RECHAZADO);
-        return pagoMapper.toResponse(pagoRepository.save(pago));
+        Pago guardado = pagoRepository.save(pago);
+        // Tramite rechazado: no se da, su cargo se anula. Una matricula rechazada se sigue
+        // debiendo (se anula con "Cancelacion de cargo de matricula").
+        if (guardado.getMatriculaId() == null) {
+            saldoCuentaService.anularCargoPago(guardado, "Pago rechazado, se anula el cargo");
+        }
+        return pagoMapper.toResponse(guardado);
     }
 
+    // El reembolso no cambia el saldo: el cargo ya se pago (abono) y el dinero vuelve fuera de la cuenta.
     public PagoResponse reembolsar(Long id) {
         Pago pago = buscarOFallar(id);
         validarEstado(pago, EstadoPago.APROBADO, "reembolsar");

@@ -8,6 +8,7 @@ import pe.edu.upeu.lamb.finanzas.dto.DetalleCobroResponse;
 import pe.edu.upeu.lamb.finanzas.entity.DescuentoAplicado;
 import pe.edu.upeu.lamb.finanzas.entity.DetalleCobro;
 import pe.edu.upeu.lamb.finanzas.entity.EstadoCobro;
+import pe.edu.upeu.lamb.finanzas.exception.BusinessRuleException;
 import pe.edu.upeu.lamb.finanzas.exception.ResourceNotFoundException;
 import pe.edu.upeu.lamb.finanzas.mapper.DetalleCobroMapper;
 import pe.edu.upeu.lamb.finanzas.repository.DescuentoAplicadoRepository;
@@ -28,6 +29,7 @@ public class DetalleCobroService {
     private final EstadoCobroRepository estadoCobroRepository;
     private final DescuentoAplicadoRepository descuentoAplicadoRepository;
     private final DetalleCobroMapper detalleCobroMapper;
+    private final CalculoDescuentoService calculoDescuentoService;
 
     public List<DetalleCobroResponse> listar() {
         return detalleCobroRepository.findAll().stream()
@@ -49,10 +51,22 @@ public class DetalleCobroService {
                     .orElseThrow(() -> new ResourceNotFoundException("Descuento aplicado no encontrado: " + request.getIdDescuentoAplicado()));
         }
 
+        // Persona del cobro: la de la cuenta del estudiante. Se aplica su beca vigente
+        // a la fecha del estado de cobro, mas el descuento elegido (si lo hay).
+        Long idPersona = estadoCobro.getCuentaEstudiante().getIdPersona();
+        if (descuentoAplicado != null && !descuentoAplicado.getIdPersona().equals(idPersona)) {
+            throw new BusinessRuleException("El descuento aplicado " + descuentoAplicado.getId()
+                    + " pertenece a otra persona, no al estudiante de este cobro");
+        }
+        CalculoDescuentoService.Resultado calculo = calculoDescuentoService.calcular(
+                idPersona, request.getMonto(), estadoCobro.getFecha(), descuentoAplicado);
+
         DetalleCobro entity = DetalleCobro.builder()
                 .estadoCobro(estadoCobro)
                 .concepto(request.getConcepto())
-                .monto(request.getMonto())
+                .monto(calculo.montoFinal())
+                .montoOriginal(calculo.montoOriginal())
+                .montoDescuento(calculo.montoDescuento())
                 .descuentoAplicado(descuentoAplicado)
                 .build();
 

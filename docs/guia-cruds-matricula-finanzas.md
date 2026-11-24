@@ -130,6 +130,39 @@ Tipo de beca ─► Beca aplicada (a una Persona)
 | 3 | **Solicitud de devolución** | Pago (cobrado) | Estados: Pendiente, Aprobada, Rechazada. |
 | 4 | **Reembolso** | Solicitud de devolución, Cuenta de estudiante | La devolución efectiva del dinero. |
 
+**Becas y descuentos en el cobro** (`CalculoDescuentoService`):
+
+- El cargo automático de matrícula aplica la beca vigente de la persona más su mejor descuento vigente. Una beca es vigente si ya rige (`fecha_inicio`) y su último movimiento no es una *suspensión* (una *renovación* posterior la reactiva).
+- Si hay varias becas, se toma la de mayor porcentaje, sin sumarlas. Lo mismo con los descuentos. La beca y el descuento sí se suman, con un tope de 100%.
+- El *detalle de cobro* aplica la beca vigente del estudiante de la cuenta, a la fecha del estado de cobro, más el descuento que se elija (debe ser de la misma persona).
+- `monto` es lo que se cobra. `monto_original` y `monto_descuento` guardan el precio antes del descuento y lo descontado. Un cargo ya generado no se recalcula si después cambia la beca.
+- Los porcentajes de becas, descuentos, tipos de descuento y convenios se validan entre 0 y 100.
+
+**Saldo de la cuenta de estudiante** (`SaldoCuentaService`):
+
+El saldo es **lo que el estudiante debe** a la universidad ("adeuda" = debe). S/ 350 = debe S/ 350; S/ 0 = al día; negativo = tiene saldo a favor.
+
+El saldo ya no se escribe a mano: cada cambio deja un **movimiento de cuenta**, así el saldo siempre se explica con su historial. Un **CARGO** suma a la deuda y un **ABONO** la resta.
+
+| Qué pasa | Movimiento | Efecto en el saldo |
+|---|---|---|
+| Se genera el cargo de una matrícula (ya con beca/descuento) | CARGO por el monto final | sube |
+| Se registra un pago de trámite (*Nuevo pago* sin matrícula, o con una matrícula que aún no tiene cargo) | CARGO | sube |
+| Se registra el pago de una matrícula que ya tiene cargo | ninguno (la deuda ya está) | — |
+| Se aprueba un pago (admin o Mercado Pago) | ABONO | baja |
+| Se rechaza un pago de **trámite** | ABONO que revierte su cargo | baja |
+| Se rechaza un pago de **matrícula** | ninguno: la matrícula se sigue debiendo | — |
+| *Cancelación de cargo de matrícula* (solo si el cargo no se pagó; una sola vez) | ABONO que revierte el cargo | baja |
+| *Ajuste manual de saldo* | positivo → CARGO, negativo → ABONO | sube / baja |
+| *Movimiento de cuenta* creado a mano (monto > 0) | el tipo elegido | sube / baja |
+| Reembolso de un pago | ninguno: el cargo ya se pagó; el dinero vuelve fuera de la cuenta | — |
+
+- Si la persona no tiene cuenta, se abre sola (en 0) con su primer cargo.
+- Al crear una cuenta a mano se puede poner un *saldo inicial*: queda como movimiento "Saldo inicial". Al editar la cuenta, el saldo no cambia.
+- Cada movimiento que viene de un pago guarda `id_pago`, y no se registra dos veces el mismo cargo o abono de un pago.
+- La fila de la cuenta se bloquea mientras se actualiza, para que dos movimientos simultáneos no se pisen.
+- En los datos de demo, los saldos de las cuentas están explicados por sus movimientos (`R__demo_pagos.sql`).
+
 Al eliminar, la base protege las relaciones con claves foráneas: no se borra un *tipo de beca* asignado, una *solicitud* con reembolso ni una *cuenta* con reembolsos (409).
 
 ### 2.4 El recorrido en el frontend, pantalla por pantalla
@@ -167,7 +200,7 @@ En la lista de matrículas, **Confirmar** y **Anular** cambian el estado a mano;
 | 2 | Conceptos de pago | Nuevo | Nombre, monto, vigente desde/hasta | **Categoría** |
 | 3 | Becas | Nuevo | Nombre, descripción del tipo de beca | — |
 | 4 | Becas aplicadas | Nuevo | Porcentaje, rige desde | **Persona, Tipo de beca** (paso 3) |
-| 5 | Cuentas de estudiante | Nuevo | Saldo actual (lo que adeuda) | **Persona** (una cuenta por persona) |
+| 5 | Cuentas de estudiante | Nuevo | Saldo inicial, opcional (lo que ya debe) | **Persona** (una cuenta por persona) |
 | 6 | Pagos | **Nuevo pago** | Concepto, monto → **Procesar pago** (va a Mercado Pago) | **Persona** |
 | 7 | Pagos | **Pagar** / **Aceptar** / **Rechazar** | Cobrar el cargo o validarlo a mano | — |
 | 8 | Solicitudes de devolución | Nuevo | Motivo, monto (se propone el del pago), estado, fecha | **Pago** — solo pagos **APROBADOS** |
