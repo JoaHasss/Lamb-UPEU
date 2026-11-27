@@ -79,7 +79,7 @@ public class SecurityConfig {
                         // OJO: SIEMPRE antes de .anyRequest(): Spring aplica la primera regla que coincide.
                         // Reiniciar el gateway despues de cambiar esto.
                         // SIGUIENTE: event/<Recurso>Evento.java del ms (PASO 8)
-                        .requestMatchers("/api/v1/notificaciones/**").permitAll()
+                        .requestMatchers("/api/v1/reservas/**").permitAll()
                         .anyRequest().permitAll()
                         // .requestMatchers("/actuator/**", "/error").permitAll()
                         // .requestMatchers(HttpMethod.GET, ACADEMICO).authenticated()

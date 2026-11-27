@@ -397,6 +397,11 @@ spring:
               uri: lb://joaquinsanchez-notificacion-ms
               predicates:
                 - Path=/api/v1/notificaciones/**
+            - id: reserva
+              uri: lb://joaquinsanchez-reserva-ms 
+              predicates:
+                - Path=/api/v1/reservas/**           
+              
 
 eureka:
   instance:

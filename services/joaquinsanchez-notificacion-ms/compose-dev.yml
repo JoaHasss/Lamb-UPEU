@@ -6,7 +6,51 @@
 #   Get-NetTCPConnection -LocalPort 15437 -State Listen -ErrorAction SilentlyContinue   (si no sale nada, esta libre)
 # Puertos ya usados por el proyecto: 15451 a 15461.
 #
+# Levantar:   # ============================================================================================
+# PASO 3 de 15: compose-dev.yml (PostgreSQL propio del servicio)
+# ============================================================================================
+# Copia de services/lamb-finanzas-ms/compose-dev.yml con estos valores cambiados.
+# Antes de elegir el puerto, mira que este libre:
+#   Get-NetTCPConnection -LocalPort 15437 -State Listen -ErrorAction SilentlyContinue   (si no sale nada, esta libre)
+# Puertos ya usados por el proyecto: 15451 a 15461.
+#
 # Levantar:   docker compose -f compose-dev.yml up -d
+# Verificar:  docker ps --filter "name=<recurso>"           -> Up ... 0.0.0.0:15437->5432
+#             docker exec -it <container_name> psql -U lamb -d <POSTGRES_DB> -c "\l"
+#
+# OJO: si cambias el puerto o la clave DESPUES de crearlo, vuelve a correr "up -d" (recrea el
+# contenedor). La clave/usuario solo se aplican la PRIMERA vez; para cambiarlos hay que borrar
+# el volumen con "down -v" (BORRA los datos de esta BD).
+#
+# Los valores de abajo (puerto, BD, usuario, clave) se repiten en el datasource del PASO 5.
+#
+# SIGUIENTE: src/main/resources/db/migration/V1__crear_<recursos>.sql (PASO 4, ver GUIA-EXAMEN.md)
+
+# CAMBIAR: <tunombre>-<recurso>-ms   ej. joaquinsanchez-reserva-ms
+name: joaquinsanchez-notificacion-ms
+
+services:
+  # CAMBIAR: postgres-<recurso>-dev   ej. postgres-reserva-dev
+  postgres-notificacion-dev:
+    image: postgres:16-alpine
+    # CAMBIAR (lo exige el examen): <tunombre>-postgres-<recurso>-dev   ej. joaquinsanchez-postgres-reserva-dev
+    container_name: joaquinsanchez-postgres-notificacion-dev
+    restart: unless-stopped
+    environment:
+      # CAMBIAR: lamb_<recurso>_db   ej. lamb_reserva_db
+      POSTGRES_DB: lamb_notificacion_db
+      POSTGRES_USER: lamb
+      POSTGRES_PASSWORD: lamb
+    ports:
+      # CAMBIAR: el puerto que diga el examen (izquierda = tu PC). La derecha (5432) NO se toca.
+      - "15437:5432"
+    volumes:
+      # CAMBIAR: <recurso>_dev_data   ej. reserva_dev_data  (y abajo igual)
+      - notificacion_dev_data:/var/lib/postgresql/data
+
+volumes:
+  notificacion_dev_data:
+
 # Verificar:  docker ps --filter "name=<recurso>"           -> Up ... 0.0.0.0:15437->5432
 #             docker exec -it <container_name> psql -U lamb -d <POSTGRES_DB> -c "\l"
 #

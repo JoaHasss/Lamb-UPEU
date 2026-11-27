@@ -181,6 +181,12 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8095/api/v1/notificaciones 
 # Compensación (dato que dispara la falla)
 Invoke-RestMethod -Method Post -Uri http://localhost:8095/api/v1/notificaciones -ContentType "application/json" -Body '{"referencia":"NOT-002","destinatario":"INVALIDO","canal":"EMAIL","mensaje":"Tu pedido salio"}'
 
+# Camino feliz
+Invoke-RestMethod -Method Post -Uri http://localhost:8095/api/v1/reservas -ContentType "application/json" -Body '{"referencia":"NOT-001","destinatario":"ana@correo.com","canal":"EMAIL","mensaje":"Tu pedido salio"}'
+
+# Compensación (dato que dispara la falla)
+Invoke-RestMethod -Method Post -Uri http://localhost:8095/api/v1/reservas -ContentType "application/json" -Body '{"referencia":"NOT-002","destinatario":"INVALIDO","canal":"EMAIL","mensaje":"Tu pedido salio"}'
+
 # Resultado (2-3 segundos después)
 Invoke-RestMethod http://localhost:8095/api/v1/notificaciones
 

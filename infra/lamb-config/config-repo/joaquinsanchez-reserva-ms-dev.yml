@@ -1,0 +1,82 @@
+# ============================================================================================
+# PASO 5 de 15: config-repo/<tunombre>-<recurso>-ms-dev.yml  (config centralizada)
+# ============================================================================================
+# Ruta: infra/lamb-config/config-repo/<tunombre>-<recurso>-ms-dev.yml
+#   ej. joaquinsanchez-reserva-ms-dev.yml
+# El nombre = spring.application.name del PASO 2 + "-dev". Si no coincide, el servicio arranca
+# en el puerto 8080 sin BD (no leyo esta config).
+#
+# Plantilla: copia de lamb-finanzas-ms-dev.yml SIN los bloques security, mercadopago, logging,
+# devtools, springdoc ni el app.kafka de finanzas.
+#
+# OJO (YAML):
+#   - Solo espacios, nunca tabs. Los bloques de primer nivel (server, spring, eureka,
+#     management, app) van en la columna 0. Al pegar, VS Code a veces mete espacios: revisa.
+#   - Un solo "spring:". kafka va DENTRO de spring, al nivel de datasource.
+#
+# Verificar (no hace falta reiniciar lamb-config, el modo native lee el archivo en cada peticion):
+#   http://localhost:18888/<tunombre>-<recurso>-ms/dev   -> JSON con tus valores (un 500 = YAML mal indentado)
+# Despues reinicia SOLO tu servicio y mira en el log: "Tomcat started on port <puerto>".
+#
+# SIGUIENTE: la ruta del gateway en lamb-gateway-dev.yml (PASO 6)
+
+server:
+  # CAMBIAR: un puerto libre. 8088 lo usa curriculo, 8090 lo ocupa Wondershare en esta PC.
+  #   Revisar: Get-NetTCPConnection -LocalPort 8095 -State Listen -ErrorAction SilentlyContinue
+  port: 8096
+
+spring:
+  datasource:
+    # CAMBIAR: jdbc:postgresql://localhost:<puerto del compose>/<POSTGRES_DB>  (PASO 3)
+    #   ej. jdbc:postgresql://localhost:15438/lamb_reserva_db
+    url: jdbc:postgresql://localhost:15438/lamb_reserva_db
+    username: lamb
+    password: lamb
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jpa:
+    hibernate:
+      # Lo exige el examen: Hibernate NO crea tablas, solo compara la entity con la tabla de Flyway.
+      ddl-auto: validate
+    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:18092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: joaquinsanchez-reserva-ms
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+        spring.json.value.default.type: pe.edu.upeu.lamb.reserva.event.ReservaEvento
+        spring.json.trusted.packages: pe.edu.upeu.lamb.reserva.event
+        spring.json.use.type.headers: false
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:18761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  kafka:
+    topic:
+      eventos: reserva-eventos
