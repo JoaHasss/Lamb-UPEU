@@ -1,0 +1,23 @@
+# ============================================================================================
+# PASO 2 de 15: application.yml (local)
+# ============================================================================================
+# Copia del application.yml de lamb-finanzas-ms. Borra el application.properties que crea Initializr.
+# Aqui va SOLO el nombre, el perfil y donde esta el Config Server. Todo lo demas (puerto, BD,
+# Kafka, Eureka) va en el Config Server (PASO 5).
+#
+# OJO: este "name" debe ser IDENTICO (letra por letra) en 4 lugares:
+#   1. aqui
+#   2. el archivo infra/lamb-config/config-repo/<este-name>-dev.yml        (PASO 5)
+#   3. la ruta del gateway  uri: lb://<este-name>                            (PASO 6)
+#   4. el group-id de Kafka y el groupId del @KafkaListener                  (PASO 5 y PASO 15)
+#
+# SIGUIENTE: compose-dev.yml en la raiz del servicio (PASO 3)
+
+spring:
+  application:
+    # CAMBIAR: <tunombre>-<recurso>-ms   ej. joaquinsanchez-reserva-ms
+    name: joaquinsanchez-notificacion-ms
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:18888}"

@@ -380,6 +380,23 @@ spring:
                 - Path=/ms/lms/**
               filters:
                 - StripPrefix=2
+            # ======================================================================================
+            # PASO 6 de 15: ruta del gateway para el ms del examen
+            # ======================================================================================
+            # AGREGAR al final de la lista (debajo de ms-lms), NO encima de otra ruta.
+            # El "-" va en la MISMA columna que los otros "- id:" (12 espacios).
+            # CAMBIAR:
+            #   id   -> <recurso>                              ej. reserva
+            #   uri  -> lb://<tunombre>-<recurso>-ms            ej. lb://joaquinsanchez-reserva-ms
+            #   Path -> /api/v1/<recursos>/**                   ej. /api/v1/reservas/**
+            # OJO: SIN "filters: StripPrefix". Quitaria /api/v1 y el servicio responderia 404.
+            # Verificar: http://localhost:18888/lamb-gateway/dev (sin 500), reiniciar el gateway y
+            #   probar http://localhost:18080/api/v1/<recursos>  -> 200
+            # SIGUIENTE: SecurityConfig.java del gateway (PASO 7)
+            - id: notificacion
+              uri: lb://joaquinsanchez-notificacion-ms
+              predicates:
+                - Path=/api/v1/notificaciones/**
 
 eureka:
   instance:

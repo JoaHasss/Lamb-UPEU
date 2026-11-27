@@ -74,6 +74,12 @@ public class SecurityConfig {
                 // TEMPORAL: seguridad desactivada en todas las rutas para probar el frontend sin login
                 // (ver CONTEXTO_SESION.md seccion 7). Reglas reales originales comentadas abajo para restaurar.
                 .authorizeHttpRequests(auth -> auth
+                        // PASO 7 de 15: el ms del examen no tiene seguridad -> su ruta va abierta.
+                        // CAMBIAR: "/api/v1/<recursos>/**" (el mismo Path del PASO 6)   ej. "/api/v1/reservas/**"
+                        // OJO: SIEMPRE antes de .anyRequest(): Spring aplica la primera regla que coincide.
+                        // Reiniciar el gateway despues de cambiar esto.
+                        // SIGUIENTE: event/<Recurso>Evento.java del ms (PASO 8)
+                        .requestMatchers("/api/v1/notificaciones/**").permitAll()
                         .anyRequest().permitAll()
                         // .requestMatchers("/actuator/**", "/error").permitAll()
                         // .requestMatchers(HttpMethod.GET, ACADEMICO).authenticated()
